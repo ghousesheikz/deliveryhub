@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "watercan-269914",
+  "private_key_id": "ba9736421405246db50154ebc940a47238f19ed6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC8eLPJbtJfR5Mc\nUDECVEhBSk/ds7BEswirpQjIgr1tiAyRADtymLqFEZ5tWd/oT05bIBLUdnHiddxP\nU2ju5LOBxaI/yT8p43Vp+YS3uTRTQEqI8JSfM3937F0K9fYlvsbEgao9k1F2wZ+d\ndSpj1aDW4hhz+jbfRaSQfhGbBVTal9OhDNLk3V8MdjibMaaSFCttFd0SSgZJDeAC\n0UZqPa7t/jFjX817cqGoQsvJiHx2RFlBrqITN1+v9eFnbkVsFGgnG8oWWw2BxBEY\nGDMbcEHmVZ1PcI/qjSDpbPJJTHn+FML/mwJTUA7tC2jumfJW2B1Mm6ZdWPT4Ax3F\nTqlBfnWnAgMBAAECggEABBEq+IJnl4fxZvvVbyUysfbuy+wy+exO43kaPD4pxqgj\nZcDu8ONs9NvPalbL7NqdBpsWspTng8Omoj4tuDcwY0t1zIJX1npGcCBMTXhMXwAC\nKs7OtyyIftMP/YcIEz7LuwgxwRk76pD1qs+YznZ6wTso+ke5DUr4f2+cxw8GRswY\nlUvwnYxWQgM9LhVAwN/uB6sQ0YnL/Y+uvECgm+skOgqU44GW8wRrELEWavcacfaZ\nwWFQZy4SFAkK3QDC5bw6Do35A6cOIsvzLsIE//76RTaXLobLW42cSePKrFjmqvKQ\nVkfUIu21G+kEAcXDH6XWgiSUrHdNcsxbqUzfTpaK0QKBgQDf8nuaedOZDzA5L2qG\ntcbvF1xVI38vB1zN3MWFWZF2cx8E6O0vbUKS+6M1NgplGarmgEisNe+c5IVwshjY\nBO5Sj3ZvEtEON8OJCB+4N6cnFYVjnkDJNVUn5xsMylcGwsRfFCzJ7S5NNQycsP6P\nr3Pns+8WdHAn/NQ9LTOqEsRwVQKBgQDXcmAFZnUej28o/GKKcg9KwtxDDvc+Rn/4\n7K7lfTM2HW1phKseXF+jnBdejtSIQDFchp6E+D2WgEC+qj4VZyMOKuyVbtDoqChh\nUxHjMfI4yYtudAdVq1qLJd6rA1kqjelXI2NOHJUL+8ITkUy50akS6Je8YM9+w4do\nNJlM4hEaCwKBgGr0oFvSu2BqhJmLL9FOl8gw3AQ9g8yuM4COZDef430y1im+JSl1\ngUo5rGUJfkVy0NBtjEfTKrE/4wtDw+HH2RrNMb8yuW2U7GpR2vRcgBSGjsJZHo/6\nTMVV9vFQ4ed0tdzDAfEeufJd17wuPCXbofuTUCjlS3uNoL/nCrm7ZN5RAoGBANEy\nifI0bnziIbnWd4ifACJD28Rxf7nEkvaOO7UyQMvG/zp6S/4LDAK9yiNS5SP30PZa\n8QmEUakVl8iLXgVCRFO5ckgXdlqzDaKTGsdU9DIX4X+6wnR5Ek4S04eSlL4xVeX6\nwq5SKpecOfLuH2Y/IsDtgIi2KESab5zLlh+FU73JAoGBALZ6tehlVpBCXk9Ng9lA\nG0lePQSZYf6lCbRFtv2227o+r3yr2BY00IYUKwbb+KA/Z8BKF2rpm2f85ToGDrRV\nmP97aeoKGTPeJrhOytsC4EzRZXMadAH521mPG6gPxLEJ4Q7pdl8E8fF1GcwAOGFW\nyJFE5FUo4L3+WH8xduNfhifR\n-----END PRIVATE KEY-----\n",
+  "client_email": "watercan@watercan-269914.iam.gserviceaccount.com",
+  "client_id": "103040900824202973958",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/watercan%40watercan-269914.iam.gserviceaccount.com"
+}
