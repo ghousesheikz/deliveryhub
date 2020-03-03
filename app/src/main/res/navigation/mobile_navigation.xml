@@ -16,14 +16,30 @@
 
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.shaikhomes.watercan.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_myorders"
+        android:name="com.shaikhomes.watercan.ui.myorders.MyOrdersFragment"
+        android:label="@string/my_orders"
+        tools:layout="@layout/fragment_my_orders" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.shaikhomes.watercan.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_amount_due"
+        android:name="com.shaikhomes.watercan.ui.amountdue.AmountDueFragment"
+        android:label="@string/amount_due"
+        tools:layout="@layout/fragment_amount_due" />
+    <fragment
+        android:id="@+id/nav_canreturn"
+        android:name="com.shaikhomes.watercan.ui.canreturn.CanReturnFragment"
+        android:label="@string/can_return"
+        tools:layout="@layout/fragment_can_return" />
+    <fragment
+        android:id="@+id/nav_moreservices"
+        android:name="com.shaikhomes.watercan.ui.moreservices.MoreServicesFragment"
+        android:label="@string/more_services"
+        tools:layout="@layout/fragment_more_services" />
+    <fragment
+        android:id="@+id/nav_callcustomercare"
+        android:name="com.shaikhomes.watercan.ui.customercare.CustomerCareFragment"
+        android:label="@string/call_customer_care"
+        tools:layout="@layout/fragment_customer_care" />
+
 </navigation>
