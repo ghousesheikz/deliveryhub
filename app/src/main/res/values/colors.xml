@@ -7,4 +7,16 @@
     <color name="aqua">#11CAB8</color>
     <color name="black">#000</color>
     <color name="white">#FFF</color>
+    <color name="pink">#B934CF</color>
+    <color name="grey">#d3d3d3</color>
+
+    <color name="l_pur">#5737c2</color>
+    <color name="l_pur_l">#9b7efd</color>
+    <color name="l_pur_r">#220681</color>
+    <color name="list_selected">#F73D81</color>
+    <color name="orange">#ff8821</color>
+    <color name="orange_l">#f9bc88</color>
+    <color name="orange_r">#ca7d3b</color>
+    <color name="darkgrey">#7C7979</color>
+    <color name="full_transparent">#005b5b5b</color>
 </resources>

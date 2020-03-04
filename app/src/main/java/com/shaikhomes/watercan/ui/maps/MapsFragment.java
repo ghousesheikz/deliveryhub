@@ -41,7 +41,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.shaikhomes.watercan.R;
+import com.shaikhomes.watercan.ui.BottomSheetView;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -56,6 +58,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     Location mLastLocation;
     Marker mCurrLocationMarker;
     GoogleMap mGoogleMap;
+    BottomSheetView bottomSheetView;
 
 
     @Nullable
@@ -65,6 +68,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
         mapFragment.getMapAsync(this);
+        bottomSheetView = (BottomSheetView) view.getContext();
         return view;
     }
 
@@ -105,14 +109,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
                     == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
                 buildGoogleApiClient();
-                mMap.setMyLocationEnabled(true);
+                // mMap.setMyLocationEnabled(true);
             } else {
                 //Request Location Permission
                 checkLocationPermission();
             }
         } else {
             buildGoogleApiClient();
-            mMap.setMyLocationEnabled(true);
+            // mMap.setMyLocationEnabled(true);
         }
 
      /*   mMap.addMarker(new MarkerOptions()
@@ -126,6 +130,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                bottomSheetView.BottomSheetDesignLocation(latLng);
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions()
                         .position(latLng)
@@ -198,15 +203,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
         markerOptions.icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_marker));
-       // markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        // markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-      //  mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
+        //  mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
 
         //move map camera
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+
+        bottomSheetView.BottomSheetDesignLocation(latLng);
+
+
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -227,7 +237,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
                                 //Prompt the user once explanation has been shown
                                 ActivityCompat.requestPermissions(getActivity(),
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION );
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         })
                         .create()
@@ -238,7 +248,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION );
+                        MY_PERMISSIONS_REQUEST_LOCATION);
             }
         }
     }
@@ -261,7 +271,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
                         if (mGoogleApiClient == null) {
                             buildGoogleApiClient();
                         }
-                        mGoogleMap.setMyLocationEnabled(true);
+                        // mGoogleMap.setMyLocationEnabled(true);
                     }
 
                 } else {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomsheet"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="150dp"
     android:layout_alignParentBottom="true"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
@@ -12,43 +12,111 @@
 
     android:orientation="vertical"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="50dp"
+    app:behavior_peekHeight="0dp"
     app:layout_behavior="@string/bottom_sheet_behavior"
     tools:ignore="MissingDefaultResource">
 
     <LinearLayout
-        android:id="@+id/expand_layout"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
-
-
-            <TextView
-                android:id="@+id/headertxt"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:drawablePadding="15dp"
-                android:gravity="center"
-
-                android:padding="8dp"
-                android:text="View Address"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/aqua" />
-
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/apartment_details_list_recyclerview"
+        <LinearLayout
+            android:id="@+id/expand_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:orientation="horizontal"
-            android:padding="5dp"></androidx.recyclerview.widget.RecyclerView>
+            android:padding="5dp"
+            android:visibility="gone"
+            android:weightSum="3">
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:clickable="true"
+                android:scaleX="1.2"
+                android:scaleY="1.2"
+                android:src="@drawable/ic_my_orders"
+                android:tint="@color/pink"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:clickable="true"
+                android:scaleX="1.2"
+                android:scaleY="1.2"
+                android:src="@drawable/ic_services"
+                android:tint="@color/pink"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:clickable="true"
+                android:scaleX="1.2"
+                android:scaleY="1.2"
+                android:src="@drawable/ic_motorcycle_tracker"
+                android:tint="@color/pink"
+                android:visibility="gone" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0dp"
+                android:background="@color/white"
+                android:scaleType="fitEnd"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/bottom_design"
+                app:lottie_repeatCount="100"
+                app:lottie_repeatMode="restart" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/aqua"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/instant_services"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_background"
+            android:drawableLeft="@drawable/ic_flash"
+            android:drawableRight="@drawable/ic_flash"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/instant_service"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/scheduled_services"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_background"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/schedule_service"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+
     </LinearLayout>
 </LinearLayout>

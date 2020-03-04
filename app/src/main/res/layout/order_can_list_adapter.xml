@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/border_layout"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/name_"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Bisleri"
+        android:textColor="@color/orange"
+        android:textSize="17sp" />
+
+    <ImageButton
+        android:id="@+id/image_"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bisleri_2"
+        android:scaleType="fitCenter" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/price_"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:padding="5dp"
+            android:text="₹ 100/-"
+            android:textColor="@color/darkgrey"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/liters_"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:padding="5dp"
+            android:text="10L"
+            android:textColor="@color/darkgrey"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

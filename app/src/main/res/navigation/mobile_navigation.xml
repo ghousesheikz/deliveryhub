@@ -42,4 +42,10 @@
         android:label="@string/call_customer_care"
         tools:layout="@layout/fragment_customer_care" />
 
+    <fragment
+        android:id="@+id/nav_insta_services"
+        android:name="com.shaikhomes.watercan.ui.orders.OrderCan"
+        android:label="@string/my_orders"
+        tools:layout="@layout/fragment_order_can" />
+
 </navigation>
