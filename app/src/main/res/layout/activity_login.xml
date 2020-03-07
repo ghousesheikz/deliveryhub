@@ -96,35 +96,47 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="LOGIN"
-                android:textColor="@color/colorPrimary"
+                android:text="@string/login"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
-            <com.google.android.material.textfield.TextInputLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="20dp"
-                android:focusable="false"
-                android:textColorHint="@color/grey"
-                app:counterOverflowTextAppearance="@color/grey"
-                app:hintTextAppearance="@color/colorPrimary">
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/edit_text_background"
+                android:orientation="horizontal"
+                android:padding="15dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/username"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:drawablePadding="8dp"
-                    android:hint="@string/userlogin"
-                    android:inputType="number"
-                    android:maxLength="10"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
+                    android:text="@string/_91"
+                    android:textColor="@color/darkgrey"
                     android:textSize="17sp" />
-            </com.google.android.material.textfield.TextInputLayout>
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@color/grey" />
+
+                <EditText
+                    android:id="@+id/edt_login_mob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:hint="@string/mobile_number"
+                    android:maxLength="10"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkgrey"
+                    android:textSize="17sp" />
+            </LinearLayout>
 
 
             <androidx.appcompat.widget.AppCompatButton
@@ -133,7 +145,7 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
-                android:background="@drawable/ripple_login_button"
+                android:background="@drawable/button_background"
                 android:text="login"
                 android:textColor="@color/white" />
 
@@ -144,26 +156,19 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <TextView
-                    android:id="@+id/btn_forgotpassword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:padding="5dp"
-                    android:text="Forgot Password"
-                    android:textColor="#9E9A9A" />
 
                 <TextView
                     android:id="@+id/btn_register_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
                     android:layout_alignParentRight="true"
                     android:layout_weight="0.5"
                     android:gravity="right"
                     android:padding="5dp"
-                    android:text="Register User"
-                    android:textColor="#9E9A9A" />
+                    android:paddingRight="8dp"
+                    android:text="@string/signup"
+                    android:textColor="@color/darkgrey"
+                    android:textSize="17sp" />
             </RelativeLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -48,14 +48,16 @@ public class MainActivity extends AppCompatActivity implements BottomSheetView, 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab_search);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_search_places);
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+        fab.setVisibility(View.GONE);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -153,7 +155,10 @@ public class MainActivity extends AppCompatActivity implements BottomSheetView, 
         switch (v.getId()) {
             case R.id.instant_services:
                 behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_insta_services);
+                Bundle args = new Bundle();
+                args.putString("ARG_PARAM1", "ghouse");
+                args.putString("ARG_PARAM2", "arguments");
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_insta_services, args);
                 break;
         }
     }

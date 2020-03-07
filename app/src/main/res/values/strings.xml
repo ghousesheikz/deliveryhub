@@ -25,4 +25,17 @@
     <string name="instant_service">Instant Service</string>
     <string name="schedule_service">Schedule Service</string>
     <string name="userlogin" />
+    <string name="create_new_account">Create New Account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="_91">+91</string>
+    <string name="email">Email</string>
+    <string name="i_agree_the_terms_and_conditions">I agree the Terms and Conditions</string>
+    <string name="signup">Not Yet a user? SignUp</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="sign_up">SignUp</string>
+    <string name="login">LOGIN</string>
+    <string name="str_atv_places">Enter Place Here</string>
+    <string name="search_places">Search Places</string>
+    <string name="total_amount">Total Amount : </string>
 </resources>

@@ -2,7 +2,9 @@ package com.shaikhomes.watercan;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,13 +28,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.shaikhomes.watercan.ui.maps.MapsFragment.MY_PERMISSIONS_REQUEST_LOCATION;
+
 public class LoginActivity extends AppCompatActivity {
     private AppCompatButton mLoginBtn;
-    private TextView mChangePwd, mRegisterUser;
+    private TextView mRegisterUser;
 
     private double mLatitude = 0.00, mLongitude = 0.00;
     private Context context;
-    private EditText mEdtUserName;
+    private EditText mEdtMobNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +45,26 @@ public class LoginActivity extends AppCompatActivity {
         mLoginBtn = findViewById(R.id.btn_login);
         context = this;
         mRegisterUser = findViewById(R.id.btn_register_user);
-        mChangePwd = findViewById(R.id.btn_forgotpassword);
-        mEdtUserName = findViewById(R.id.username);
+        mEdtMobNumber = findViewById(R.id.edt_login_mob);
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                MY_PERMISSIONS_REQUEST_LOCATION);
 
         mRegisterUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                finish();
             }
         });
 
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!TextUtils.isEmpty(mEdtUserName.getText().toString().trim())) {
-                    if (mEdtUserName.getText().toString().length() == 10) {
-                        authenticateuser(mEdtUserName.getText().toString().trim());
+                if (!TextUtils.isEmpty(mEdtMobNumber.getText().toString().trim())) {
+                    if (mEdtMobNumber.getText().toString().length() == 10) {
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        // authenticateuser(mEdtMobNumber.getText().toString().trim());
                     }
                 }
 
