@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.model.OrderCalculationPojo;
@@ -25,6 +28,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 import static com.shaikhomes.watercan.utility.UtilityConstants.ORDER_CAN_LIST;
 
 /**
@@ -32,7 +37,7 @@ import static com.shaikhomes.watercan.utility.UtilityConstants.ORDER_CAN_LIST;
  * Use the {@link OrderCalculation#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrderCalculation extends Fragment {
+public class OrderCalculation extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -55,6 +60,8 @@ public class OrderCalculation extends Fragment {
     private OrderListAdapter mAdapter;
     private View view;
     private RecyclerView mRecyclerView;
+    private TextView mtxtTotalAmt;
+    private FloatingActionButton mOrderProceedFab;
 
     public OrderCalculation() {
         // Required empty public constructor
@@ -115,12 +122,31 @@ public class OrderCalculation extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_order_calculation, container, false);
         mRecyclerView = view.findViewById(R.id.order_cal_list);
+        mtxtTotalAmt = view.findViewById(R.id.total_amount);
+        mOrderProceedFab = view.findViewById(R.id.proceed_order);
+        mOrderProceedFab.setOnClickListener(this);
+        if (mOrdersList.size() > 0) {
+            double totAmt = 0;
+            for (int i = 0; i < mOrdersList.size(); i++) {
+                totAmt += mOrdersList.get(i).getUnitAmount();
+            }
+            mtxtTotalAmt.setText(totAmt + " /-");
+        }
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        mAdapter = new OrderListAdapter(getActivity(), mOrdersList, new OrderCanAdapter.OnItemClickListener() {
+        mAdapter = new OrderListAdapter(getActivity(), mOrdersList, new OrderListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(String response, int position) {
-
+            public void onItemClick(List<OrderCalculationPojo> response, int position) {
+                tinyDB.remove(ORDER_CAN_LIST);
+                tinyDB.putString(ORDER_CAN_LIST, new Gson().toJson(response));
+                mAdapter.updateAdapter(response);
+                mOrdersList = response;
+                double totAmt = 0;
+                for (int i = 0; i < response.size(); i++) {
+                    totAmt += response.get(i).getUnitAmount();
+                }
+                mtxtTotalAmt.setText(totAmt + " /-");
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -128,5 +154,13 @@ public class OrderCalculation extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.proceed_order) {
+            tinyDB.remove(ORDER_CAN_LIST);
+            Toasty.success(getActivity(), "Your Total Order AMount is " + mtxtTotalAmt.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

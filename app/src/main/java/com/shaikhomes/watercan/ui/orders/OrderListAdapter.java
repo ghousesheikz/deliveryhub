@@ -19,12 +19,13 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
 
 
     Context context;
-    OrderCanAdapter.OnItemClickListener itemClickListener;
+    OrderListAdapter.OnItemClickListener itemClickListener;
     List<OrderCalculationPojo> mCanList;
     String rupee;
+    int mCount = 0;
 
 
-    public OrderListAdapter(Activity context, List<OrderCalculationPojo> mCanList, OrderCanAdapter.OnItemClickListener mItemClickListener) {
+    public OrderListAdapter(Activity context, List<OrderCalculationPojo> mCanList, OrderListAdapter.OnItemClickListener mItemClickListener) {
         this.context = (Activity) context;
         this.mCanList = mCanList;
         this.itemClickListener = mItemClickListener;
@@ -47,12 +48,56 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
     @Override
     public void onBindViewHolder(final OrderListAdapter.MyViewHolder holder, final int position) {
         //  animator.animateAdd(holder);
+        mCount = mCanList.get(position).getNoOfCans();
+
+        holder.mCanCount.setText(String.valueOf(mCount));
+        holder.mCanAmt.setText("Amount : " + mCanList.get(position).getUnitAmount());
+        holder.mPlusCnt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCount = mCanList.get(position).getNoOfCans();
+                mCount = mCount + 1;
+                double amt = Double.parseDouble(mCanList.get(position).getPrice());
+                amt = mCount * amt;
+                mCanList.get(position).setUnitAmount(amt);
+                mCanList.get(position).setNoOfCans(mCount);
+                holder.mCanAmt.setText("Amount : " + amt);
+                holder.mCanCount.setText(String.valueOf(mCount));
+                itemClickListener.onItemClick(mCanList,position);
+            }
+        });
+
+        holder.mMinusCnt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCount = mCanList.get(position).getNoOfCans();
+                mCount = mCount - 1;
+                if (mCount < 0) {
+                    mCount = 0;
+                    double amt = Double.parseDouble(mCanList.get(position).getPrice());
+                    amt = mCount * amt;
+                    mCanList.get(position).setUnitAmount(amt);
+                    mCanList.get(position).setNoOfCans(mCount);
+                    holder.mCanAmt.setText("Amount : " + amt);
+                    holder.mCanCount.setText(String.valueOf(mCount));
+                    itemClickListener.onItemClick(mCanList,position);
+                } else {
+                    double amt = Double.parseDouble(mCanList.get(position).getPrice());
+                    amt = mCount * amt;
+                    mCanList.get(position).setUnitAmount(amt);
+                    mCanList.get(position).setNoOfCans(mCount);
+                    holder.mCanAmt.setText("Amount : " + amt);
+                    holder.mCanCount.setText(String.valueOf(mCount));
+                    itemClickListener.onItemClick(mCanList,position);
+                }
+            }
+        });
 
 
     }
 
     public interface OnItemClickListener {
-        void onItemClick(String response, int position);
+        void onItemClick(List<OrderCalculationPojo> response, int position);
     }
 
     @Override
@@ -63,18 +108,21 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return mCanList.size()                                            ;
+        return mCanList.size();
         //  return mCanList == null ? 0 : mCanList.size();
     }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView mCompName, mPrice, mLiters;
-
-
+        TextView mCanCount, mCanAmt;
+        ImageView mPlusCnt, mMinusCnt;
 
         public MyViewHolder(View v) {
             super(v);
+            mCanCount = v.findViewById(R.id.can_count);
+            mPlusCnt = v.findViewById(R.id.plus_count);
+            mMinusCnt = v.findViewById(R.id.minus_count);
+            mCanAmt = v.findViewById(R.id.txt_amt);
 
         }
 
