@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(mEdtMobNumber.getText().toString().trim())) {
                     if (mEdtMobNumber.getText().toString().length() == 10) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
                         // authenticateuser(mEdtMobNumber.getText().toString().trim());
                     }
                 }

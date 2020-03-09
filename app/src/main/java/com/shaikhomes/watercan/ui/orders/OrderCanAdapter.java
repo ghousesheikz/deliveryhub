@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -50,6 +51,12 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         //  animator.animateAdd(holder);
+        holder.mOrderCanLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onItemClick("",position);
+            }
+        });
 
 
     }
@@ -74,6 +81,7 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView mCompName, mPrice, mLiters;
         ImageView mCanImage;
+        LinearLayout mOrderCanLL;
 
 
         public MyViewHolder(View v) {
@@ -82,7 +90,7 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
             mPrice = v.findViewById(R.id.price_);
             mLiters = v.findViewById(R.id.liters_);
             mCanImage = v.findViewById(R.id.image_);
-
+            mOrderCanLL = v.findViewById(R.id.order_can_ll);
         }
 
     }

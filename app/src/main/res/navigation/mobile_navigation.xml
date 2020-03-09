@@ -49,6 +49,12 @@
         tools:layout="@layout/fragment_order_can" />
 
     <fragment
+        android:id="@+id/nav_order_cal"
+        android:name="com.shaikhomes.watercan.ui.ordercalculation.OrderCalculation"
+        android:label="@string/my_orders"
+        tools:layout="@layout/fragment_order_calculation" />
+
+    <fragment
         android:id="@+id/nav_search_places"
         android:name="com.shaikhomes.watercan.ui.searchplaces.SearchPlaces"
         android:label="@string/search_places"

@@ -3,12 +3,29 @@ package com.shaikhomes.watercan.ui.ordercalculation;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.shaikhomes.watercan.R;
+import com.shaikhomes.watercan.model.OrderCalculationPojo;
+import com.shaikhomes.watercan.ui.orders.OrderCanAdapter;
+import com.shaikhomes.watercan.ui.orders.OrderListAdapter;
+import com.shaikhomes.watercan.utility.TinyDB;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.shaikhomes.watercan.utility.UtilityConstants.ORDER_CAN_LIST;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,28 +38,40 @@ public class OrderCalculation extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private static final String ARG_IMAGE = "image";
+    private static final String ARG_LITERS = "liters";
+    private static final String ARG_NAME = "name";
+    private static final String ARG_NOOFCANS = "noofcans";
+    private static final String ARG_TOTAMT = "totamt";
+    private static final String ARG_UNITAMT = "unitamt";
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private List<OrderCalculationPojo> mOrdersList = new ArrayList<>();
+    private TinyDB tinyDB;
+    private JSONArray jsonArray;
+    private OrderCalculationPojo mOrderPojo;
+    private OrderListAdapter mAdapter;
+    private View view;
+    private RecyclerView mRecyclerView;
 
     public OrderCalculation() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OrderCalculation.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static OrderCalculation newInstance(String param1, String param2) {
+    public static OrderCalculation newInstance(String imageURL, String liters, String name, int noOfCans, double totalAmount, double unitAmount) {
         OrderCalculation fragment = new OrderCalculation();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_IMAGE, imageURL);
+        args.putString(ARG_LITERS, liters);
+        args.putString(ARG_NAME, name);
+        args.putInt(ARG_NOOFCANS, noOfCans);
+        args.putDouble(ARG_TOTAMT, totalAmount);
+        args.putDouble(ARG_UNITAMT, unitAmount);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,16 +79,54 @@ public class OrderCalculation extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        tinyDB = new TinyDB(getActivity());
+        try {
+            jsonArray = new JSONArray(tinyDB.getString(ORDER_CAN_LIST));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+        if (jsonArray != null) {
+            if (jsonArray.length() > 0) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    mOrderPojo = new OrderCalculationPojo();
+                    try {
+                        JSONObject jsonObject = new JSONObject(jsonArray.get(i).toString());
+                        mOrderPojo.setImageURL(jsonObject.getString("imageURL"));
+                        mOrderPojo.setName(jsonObject.getString("Name"));
+                        mOrderPojo.setPrice(jsonObject.getString("Price"));
+                        mOrderPojo.setLiters(jsonObject.getString("Liters"));
+                        mOrderPojo.setNoOfCans(jsonObject.getInt("NoOfCans"));
+                        mOrderPojo.setUnitAmount(jsonObject.getDouble("unitAmount"));
+                        mOrderPojo.setTotalAmount(jsonObject.getDouble("TotalAmount"));
+                        mOrdersList.add(mOrderPojo);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_order_calculation, container, false);
+        mRecyclerView = view.findViewById(R.id.order_cal_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        mAdapter = new OrderListAdapter(getActivity(), mOrdersList, new OrderCanAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String response, int position) {
+
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_order_calculation, container, false);
+        return view;
     }
 }

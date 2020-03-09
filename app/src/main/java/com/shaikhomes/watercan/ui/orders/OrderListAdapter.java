@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shaikhomes.watercan.R;
+import com.shaikhomes.watercan.model.OrderCalculationPojo;
 
 import java.util.List;
 
@@ -19,13 +20,13 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
 
     Context context;
     OrderCanAdapter.OnItemClickListener itemClickListener;
-    List<String> mJoblist;
+    List<OrderCalculationPojo> mCanList;
     String rupee;
 
 
-    public OrderListAdapter(Activity context, List<String> mJoblist, OrderCanAdapter.OnItemClickListener mItemClickListener) {
+    public OrderListAdapter(Activity context, List<OrderCalculationPojo> mCanList, OrderCanAdapter.OnItemClickListener mItemClickListener) {
         this.context = (Activity) context;
-        this.mJoblist = mJoblist;
+        this.mCanList = mCanList;
         this.itemClickListener = mItemClickListener;
         rupee = context.getResources().getString(R.string.Rs);
     }
@@ -62,33 +63,29 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return 12;
-        //  return mJoblist == null ? 0 : mJoblist.size();
+        return mCanList.size()                                            ;
+        //  return mCanList == null ? 0 : mCanList.size();
     }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView mCompName, mPrice, mLiters;
-        ImageView mCanImage;
+
 
 
         public MyViewHolder(View v) {
             super(v);
-            mCompName = v.findViewById(R.id.name_);
-            mPrice = v.findViewById(R.id.price_);
-            mLiters = v.findViewById(R.id.liters_);
-            mCanImage = v.findViewById(R.id.image_);
 
         }
 
     }
 
-    public void updateAdapter(List<String> updatelist) {
-        this.mJoblist = updatelist;
+    public void updateAdapter(List<OrderCalculationPojo> updatelist) {
+        this.mCanList = updatelist;
         notifyDataSetChanged();
     }
 
-    public List<String> getlist() {
-        return mJoblist;
+    public List<OrderCalculationPojo> getlist() {
+        return mCanList;
     }
 }
