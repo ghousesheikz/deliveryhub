@@ -104,11 +104,7 @@ public class OrderCan extends Fragment {
                 mPojo.setUnitAmount(100.00);
                 try {
                     jsonObject = new JSONObject(new Gson().toJson(mPojo));
-                    if (!TextUtils.isEmpty(tinyDB.getString(ORDER_CAN_LIST))) {
-                        jsonArray = new JSONArray(tinyDB.getString(ORDER_CAN_LIST));
-                    } else {
-                        jsonArray = new JSONArray();
-                    }
+                    jsonArray = new JSONArray();
                     jsonArray.put(jsonObject);
                     tinyDB.remove(ORDER_CAN_LIST);
                     tinyDB.putString(ORDER_CAN_LIST, jsonArray.toString());
@@ -116,7 +112,7 @@ public class OrderCan extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-               // new OrderCalculation().newInstance(mPojo.getImageURL(), mPojo.getLiters(), mPojo.getName(), mPojo.getNoOfCans(), mPojo.getTotalAmount(), mPojo.getUnitAmount());
+                // new OrderCalculation().newInstance(mPojo.getImageURL(), mPojo.getLiters(), mPojo.getName(), mPojo.getNoOfCans(), mPojo.getTotalAmount(), mPojo.getUnitAmount());
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_order_cal, args);
             }
         });

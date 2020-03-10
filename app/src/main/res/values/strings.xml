@@ -38,4 +38,12 @@
     <string name="str_atv_places">Enter Place Here</string>
     <string name="search_places">Search Places</string>
     <string name="total_amount">Total Amount : </string>
+    <string name="a_sum_of_150_will_be_charged_on_every_new_can">A sum of ₹150/- will be charged on every new can</string>
+    <string name="price_of_water">Price of water</string>
+    <string name="empty_can_price">Empty can price</string>
+    <string name="do_you_want_to_buy_new_cans">Do you want to buy new cans</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="select_payment_type">Select Payment Type</string>
+    <string name="online_payment">Online Payment</string>
+    <string name="cash_on_delivery">Cash on delivery</string>
 </resources>
