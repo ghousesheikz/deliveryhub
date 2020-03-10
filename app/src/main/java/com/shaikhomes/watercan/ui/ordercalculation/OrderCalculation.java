@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,8 +63,13 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
     private OrderListAdapter mAdapter;
     private View view;
     private RecyclerView mRecyclerView;
-    private TextView mtxtTotalAmt;
+    private TextView mtxtTotalAmt, mTxtCanCount;
     private FloatingActionButton mOrderProceedFab;
+    private RelativeLayout mEmptycanLL;
+    private Switch mEmptyCanSwitch;
+    private int mEmptyCanCount = 0;
+    private ImageView mCanCountPlus, mCanCountMinus;
+
 
     public OrderCalculation() {
         // Required empty public constructor
@@ -124,6 +132,9 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
         mRecyclerView = view.findViewById(R.id.order_cal_list);
         mtxtTotalAmt = view.findViewById(R.id.total_amount);
         mOrderProceedFab = view.findViewById(R.id.proceed_order);
+        mEmptycanLL = view.findViewById(R.id.empty_can_ll);
+        mEmptyCanSwitch = view.findViewById(R.id.swtch_add_can);
+        mEmptyCanSwitch.setOnClickListener(this);
         mOrderProceedFab.setOnClickListener(this);
         if (mOrdersList.size() > 0) {
             double totAmt = 0;
@@ -161,6 +172,13 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
         if (v.getId() == R.id.proceed_order) {
             tinyDB.remove(ORDER_CAN_LIST);
             Toasty.success(getActivity(), "Your Total Order AMount is " + mtxtTotalAmt.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+        } else if (v.getId() == R.id.swtch_add_can) {
+            if (mEmptyCanSwitch.isChecked()) {
+                mEmptycanLL.setVisibility(View.VISIBLE);
+            } else {
+                mEmptycanLL.setVisibility(View.GONE);
+
+            }
         }
     }
 }
