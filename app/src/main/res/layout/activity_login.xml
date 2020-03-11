@@ -109,12 +109,12 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/edit_text_background"
-                android:orientation="horizontal"
-                android:padding="15dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="15dp"
                     android:text="@string/_91"
                     android:textColor="@color/darkgrey"
                     android:textSize="17sp" />
@@ -128,11 +128,13 @@
 
                 <EditText
                     android:id="@+id/edt_login_mob"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:hint="@string/mobile_number"
+                    android:inputType="number"
                     android:maxLength="10"
+                    android:padding="15dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkgrey"
                     android:textSize="17sp" />

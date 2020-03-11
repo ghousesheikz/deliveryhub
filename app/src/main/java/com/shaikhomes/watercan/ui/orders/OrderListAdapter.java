@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.model.OrderCalculationPojo;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyViewHolder> {
@@ -23,6 +24,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
     List<OrderCalculationPojo> mCanList;
     String rupee;
     int mCount = 0;
+    DecimalFormat decimalFormat;
 
 
     public OrderListAdapter(Activity context, List<OrderCalculationPojo> mCanList, OrderListAdapter.OnItemClickListener mItemClickListener) {
@@ -30,6 +32,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
         this.mCanList = mCanList;
         this.itemClickListener = mItemClickListener;
         rupee = context.getResources().getString(R.string.Rs);
+        decimalFormat = new DecimalFormat("0.00");
     }
 
     @Override
@@ -51,7 +54,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
         mCount = mCanList.get(position).getNoOfCans();
 
         holder.mCanCount.setText(String.valueOf(mCount));
-        holder.mCanAmt.setText("Amount : " + mCanList.get(position).getUnitAmount());
+        holder.mCanAmt.setText("Amount : ₹" + mCanList.get(position).getUnitAmount());
         holder.mPlusCnt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +64,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                 amt = mCount * amt;
                 mCanList.get(position).setUnitAmount(amt);
                 mCanList.get(position).setNoOfCans(mCount);
-                holder.mCanAmt.setText("Amount : " + amt);
+                holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt)+"/-");
                 holder.mCanCount.setText(String.valueOf(mCount));
                 itemClickListener.onItemClick(mCanList,position);
             }
@@ -78,7 +81,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                     amt = mCount * amt;
                     mCanList.get(position).setUnitAmount(amt);
                     mCanList.get(position).setNoOfCans(mCount);
-                    holder.mCanAmt.setText("Amount : " + amt);
+                    holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt)+"/-");
                     holder.mCanCount.setText(String.valueOf(mCount));
                     itemClickListener.onItemClick(mCanList,position);
                 } else {
@@ -86,7 +89,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                     amt = mCount * amt;
                     mCanList.get(position).setUnitAmount(amt);
                     mCanList.get(position).setNoOfCans(mCount);
-                    holder.mCanAmt.setText("Amount : " + amt);
+                    holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt)+"/-");
                     holder.mCanCount.setText(String.valueOf(mCount));
                     itemClickListener.onItemClick(mCanList,position);
                 }

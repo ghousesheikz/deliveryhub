@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -28,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +44,7 @@ import static com.shaikhomes.watercan.utility.UtilityConstants.ORDER_CAN_LIST;
  * Use the {@link OrderCalculation#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrderCalculation extends Fragment implements View.OnClickListener {
+public class OrderCalculation extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,13 +67,17 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
     private OrderListAdapter mAdapter;
     private View view;
     private RecyclerView mRecyclerView;
-    private TextView mtxtTotalAmt, mTxtCanCount;
+    private TextView mtxtTotalAmt, mTxtCanCount, mTxtEmptyCanAmount, mTxtWaterPrice, mMasterTotal, mTxtAddressType, mTxtAddress;
     private FloatingActionButton mOrderProceedFab;
     private RelativeLayout mEmptycanLL;
     private Switch mEmptyCanSwitch;
     private int mEmptyCanCount = 0;
+    private double mEmptyCanPrice;
     private ImageView mCanCountPlus, mCanCountMinus;
-
+    private double totAmt = 0, mTotalPrice = 0.00;
+    private String mPaymentChk = "";
+    private RadioButton mOnlinePay, mCashPay;
+    private DecimalFormat decimalFormat;
 
     public OrderCalculation() {
         // Required empty public constructor
@@ -95,6 +103,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tinyDB = new TinyDB(getActivity());
+        decimalFormat = new DecimalFormat("0.00");
         try {
             jsonArray = new JSONArray(tinyDB.getString(ORDER_CAN_LIST));
         } catch (JSONException e) {
@@ -134,14 +143,29 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
         mOrderProceedFab = view.findViewById(R.id.proceed_order);
         mEmptycanLL = view.findViewById(R.id.empty_can_ll);
         mEmptyCanSwitch = view.findViewById(R.id.swtch_add_can);
+        mCanCountPlus = view.findViewById(R.id.plus_count);
+        mCanCountMinus = view.findViewById(R.id.minus_count);
+        mTxtCanCount = view.findViewById(R.id.empty_can_count);
+        mTxtEmptyCanAmount = view.findViewById(R.id.empty_can_amount);
+        mTxtWaterPrice = view.findViewById(R.id.water_amount);
+        mMasterTotal = view.findViewById(R.id.master_total_amount);
+        mOnlinePay = view.findViewById(R.id.radio_online_pay);
+        mCashPay = view.findViewById(R.id.radio_cash_on_delivery);
+        mTxtAddressType = view.findViewById(R.id.txt_address_type);
+        mTxtAddress = view.findViewById(R.id.txt_address);
+        mCanCountPlus.setOnClickListener(this);
+        mCanCountMinus.setOnClickListener(this);
         mEmptyCanSwitch.setOnClickListener(this);
         mOrderProceedFab.setOnClickListener(this);
+        mOnlinePay.setOnCheckedChangeListener(this);
         if (mOrdersList.size() > 0) {
-            double totAmt = 0;
+            totAmt = 0.00;
             for (int i = 0; i < mOrdersList.size(); i++) {
                 totAmt += mOrdersList.get(i).getUnitAmount();
             }
-            mtxtTotalAmt.setText(totAmt + " /-");
+            mTxtWaterPrice.setText("₹" + decimalFormat.format(totAmt) + " /-");
+            getTotalAmt();
+
         }
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -153,11 +177,12 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                 tinyDB.putString(ORDER_CAN_LIST, new Gson().toJson(response));
                 mAdapter.updateAdapter(response);
                 mOrdersList = response;
-                double totAmt = 0;
+                totAmt = 0.00;
                 for (int i = 0; i < response.size(); i++) {
                     totAmt += response.get(i).getUnitAmount();
                 }
-                mtxtTotalAmt.setText(totAmt + " /-");
+                mTxtWaterPrice.setText("₹" + decimalFormat.format(totAmt) + "/-");
+                getTotalAmt();
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -167,17 +192,74 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    private void getTotalAmt() {
+        mTotalPrice = 0;
+        mTotalPrice = totAmt + mEmptyCanPrice;
+        mtxtTotalAmt.setText("₹" + decimalFormat.format(mTotalPrice)+ "/-");
+        mMasterTotal.setText("₹" + decimalFormat.format(mTotalPrice) + "/-");
+    }
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.proceed_order) {
             tinyDB.remove(ORDER_CAN_LIST);
-            Toasty.success(getActivity(), "Your Total Order AMount is " + mtxtTotalAmt.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+            if (validInputs())
+                Toasty.success(getActivity(), "Your Total Order AMount is " + mtxtTotalAmt.getText().toString().trim(), Toast.LENGTH_SHORT).show();
         } else if (v.getId() == R.id.swtch_add_can) {
             if (mEmptyCanSwitch.isChecked()) {
                 mEmptycanLL.setVisibility(View.VISIBLE);
             } else {
                 mEmptycanLL.setVisibility(View.GONE);
 
+            }
+        } else if (v.getId() == R.id.plus_count) {
+            mEmptyCanCount = Integer.parseInt(mTxtCanCount.getText().toString());
+            mEmptyCanCount = mEmptyCanCount + 1;
+            mEmptyCanPrice = mEmptyCanCount * 150;
+            mTxtEmptyCanAmount.setText("₹" + decimalFormat.format(mEmptyCanPrice) + "/-");
+            mTxtCanCount.setText(String.valueOf(mEmptyCanCount));
+            getTotalAmt();
+
+        } else if (v.getId() == R.id.minus_count) {
+            mEmptyCanCount = Integer.parseInt(mTxtCanCount.getText().toString());
+            mEmptyCanCount = mEmptyCanCount - 1;
+            if (mEmptyCanCount < 0) {
+                mEmptyCanPrice = 0 * 150;
+                mTxtEmptyCanAmount.setText("₹" + decimalFormat.format(mEmptyCanPrice) + "/-");
+                mTxtCanCount.setText(String.valueOf(0));
+                getTotalAmt();
+            } else {
+                mEmptyCanPrice = mEmptyCanCount * 150;
+                mTxtEmptyCanAmount.setText("₹" + decimalFormat.format(mEmptyCanPrice) + "/-");
+                mTxtCanCount.setText(String.valueOf(mEmptyCanCount));
+                getTotalAmt();
+            }
+        }
+    }
+
+    private boolean validInputs() {
+        boolean flag = true;
+        if (TextUtils.isEmpty(mTxtAddressType.getText().toString()) && TextUtils.isEmpty(mTxtAddress.getText().toString())) {
+            flag = false;
+            Toasty.error(getActivity(), "Please Select Address", Toast.LENGTH_SHORT).show();
+        }
+
+        return flag;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (buttonView.getId() == R.id.radio_online_pay) {
+            if (isChecked) {
+                mPaymentChk = "online";
+            } else {
+                mPaymentChk = "cash";
+            }
+        } else if (buttonView.getId() == R.id.radio_cash_on_delivery) {
+            if (isChecked) {
+                mPaymentChk = "cash";
+            } else {
+                mPaymentChk = "online";
             }
         }
     }
