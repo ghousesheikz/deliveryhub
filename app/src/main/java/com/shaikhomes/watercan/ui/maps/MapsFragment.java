@@ -85,7 +85,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     public void onMapReady(final GoogleMap mMap) {
         mGoogleMap = mMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
+        mMap.setMyLocationEnabled(true);
         mMap.clear(); //clear old markers
 
       /*  CameraPosition googlePlex = CameraPosition.builder()

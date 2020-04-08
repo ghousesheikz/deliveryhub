@@ -2,6 +2,7 @@ package com.shaikhomes.watercan.ui.orders;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.model.OrderCalculationPojo;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -51,7 +55,15 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
     @Override
     public void onBindViewHolder(final OrderListAdapter.MyViewHolder holder, final int position) {
         //  animator.animateAdd(holder);
+        if (!TextUtils.isEmpty(mCanList.get(position).getImageURL())) {
+            String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + mCanList.get(position).getImageURL();
+            Picasso.get().load(imgUrl).resize(800, 1200)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .into(holder.mCanImage);
+        }
         mCount = mCanList.get(position).getNoOfCans();
+        mCanList.get(position).setItemcount(mCount);
 
         holder.mCanCount.setText(String.valueOf(mCount));
         holder.mCanAmt.setText("Amount : ₹" + mCanList.get(position).getUnitAmount());
@@ -60,13 +72,13 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
             public void onClick(View v) {
                 mCount = mCanList.get(position).getNoOfCans();
                 mCount = mCount + 1;
-                double amt = Double.parseDouble(mCanList.get(position).getPrice());
+                int amt = Integer.parseInt(mCanList.get(position).getPrice());
                 amt = mCount * amt;
                 mCanList.get(position).setUnitAmount(amt);
                 mCanList.get(position).setNoOfCans(mCount);
-                holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt)+"/-");
+                holder.mCanAmt.setText("Amount : ₹" + amt + "/-");
                 holder.mCanCount.setText(String.valueOf(mCount));
-                itemClickListener.onItemClick(mCanList,position);
+                itemClickListener.onItemClick(mCanList, position);
             }
         });
 
@@ -81,17 +93,19 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                     amt = mCount * amt;
                     mCanList.get(position).setUnitAmount(amt);
                     mCanList.get(position).setNoOfCans(mCount);
-                    holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt)+"/-");
+                    holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt) + "/-");
                     holder.mCanCount.setText(String.valueOf(mCount));
-                    itemClickListener.onItemClick(mCanList,position);
+                    mCanList.get(position).setItemcount(mCount);
+                    itemClickListener.onItemClick(mCanList, position);
                 } else {
                     double amt = Double.parseDouble(mCanList.get(position).getPrice());
                     amt = mCount * amt;
                     mCanList.get(position).setUnitAmount(amt);
                     mCanList.get(position).setNoOfCans(mCount);
-                    holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt)+"/-");
+                    holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt) + "/-");
                     holder.mCanCount.setText(String.valueOf(mCount));
-                    itemClickListener.onItemClick(mCanList,position);
+                    mCanList.get(position).setItemcount(mCount);
+                    itemClickListener.onItemClick(mCanList, position);
                 }
             }
         });
@@ -118,7 +132,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView mCanCount, mCanAmt;
-        ImageView mPlusCnt, mMinusCnt;
+        ImageView mPlusCnt, mMinusCnt, mCanImage;
 
         public MyViewHolder(View v) {
             super(v);
@@ -126,6 +140,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
             mPlusCnt = v.findViewById(R.id.plus_count);
             mMinusCnt = v.findViewById(R.id.minus_count);
             mCanAmt = v.findViewById(R.id.txt_amt);
+            mCanImage = v.findViewById(R.id.image_);
 
         }
 

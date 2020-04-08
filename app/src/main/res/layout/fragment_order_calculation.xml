@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="8dp"
     tools:context=".ui.ordercalculation.OrderCalculation">
 
     <ScrollView
@@ -116,6 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
                     android:padding="8dp"
+                    android:gravity="end"
                     android:text="₹100/-"
                     android:textSize="17sp" />
             </LinearLayout>
@@ -139,6 +141,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
+                    android:gravity="end"
                     android:padding="8dp"
                     android:text="₹0/-"
                     android:textSize="17sp" />
@@ -172,6 +175,7 @@
                     android:layout_weight="0.4"
                     android:padding="8dp"
                     android:text="₹100/-"
+                    android:gravity="end"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -182,10 +186,40 @@
                 android:layout_height="1dp"
                 android:background="@color/grey" />
 
+            <LinearLayout
+                android:id="@+id/schedule_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/schedule_delivery_date"
+                    android:textColor="@color/aquatextcolor"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_scheduledate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/edit_text_background"
+                    android:drawableRight="@drawable/ic_date_range"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:hint="Select Date"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
+                android:padding="5dp"
                 android:text="@string/delivery_address"
                 android:textColor="@color/aquatextcolor"
                 android:textSize="17sp"
@@ -195,7 +229,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/txt_address_type"
@@ -232,21 +266,31 @@
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
-                <RadioButton
-                    android:id="@+id/radio_online_pay"
-                    android:layout_width="match_parent"
+                <RadioGroup
+                    android:id="@+id/radiogroup"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:buttonTint="@color/colorPrimary"
-                    android:text="@string/online_payment" />
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/red"
+                    android:orientation="vertical">
 
-                <RadioButton
-                    android:id="@+id/radio_cash_on_delivery"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:buttonTint="@color/colorPrimary"
-                    android:text="@string/cash_on_delivery" />
+                    <RadioButton
+                        android:id="@+id/radio_online_pay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:buttonTint="@color/colorPrimary"
+                        android:text="@string/online_payment" />
+
+                    <RadioButton
+
+                        android:id="@+id/radio_cash_on_delivery"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:buttonTint="@color/colorPrimary"
+                        android:text="@string/cash_on_delivery" />
+                </RadioGroup>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -256,14 +300,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="10dp">
 
         <LinearLayout
+            android:id="@+id/total_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_toLeftOf="@id/proceed_order"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -287,15 +332,17 @@
         </LinearLayout>
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/proceed_order"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            app:elevation="0dp"
-            app:fabSize="mini"
-            android:layout_marginRight="@dimen/fab_margin"
-            android:src="@drawable/ic_right_arrow" />
+            android:layout_below="@id/total_ll"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_background"
+            android:padding="8dp"
+            android:text="@string/place_your_order"
+            android:textColor="@color/white" />
     </RelativeLayout>
 
 </RelativeLayout>

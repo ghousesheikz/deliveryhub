@@ -32,6 +32,7 @@
                 android:textSize="22sp" />
 
             <EditText
+                android:id="@+id/signup_firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -46,6 +47,7 @@
                 android:textSize="17sp" />
 
             <EditText
+                android:id="@+id/signup_lastname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -85,6 +87,7 @@
                     android:background="@color/grey" />
 
                 <EditText
+                    android:id="@+id/signup_mobile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
@@ -107,13 +110,16 @@
                 android:padding="8dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/darkgrey"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                android:visibility="gone" />
 
             <CheckBox
+                android:id="@+id/chk_terms_condition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
+                android:visibility="gone"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
                 android:buttonTint="@color/black"
@@ -121,6 +127,7 @@
                 android:textSize="17sp" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_signup"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"

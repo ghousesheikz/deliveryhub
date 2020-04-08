@@ -2,8 +2,6 @@ package com.shaikhomes.watercan.ui.orders;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +10,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shaikhomes.watercan.R;
+import com.shaikhomes.watercan.pojo.ItemPojo;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -24,11 +25,11 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
 
     Context context;
     OnItemClickListener itemClickListener;
-    List<String> mJoblist;
+    List<ItemPojo.Item> mJoblist;
     String rupee;
 
 
-    public OrderCanAdapter(Activity context, List<String> mJoblist, OnItemClickListener mItemClickListener) {
+    public OrderCanAdapter(Activity context, List<ItemPojo.Item> mJoblist, OnItemClickListener mItemClickListener) {
         this.context = (Activity) context;
         this.mJoblist = mJoblist;
         this.itemClickListener = mItemClickListener;
@@ -51,10 +52,27 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         //  animator.animateAdd(holder);
+        if (!TextUtils.isEmpty(mJoblist.get(position).getItemImage())) {
+            String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + mJoblist.get(position).getItemImage();
+            Picasso.get().load(imgUrl).resize(800, 1200)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .into(holder.mCanImage);
+        }
+        holder.mCompName.setText(mJoblist.get(position).getItemName());
+        holder.mPrice.setText(rupee +" "+ mJoblist.get(position).getItemPrice()+"/-");
+        holder.mLiters.setText(mJoblist.get(position).getItemSize());
+
         holder.mOrderCanLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.onItemClick("",position);
+                itemClickListener.onItemClick(mJoblist.get(position), position);
+            }
+        });
+        holder.mCanImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onItemClick(mJoblist.get(position), position);
             }
         });
 
@@ -62,7 +80,7 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
     }
 
     public interface OnItemClickListener {
-        void onItemClick(String response, int position);
+        void onItemClick(ItemPojo.Item response, int position);
     }
 
     @Override
@@ -73,8 +91,8 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return 12;
-      //  return mJoblist == null ? 0 : mJoblist.size();
+        // return 12;
+        return mJoblist == null ? 0 : mJoblist.size();
     }
 
 
@@ -95,12 +113,12 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
 
     }
 
-    public void updateAdapter(List<String> updatelist) {
+    public void updateAdapter(List<ItemPojo.Item> updatelist) {
         this.mJoblist = updatelist;
         notifyDataSetChanged();
     }
 
-    public List<String> getlist() {
+    public List<ItemPojo.Item> getlist() {
         return mJoblist;
     }
 }

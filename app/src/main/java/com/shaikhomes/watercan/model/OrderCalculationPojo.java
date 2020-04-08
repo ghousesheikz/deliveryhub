@@ -5,6 +5,7 @@ public class OrderCalculationPojo {
     public String Name;
     public String Price;
     public String Liters;
+    public int itemcount;
     public int NoOfCans;
     public double unitAmount;
     public double TotalAmount;
@@ -63,5 +64,13 @@ public class OrderCalculationPojo {
 
     public void setTotalAmount(double totalAmount) {
         TotalAmount = totalAmount;
+    }
+
+    public int getItemcount() {
+        return itemcount;
+    }
+
+    public void setItemcount(int itemcount) {
+        this.itemcount = itemcount;
     }
 }

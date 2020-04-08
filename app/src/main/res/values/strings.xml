@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WaterCan</string>
+    <string name="app_name">Delivery HUB</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -22,8 +22,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="instant_service">Instant Service</string>
-    <string name="schedule_service">Schedule Service</string>
+    <string name="instant_service">Instant Delivery</string>
+    <string name="schedule_service">Schedule Delivery</string>
     <string name="userlogin" />
     <string name="create_new_account">Create New Account</string>
     <string name="first_name">First Name</string>
@@ -39,11 +39,29 @@
     <string name="search_places">Search Places</string>
     <string name="total_amount">Total Amount : </string>
     <string name="a_sum_of_150_will_be_charged_on_every_new_can">A sum of ₹150/- will be charged on every new can</string>
-    <string name="price_of_water">Price of water</string>
+    <string name="price_of_water">Price of Item</string>
     <string name="empty_can_price">Empty can price</string>
-    <string name="do_you_want_to_buy_new_cans">Do you want to buy new cans</string>
+    <string name="do_you_want_to_buy_new_cans">Do you want to Buy new cans</string>
     <string name="delivery_address">Delivery Address</string>
     <string name="select_payment_type">Select Payment Type</string>
     <string name="online_payment">Online Payment</string>
     <string name="cash_on_delivery">Cash on delivery</string>
+    <string name="register_new_item">Register New Item</string>
+    <string name="item_name">Item Name</string>
+    <string name="item_price">Item Price</string>
+    <string name="item_size_ex_kgs_ltrs_pieces_per_pack">Item Units (Ex. Kgs/ltrs/pieces)</string>
+    <string name="minimum_quantity_order_minimum_qty">Minimum quantity per order</string>
+    <string name="submit">SUBMIT</string>
+    <string name="add_address">Add Address</string>
+    <string name="flat_apartment_number">Flat/Apartment Number</string>
+    <string name="building_apartment">Building/Apartment</string>
+    <string name="area_streetname">Area/StreetName</string>
+    <string name="cityname">CityName</string>
+    <string name="address_type">Address Type</string>
+    <string name="save">Save</string>
+    <string name="landmark">Landmark</string>
+    <string name="schedule_delivery_date">Schedule Delivery date</string>
+    <string name="place_your_order">Place your order</string>
+    <string name="please_select_delivery_address_to_proceed">Please select delivery address to proceed</string>
+    <string name="select_address">Select address</string>
 </resources>
