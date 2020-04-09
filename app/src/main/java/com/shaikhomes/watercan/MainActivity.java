@@ -1,6 +1,8 @@
 package com.shaikhomes.watercan;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -29,6 +31,7 @@ import com.shaikhomes.watercan.ui.address.AddressAdapter;
 import com.shaikhomes.watercan.utility.TinyDB;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.navigation.NavController;
@@ -214,9 +217,31 @@ public class MainActivity extends AppCompatActivity implements BottomSheetView, 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
-            tinyDB.remove(LOGIN_ENABLED);
-            Toast.makeText(MainActivity.this, "Logout", Toast.LENGTH_SHORT).show();
-            finishAffinity();
+            new AlertDialog.Builder(MainActivity.this).setTitle("LOGOUT").setMessage("Do you want to logout?").setPositiveButton("EDIT", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    try {
+
+                        tinyDB.remove(LOGIN_ENABLED);
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                        Toasty.success(MainActivity.this, "Successfully logout", Toasty.LENGTH_SHORT).show();
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                }
+            }).create().show();
         }
         return super.onOptionsItemSelected(item);
     }
