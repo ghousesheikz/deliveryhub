@@ -143,7 +143,7 @@
                     android:layout_weight="0.4"
                     android:gravity="end"
                     android:padding="8dp"
-                    android:text="₹0/-"
+                    android:text="₹0 "
                     android:textSize="17sp" />
             </LinearLayout>
 

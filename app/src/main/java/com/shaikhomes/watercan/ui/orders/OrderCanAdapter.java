@@ -60,7 +60,7 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
                     .into(holder.mCanImage);
         }
         holder.mCompName.setText(mJoblist.get(position).getItemName());
-        holder.mPrice.setText(rupee +" "+ mJoblist.get(position).getItemPrice()+"/-");
+        holder.mPrice.setText(rupee +" "+ mJoblist.get(position).getItemPrice()+" ");
         holder.mLiters.setText(mJoblist.get(position).getItemSize());
 
         holder.mOrderCanLL.setOnClickListener(new View.OnClickListener() {

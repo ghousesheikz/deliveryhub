@@ -108,9 +108,12 @@ public class OrderCan extends Fragment {
                 mPojo.setLiters(mList.get(position).getItemSize());
                 mPojo.setPrice(mList.get(position).getItemPrice());
                 mPojo.setName(mList.get(position).getItemName());
+                mPojo.setVendorId(mList.get(position).getVendorId());
+                mPojo.setVendorName(mList.get(position).getVendorName());
+                mPojo.setMinQty(mList.get(position).getMinqty());
                 mPojo.setNoOfCans(1);
-                mPojo.setTotalAmount(Double.parseDouble(mList.get(position).getItemPrice()));
-                mPojo.setUnitAmount(Double.parseDouble(mList.get(position).getItemPrice()));
+                mPojo.setTotalAmount(Integer.parseInt(mList.get(position).getItemPrice()));
+                mPojo.setUnitAmount(Integer.parseInt(mList.get(position).getItemPrice()));
                 try {
 
                     jsonObject = new JSONObject(new Gson().toJson(mPojo));

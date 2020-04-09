@@ -51,7 +51,7 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
-            new AlertDialog.Builder(VendorDashboard.this).setTitle("LOGOUT").setMessage("Do you want to logout?").setPositiveButton("EDIT", new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(VendorDashboard.this).setTitle("LOGOUT").setMessage("Do you want to logout?").setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();

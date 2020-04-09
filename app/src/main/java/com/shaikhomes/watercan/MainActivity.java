@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -25,7 +26,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.payumoney.core.entity.TransactionResponse;
+import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
+import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.shaikhomes.watercan.pojo.AddressPojo;
+import com.shaikhomes.watercan.pojo.OrderDelivery;
+import com.shaikhomes.watercan.pojo.PayuResponse;
+import com.shaikhomes.watercan.pojo.PostResponsePojo;
 import com.shaikhomes.watercan.ui.BottomSheetView;
 import com.shaikhomes.watercan.ui.address.AddressAdapter;
 import com.shaikhomes.watercan.utility.TinyDB;
@@ -50,20 +59,27 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.shaikhomes.watercan.utility.AppConstants.ADDRESS_LIST;
 import static com.shaikhomes.watercan.utility.AppConstants.DELIVERY_TYPE;
 import static com.shaikhomes.watercan.utility.AppConstants.LOGIN_ENABLED;
+import static com.shaikhomes.watercan.utility.AppConstants.ORDER_DATA;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_ADDRESS;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_MOBILE;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
 
-public class MainActivity extends AppCompatActivity implements BottomSheetView, View.OnClickListener {
+public class MainActivity extends BaseActivity implements BottomSheetView, View.OnClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private BottomSheetBehavior behavior;
@@ -217,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements BottomSheetView, 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
-            new AlertDialog.Builder(MainActivity.this).setTitle("LOGOUT").setMessage("Do you want to logout?").setPositiveButton("EDIT", new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(MainActivity.this).setTitle("LOGOUT").setMessage("Do you want to logout?").setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -481,5 +497,125 @@ public class MainActivity extends AppCompatActivity implements BottomSheetView, 
         });
 
 
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        PayuResponse getData = null;
+        OrderDelivery.OrderList mPostData = null;
+        // Result Code is -1 send from Payumoney activity
+        Log.d("PaymentRequest", "request code " + requestCode + " resultcode " + resultCode);
+        if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && resultCode == RESULT_OK && data !=
+                null) {
+            TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
+                    .INTENT_EXTRA_TRANSACTION_RESPONSE);
+            String response = transactionResponse.getPayuResponse();
+            JsonParser parser = new JsonParser();
+            JsonElement mJson = parser.parse(response);
+            Gson gson = new Gson();
+            getData = gson.fromJson(mJson, PayuResponse.class);
+            ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
+
+            // Check which object is non-null
+            if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
+                if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+                    //Success Transaction
+                    try {
+                        mPostData = new Gson().fromJson(tinyDB.getString(ORDER_DATA), OrderDelivery.OrderList.class);
+                        mPostData.setPaidStatus("Paid");
+                        Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
+                        call.enqueue(new Callback<PostResponsePojo>() {
+                            @Override
+                            public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
+
+                                PostResponsePojo pojo = response.body();
+                                if (pojo != null)
+                                    if (pojo.getStatus().equalsIgnoreCase("200")) {
+                                        //clearData();
+                                        tinyDB.remove(ORDER_DATA);
+                                        Toasty.success(MainActivity.this, "Item Ordered Successfully", Toast.LENGTH_SHORT, true).show();
+
+                                    }
+                            }
+
+                            @Override
+                            public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+                                // hud.dismiss();
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setCancelable(false)
+                            .setTitle("Payment Success")
+                            .setMessage("Your PaymentID is : " + getData.getResult().getPayuMoneyId())
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.dismiss();
+
+                                }
+                            }).show();
+                } else {
+                    try {
+                        mPostData = new Gson().fromJson(tinyDB.getString(ORDER_DATA), OrderDelivery.OrderList.class);
+                        mPostData.setPaidStatus("NotPaid");
+                        Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
+                        call.enqueue(new Callback<PostResponsePojo>() {
+                            @Override
+                            public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
+
+                                PostResponsePojo pojo = response.body();
+                                if (pojo != null)
+                                    if (pojo.getStatus().equalsIgnoreCase("200")) {
+                                        //clearData();
+                                        tinyDB.remove(ORDER_DATA);
+                                        Toasty.success(MainActivity.this, "Item Ordered Successfully", Toast.LENGTH_SHORT, true).show();
+
+                                    }
+                            }
+
+                            @Override
+                            public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+                                // hud.dismiss();
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    //Failure Transaction
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setCancelable(false)
+                            .setTitle("Failed")
+                            .setMessage("Payment Failure")
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.dismiss();
+
+                                }
+                            }).show();
+                }
+
+            } else if (resultModel != null && resultModel.getError() != null) {
+                Log.d("RESPONSE", "Error response : " + resultModel.getError().getTransactionResponse());
+            } else {
+                Log.d("RESPONSE", "Both objects are null!");
+            }
+        }else {
+            new AlertDialog.Builder(MainActivity.this)
+                    .setCancelable(false)
+                    .setTitle("Failed")
+                    .setMessage("Payment Failure")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.dismiss();
+
+                        }
+                    }).show();
+        }
     }
 }

@@ -5,10 +5,13 @@ public class OrderCalculationPojo {
     public String Name;
     public String Price;
     public String Liters;
+    public String VendorId;
+    public String VendorName;
+    public String MinQty;
     public int itemcount;
     public int NoOfCans;
-    public double unitAmount;
-    public double TotalAmount;
+    public int unitAmount;
+    public int TotalAmount;
 
     public String getImageURL() {
         return imageURL;
@@ -50,19 +53,19 @@ public class OrderCalculationPojo {
         NoOfCans = noOfCans;
     }
 
-    public double getUnitAmount() {
+    public int getUnitAmount() {
         return unitAmount;
     }
 
-    public void setUnitAmount(double unitAmount) {
+    public void setUnitAmount(int unitAmount) {
         this.unitAmount = unitAmount;
     }
 
-    public double getTotalAmount() {
+    public int getTotalAmount() {
         return TotalAmount;
     }
 
-    public void setTotalAmount(double totalAmount) {
+    public void setTotalAmount(int totalAmount) {
         TotalAmount = totalAmount;
     }
 
@@ -72,5 +75,29 @@ public class OrderCalculationPojo {
 
     public void setItemcount(int itemcount) {
         this.itemcount = itemcount;
+    }
+
+    public String getVendorId() {
+        return VendorId;
+    }
+
+    public void setVendorId(String vendorId) {
+        VendorId = vendorId;
+    }
+
+    public String getVendorName() {
+        return VendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        VendorName = vendorName;
+    }
+
+    public String getMinQty() {
+        return MinQty;
+    }
+
+    public void setMinQty(String minQty) {
+        MinQty = minQty;
     }
 }

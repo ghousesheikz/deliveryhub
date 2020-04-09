@@ -63,7 +63,6 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                     .into(holder.mCanImage);
         }
         mCount = mCanList.get(position).getNoOfCans();
-        mCanList.get(position).setItemcount(mCount);
 
         holder.mCanCount.setText(String.valueOf(mCount));
         holder.mCanAmt.setText("Amount : ₹" + mCanList.get(position).getUnitAmount());
@@ -76,7 +75,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                 amt = mCount * amt;
                 mCanList.get(position).setUnitAmount(amt);
                 mCanList.get(position).setNoOfCans(mCount);
-                holder.mCanAmt.setText("Amount : ₹" + amt + "/-");
+                holder.mCanAmt.setText("Amount : ₹" + amt + " ");
                 holder.mCanCount.setText(String.valueOf(mCount));
                 itemClickListener.onItemClick(mCanList, position);
             }
@@ -89,22 +88,21 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                 mCount = mCount - 1;
                 if (mCount < 0) {
                     mCount = 0;
-                    double amt = Double.parseDouble(mCanList.get(position).getPrice());
+                    int amt = Integer.parseInt(mCanList.get(position).getPrice());
                     amt = mCount * amt;
                     mCanList.get(position).setUnitAmount(amt);
                     mCanList.get(position).setNoOfCans(mCount);
-                    holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt) + "/-");
+                    holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt) + " ");
                     holder.mCanCount.setText(String.valueOf(mCount));
                     mCanList.get(position).setItemcount(mCount);
                     itemClickListener.onItemClick(mCanList, position);
                 } else {
-                    double amt = Double.parseDouble(mCanList.get(position).getPrice());
+                    int amt = Integer.parseInt(mCanList.get(position).getPrice());
                     amt = mCount * amt;
                     mCanList.get(position).setUnitAmount(amt);
                     mCanList.get(position).setNoOfCans(mCount);
-                    holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt) + "/-");
+                    holder.mCanAmt.setText("Amount : ₹" + decimalFormat.format(amt) + " ");
                     holder.mCanCount.setText(String.valueOf(mCount));
-                    mCanList.get(position).setItemcount(mCount);
                     itemClickListener.onItemClick(mCanList, position);
                 }
             }

@@ -86,6 +86,7 @@
                 android:background="@drawable/edit_text_background"
                 android:hint="@string/minimum_quantity_order_minimum_qty"
                 android:padding="8dp"
+                android:inputType="number"
                 android:textColor="@color/black"
                 android:textColorHint="@color/darkgrey"
                 android:textSize="17sp" />

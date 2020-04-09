@@ -3,6 +3,7 @@ package com.shaikhomes.watercan.ui.ordercalculation;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -40,6 +41,9 @@ import com.payumoney.core.PayUmoneySdkInitializer;
 import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
+import com.shaikhomes.watercan.LoginActivity;
+import com.shaikhomes.watercan.MainActivity;
+import com.shaikhomes.watercan.OTPAuthentication;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.api_services.ApiClient;
 import com.shaikhomes.watercan.api_services.ApiInterface;
@@ -48,6 +52,7 @@ import com.shaikhomes.watercan.pojo.AddressPojo;
 import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PayuResponse;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
+import com.shaikhomes.watercan.pojo.SMSResponse;
 import com.shaikhomes.watercan.ui.orders.OrderCanAdapter;
 import com.shaikhomes.watercan.ui.orders.OrderListAdapter;
 import com.shaikhomes.watercan.utility.AppEnvironment;
@@ -58,6 +63,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +75,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -75,6 +85,8 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_OK;
 import static com.shaikhomes.watercan.BaseActivity.hashCal;
 import static com.shaikhomes.watercan.utility.AppConstants.DELIVERY_TYPE;
+import static com.shaikhomes.watercan.utility.AppConstants.LOGIN_ENABLED;
+import static com.shaikhomes.watercan.utility.AppConstants.ORDER_DATA;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_ADDRESS;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_MOBILE;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
@@ -90,6 +102,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    SMSResponse getData;
     @Nullable
     DatePickerDialog dialouge;
     int year, month, day;
@@ -176,8 +189,11 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                         mOrderPojo.setPrice(jsonObject.getString("Price"));
                         mOrderPojo.setLiters(jsonObject.getString("Liters"));
                         mOrderPojo.setNoOfCans(jsonObject.getInt("NoOfCans"));
-                        mOrderPojo.setUnitAmount(jsonObject.getDouble("unitAmount"));
-                        mOrderPojo.setTotalAmount(jsonObject.getDouble("TotalAmount"));
+                        mOrderPojo.setUnitAmount(jsonObject.getInt("unitAmount"));
+                        mOrderPojo.setTotalAmount(jsonObject.getInt("TotalAmount"));
+                        mOrderPojo.setVendorName(jsonObject.getString("VendorName"));
+                        mOrderPojo.setVendorId(jsonObject.getString("VendorId"));
+                        mOrderPojo.setMinQty(jsonObject.getString("MinQty"));
                         mOrdersList.add(mOrderPojo);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -267,6 +283,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                 mTxtWaterPrice.setText("₹ " + totAmt + " ");
                 getTotalAmt();
             }
+
         });
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
@@ -293,12 +310,82 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                     radioButton = view.findViewById(selectedId);
                     if (radioButton.getText().toString().toLowerCase().equalsIgnoreCase("online payment")) {
                         mPaymentChk = "online";
-                        launchPayUMoneyFlow(tinyDB.getString(USER_NAME), tinyDB.getString(USER_MOBILE), mOrdersList.get(0).getName() + "DeliveryHUB", String.valueOf(mTotalPrice));
+                        Toasty.success(getActivity(), "Your Total Order AMount is " + mtxtTotalAmt.getText().toString().trim() + mPaymentChk, Toast.LENGTH_SHORT).show();
+                        try {
+                            String mOtp = generateOTP();
+                            sendSms("91" + tinyDB.getString(USER_MOBILE), "Thank you for ordering with DeliveryHUB OTP : " + mOtp + ". Please share OTP with the delivery person for verification.");
+
+                            Date c = Calendar.getInstance().getTime();
+                            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                            OrderDelivery.OrderList mPostData = new OrderDelivery.OrderList();
+                            mPostData.setItemName(mOrdersList.get(0).getName());
+                            mPostData.setItemprice(mOrdersList.get(0).getPrice());
+                            mPostData.setItemQuantity(String.valueOf(mAdapter.getlist().get(0).getItemcount()));
+                            mPostData.setOTP(mOtp);
+                            mPostData.setUserMobileNo(tinyDB.getString(USER_MOBILE));
+                            mPostData.setUserName(tinyDB.getString(USER_NAME));
+                            mPostData.setVendorName(mOrdersList.get(0).getVendorId());
+                            mPostData.setVendorAddress(mOrdersList.get(0).getVendorName());
+                            mPostData.setAddress(mTxtAddressType.getText().toString() + "_" + mTxtAddress.getText().toString());
+                            mPostData.setTotalamount(mtxtTotalAmt.getText().toString());
+                            mPostData.setPaidStatus("");
+                            mPostData.setTypeoforder(mParam1);
+                            if (mParam1.equalsIgnoreCase("instant")) {
+                                mPostData.setOrderDate(df.format(c));
+                            } else {
+                                mPostData.setOrderDate(mScheduledDate.getText().toString().trim());
+                            }
+                            mPostData.setOrderStatus("Pending");
+                            mPostData.setOrderType("Online");
+                            mPostData.setPaymentType("Online");
+                            tinyDB.putString(ORDER_DATA, new Gson().toJson(mPostData));
+
+                            launchPayUMoneyFlow(tinyDB.getString(USER_NAME), tinyDB.getString(USER_MOBILE), mOrdersList.get(0).getName() + "DeliveryHUB", String.valueOf(mTotalPrice));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                       /*
+
+                        Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
+                        call.enqueue(new Callback<PostResponsePojo>() {
+                            @Override
+                            public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
+
+                                PostResponsePojo pojo = response.body();
+                                if (pojo != null)
+                                    if (pojo.getStatus().equalsIgnoreCase("200")) {
+                                        //clearData();
+
+                                        Toasty.success(getActivity(), "Item Ordered Successfully", Toast.LENGTH_SHORT, true).show();
+
+                                    }
+                            }
+
+                            @Override
+                            public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+                                // hud.dismiss();
+                            }
+                        });
+
+*/
                     } else if (radioButton.getText().toString().toLowerCase().equalsIgnoreCase("cash on delivery")) {
                         mPaymentChk = "cash";
+                        new AlertDialog.Builder(getActivity()).setTitle("Info").setMessage("Sorry, This option is not available in your area").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                               /* try {
+                                    Toasty.success(getActivity(), "Successfully logout", Toasty.LENGTH_SHORT).show();
+
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }*/
+
+                            }
+                        }).create().show();
                     }
                     // tinyDB.remove(USER_ADDRESS);
-                    Toasty.success(getActivity(), "Your Total Order AMount is " + mtxtTotalAmt.getText().toString().trim() + mPaymentChk, Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (v.getId() == R.id.swtch_add_can) {
@@ -473,6 +560,12 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
         }
     }
 
+    private String generateOTP() {
+        Random random = new Random();
+        String id = String.format("%04d", random.nextInt(10000));
+        return id;
+    }
+
     public PayUmoneySdkInitializer.PaymentParam calculateServerSideHashAndInitiatePayment1(final PayUmoneySdkInitializer.PaymentParam paymentParam) {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -498,42 +591,72 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
         return paymentParam;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        PayuResponse getData = null;
-        // Result Code is -1 send from Payumoney activity
-        Log.d("PaymentRequest", "request code " + requestCode + " resultcode " + resultCode);
-        if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && resultCode == RESULT_OK && data !=
-                null) {
-            TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
-                    .INTENT_EXTRA_TRANSACTION_RESPONSE);
-            String response = transactionResponse.getPayuResponse();
-            JsonParser parser = new JsonParser();
-            JsonElement mJson = parser.parse(response);
-            Gson gson = new Gson();
-            getData = gson.fromJson(mJson, PayuResponse.class);
-            ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
+    /* @Override
+     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+         super.onActivityResult(requestCode, resultCode, data);
+         PayuResponse getData = null;
+         // Result Code is -1 send from Payumoney activity
+         Log.d("PaymentRequest", "request code " + requestCode + " resultcode " + resultCode);
+         if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && resultCode == RESULT_OK && data !=
+                 null) {
+             TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
+                     .INTENT_EXTRA_TRANSACTION_RESPONSE);
+             String response = transactionResponse.getPayuResponse();
+             JsonParser parser = new JsonParser();
+             JsonElement mJson = parser.parse(response);
+             Gson gson = new Gson();
+             getData = gson.fromJson(mJson, PayuResponse.class);
+             ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
 
-            // Check which object is non-null
-            if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
-                if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
-                    //Success Transaction
-                    try {
+             // Check which object is non-null
+             if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
+                 if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+                     //Success Transaction
+                     try {
+                        *//* {
+                            "OrderId": "1",
+                                "ItemName": "BisleriBottle",
+                                "ItemQuantity": "3",
+                                "OTP": "",
+                                "UserMobileNo": "8688589282",
+                                "UserName": "Ghouse",
+                                "VendorName": "Nasuruddin",
+                                "VendorAddress": "Hyderabad",
+                                "Address": "Kadapa",
+                                "Itemprice": "100",
+                                "totalamount": "360",
+                                "paid_status": "Pending",
+                                "typeoforder": "Instant",
+                                "OrderDate": "03-04-2020 00:00:00",
+                                "OrderStatus": "Pending",
+                                "OrderType": "Online",
+                                "PaymentType": "Online"
+                        }*//*
+                        Date c = Calendar.getInstance().getTime();
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                         OrderDelivery.OrderList mPostData = new OrderDelivery.OrderList();
                         mPostData.setItemName(mOrdersList.get(0).getName());
                         mPostData.setItemprice(mOrdersList.get(0).getPrice());
 
                         mPostData.setItemQuantity(String.valueOf(mAdapter.getlist().get(0).getItemcount()));
-                        mPostData.setItemprice(mOrdersList.get(0).getPrice());
-                        mPostData.setItemName(mOrdersList.get(0).getName());
-                        mPostData.setItemprice(mOrdersList.get(0).getPrice());
-                        mPostData.setItemName(mOrdersList.get(0).getName());
-                        mPostData.setItemprice(mOrdersList.get(0).getPrice());
-                        mPostData.setItemName(mOrdersList.get(0).getName());
-                        mPostData.setItemprice(mOrdersList.get(0).getPrice());
-                        mPostData.setItemName(mOrdersList.get(0).getName());
-                        mPostData.setItemprice(mOrdersList.get(0).getPrice());
+                        mPostData.setOTP("9966");
+                        mPostData.setUserMobileNo(tinyDB.getString(USER_MOBILE));
+                        mPostData.setUserName(tinyDB.getString(USER_NAME));
+                        mPostData.setVendorName(mOrdersList.get(0).getName());
+                        mPostData.setVendorAddress(mOrdersList.get(0).getPrice());
+                        mPostData.setAddress(mTxtAddressType.getText().toString() + "_" + mTxtAddress.getText().toString());
+                        mPostData.setTotalamount(mtxtTotalAmt.getText().toString());
+                        mPostData.setPaidStatus("Successful");
+                        mPostData.setTypeoforder(mParam1);
+                        if (mParam1.equalsIgnoreCase("instant")) {
+                            mPostData.setOrderDate(df.format(c));
+                        } else {
+                            mPostData.setOrderDate(mScheduledDate.getText().toString().trim());
+                        }
+                        mPostData.setOrderStatus("Pending");
+                        mPostData.setOrderType("Online");
+                        mPostData.setPaymentType("Online");
+
                         Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
                         call.enqueue(new Callback<PostResponsePojo>() {
                             @Override
@@ -543,7 +666,9 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                                 if (pojo != null)
                                     if (pojo.getStatus().equalsIgnoreCase("200")) {
                                         //clearData();
-                                        Toasty.success(getActivity(), "Agreement Registered Successfully", Toast.LENGTH_SHORT, true).show();
+
+                                        Toasty.success(getActivity(), "Item Ordered Successfully", Toast.LENGTH_SHORT, true).show();
+
                                     }
                             }
 
@@ -552,7 +677,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                                 // hud.dismiss();
                             }
                         });
-                      /*  String mAddress = "", mDesc = "";
+                      *//*  String mAddress = "", mDesc = "";
                         mAddress = mApartmentname.getText().toString().trim() + "-" + mFlatno.getText().toString().trim();
                         mDesc = "Security deposit : " + mSecurityAmt.getText().toString().trim() + "\n" + " Rent Amount : " + mRent.getText().toString().trim() + "\n" + " PaymentID : " + getData.getResult().getPayuMoneyId();
                         String mOtp = geek_OTP();
@@ -586,7 +711,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                         });
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }*/
+                    }*//*
                         Toasty.success(getActivity(), "Product ordered Successfully", Toast.LENGTH_SHORT, true).show();
 
 
@@ -617,7 +742,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                             }).show();
                 }
 
-          /*  // Response from Payumoney
+          *//*  // Response from Payumoney
             String payuResponse = transactionResponse.getPayuResponse();
 
             // Response from SURl and FURL
@@ -630,13 +755,78 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             dialog.dismiss();
                         }
-                    }).show();*/
+                    }).show();*//*
 
             } else if (resultModel != null && resultModel.getError() != null) {
                 Log.d("RESPONSE", "Error response : " + resultModel.getError().getTransactionResponse());
             } else {
                 Log.d("RESPONSE", "Both objects are null!");
             }
+        }
+    }*/
+    public void sendSms(String number, String msg) {
+        try {
+            // Construct data
+            String apiKey = "apikey=" + "rHjrP/vVGC0-6QwewVQbHjh1xnWwlnoMWXiC4ofDcK";
+            String message = "&message=" + msg;
+            String sender = "&sender=" + "SHAIKH";
+            String numbers = "&numbers=" + number;
+
+            // Send data
+            String url = apiKey + numbers + message + sender;
+            new RetrieveFeedTask().execute(url);
+        } catch (Exception e) {
+
+
+        }
+    }
+
+    class RetrieveFeedTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+
+        protected String doInBackground(String... urls) {
+            try {
+                HttpURLConnection conn = (HttpURLConnection) new URL("https://api.textlocal.in/send/?").openConnection();
+                String data = urls[0];
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Length", Integer.toString(data.length()));
+                conn.getOutputStream().write(data.getBytes("UTF-8"));
+                final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                final StringBuffer stringBuffer = new StringBuffer();
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    stringBuffer.append(line);
+                }
+                rd.close();
+                JsonParser parser = new JsonParser();
+                JsonElement mJson = parser.parse(stringBuffer.toString());
+                Gson gson = new Gson();
+                getData = gson.fromJson(mJson, SMSResponse.class);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getData.getStatus().toLowerCase().equalsIgnoreCase("success")) {
+                            Toasty.success(getActivity(), getData.getStatus(), Toasty.LENGTH_LONG).show();
+                        } else {
+                            Toasty.error(getActivity(), getData.getStatus(), Toasty.LENGTH_LONG).show();
+
+                        }
+                    }
+                });
+                Log.v("response", stringBuffer.toString());
+                return stringBuffer.toString();
+            } catch (Exception e) {
+                this.exception = e;
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
         }
     }
 }
