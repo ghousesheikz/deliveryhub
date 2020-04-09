@@ -157,6 +157,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
             if (mGoogleApiClient != null) {
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             }
+
         } catch (IllegalStateException e) {
             e.printStackTrace();
         } catch (Exception e) {
