@@ -5,7 +5,7 @@ import android.view.View;
 import com.google.android.gms.maps.model.LatLng;
 
 public interface BottomSheetView {
-   public void BottomSheetDesignView(View view);
+   public void BottomSheetDesignView(String collapse);
 
   public   void BottomSheetDesignLocation(LatLng latLng);
 }

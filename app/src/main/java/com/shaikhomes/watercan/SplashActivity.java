@@ -50,7 +50,7 @@ public class SplashActivity extends BaseActivity {
         tinyDB = new TinyDB(this);
         // getSupportActionBar().hide();
         ActivityCompat.requestPermissions(SplashActivity.this,
-                new String[]{Manifest.permission.WAKE_LOCK, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS, Manifest.permission.CALL_PHONE, Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_CONTACTS, Manifest.permission.READ_CALL_LOG},
+                new String[]{Manifest.permission.WAKE_LOCK, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_WIFI_STATE},
                 1);
         if (!tinyDB.getBoolean(LOGIN_ENABLED)) {
             new Handler().postDelayed(new Runnable() {

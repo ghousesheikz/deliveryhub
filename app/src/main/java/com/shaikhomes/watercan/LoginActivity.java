@@ -36,6 +36,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.shaikhomes.watercan.ui.maps.MapsFragment.MY_PERMISSIONS_REQUEST_LOCATION;
+import static com.shaikhomes.watercan.utility.AppConstants.ADDRESS_LIST;
 import static com.shaikhomes.watercan.utility.AppConstants.IS_ADMIN;
 import static com.shaikhomes.watercan.utility.AppConstants.OTP_ENABLED;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_ID;
@@ -127,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                                     tinyDB.putString(IS_ADMIN, mData.getIsadmin());
                                     tinyDB.putString(USER_ID, mData.getUserid());
                                     tinyDB.putString(USER_NAME, mData.getUsername());
+                                    tinyDB.putString(ADDRESS_LIST, mData.getAddress());
                                     tinyDB.putBoolean(OTP_ENABLED, true);
                                     startActivity(new Intent(LoginActivity.this, OTPAuthentication.class));
                                     finish();

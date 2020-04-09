@@ -1,7 +1,6 @@
 package com.shaikhomes.watercan.api_services;
 
 
-
 import com.shaikhomes.watercan.pojo.ItemPojo;
 import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
@@ -36,6 +35,10 @@ public interface ApiInterface {
 
     @POST("api/UpdateItem?")
     Call<PostResponsePojo> UpdateItemDetails(@Body ItemPojo.Item item);
+
+    @GET("api/UpdateAddress?")
+    Call<PostResponsePojo> UpdateAddress(@Query("address") String address, @Query("id") String id);
+
 
   /*  @POST("api/LeadsRegistration")
     Call<PostResponsePojo> PostLeads(@Body AddLeadsPojo writeoffPost);

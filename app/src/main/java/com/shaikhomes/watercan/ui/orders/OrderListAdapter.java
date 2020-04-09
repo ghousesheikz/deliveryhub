@@ -86,6 +86,9 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
             public void onClick(View v) {
                 mCount = mCanList.get(position).getNoOfCans();
                 mCount = mCount - 1;
+                if(mCount<Integer.parseInt(mCanList.get(position).getMinQty())){
+                    mCount=Integer.parseInt(mCanList.get(position).getMinQty());
+                }
                 if (mCount < 0) {
                     mCount = 0;
                     int amt = Integer.parseInt(mCanList.get(position).getPrice());

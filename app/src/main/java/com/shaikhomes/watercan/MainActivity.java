@@ -1,5 +1,6 @@
 package com.shaikhomes.watercan;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.shaikhomes.watercan.pojo.AddressPojo;
+import com.shaikhomes.watercan.pojo.ItemPojo;
 import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PayuResponse;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
@@ -76,10 +78,11 @@ import static com.shaikhomes.watercan.utility.AppConstants.DELIVERY_TYPE;
 import static com.shaikhomes.watercan.utility.AppConstants.LOGIN_ENABLED;
 import static com.shaikhomes.watercan.utility.AppConstants.ORDER_DATA;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_ADDRESS;
+import static com.shaikhomes.watercan.utility.AppConstants.USER_ID;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_MOBILE;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
 
-public class MainActivity extends BaseActivity implements BottomSheetView, View.OnClickListener {
+public class MainActivity extends BaseActivity implements BottomSheetView, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private BottomSheetBehavior behavior;
@@ -124,6 +127,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navView = navigationView.getHeaderView(0);
+        navigationView.setNavigationItemSelectedListener(this);
         mUserName = navView.findViewById(R.id.txt_name);
         mUserNumber = navView.findViewById(R.id.txt_number);
         mUserName.setText("Hello ! " + tinyDB.getString(USER_NAME));
@@ -223,6 +227,8 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
         });
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -275,7 +281,10 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
     }
 
     @Override
-    public void BottomSheetDesignView(View view) {
+    public void BottomSheetDesignView(String collapse) {
+        if(collapse.equalsIgnoreCase("hide")){
+            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
 
     }
 
@@ -486,6 +495,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                         tinyDB.putString(ADDRESS_LIST, jsonArray.toString());
                         mDeliveryLL.setVisibility(View.VISIBLE);
                         mAddressLL.setVisibility(View.GONE);
+                        saveAddress(jsonArray.toString());
                         tinyDB.putString(USER_ADDRESS, new Gson().toJson(mPojo));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -497,6 +507,30 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
         });
 
 
+    }
+
+    private void saveAddress(String address) {
+        try {
+            Call<PostResponsePojo> call = apiService.UpdateAddress(address, tinyDB.getString(USER_ID));
+            call.enqueue(new Callback<PostResponsePojo>() {
+                @Override
+                public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
+                    PostResponsePojo mItemData = response.body();
+                    if (mItemData.getStatus().equalsIgnoreCase("200")) {
+                        Toasty.success(MainActivity.this, "Address saved Successfully", Toasty.LENGTH_SHORT).show();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -605,7 +639,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
             } else {
                 Log.d("RESPONSE", "Both objects are null!");
             }
-        }else {
+        } else {
             new AlertDialog.Builder(MainActivity.this)
                     .setCancelable(false)
                     .setTitle("Failed")
@@ -617,5 +651,13 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                         }
                     }).show();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (item.getGroupId() == R.id.nav_myorders) {
+
+        }
+        return false;
     }
 }

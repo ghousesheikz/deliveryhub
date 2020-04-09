@@ -327,7 +327,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                             mPostData.setVendorName(mOrdersList.get(0).getVendorId());
                             mPostData.setVendorAddress(mOrdersList.get(0).getVendorName());
                             mPostData.setAddress(mTxtAddressType.getText().toString() + "_" + mTxtAddress.getText().toString());
-                            mPostData.setTotalamount(mtxtTotalAmt.getText().toString());
+                            mPostData.setTotalamount(String.valueOf(mTotalPrice));
                             mPostData.setPaidStatus("");
                             mPostData.setTypeoforder(mParam1);
                             if (mParam1.equalsIgnoreCase("instant")) {
