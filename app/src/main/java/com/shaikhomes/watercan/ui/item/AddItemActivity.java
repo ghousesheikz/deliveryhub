@@ -109,7 +109,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         adapter_spinner_category = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, spinner_array_category);
         adapter_spinner_category.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCatSpinner.setAdapter(adapter_spinner_category);
-        getCategoryDetails("");
+
         if (getIntent().getStringExtra("edititem") != null) {
             mEditItem = getIntent().getStringExtra("edititem");
             mEditPojo = new Gson().fromJson(mEditItem, ItemPojo.Item.class);
@@ -127,6 +127,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
 
 
         }
+        getCategoryDetails("");
     }
 
     private String encodeImage(Bitmap bm) {
@@ -608,7 +609,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                                         spinner_array_category.add(new Spinner_global_model(mList.get(i).getId(), mList.get(i).getCategoryName()));
                                     }
                                     adapter_spinner_category.notifyDataSetChanged();
-                                    mCatSpinner.setSelection(mSpinpos);
+                                    mCatSpinner.setSelection(mSpinpos+1);
                                 }
                                 // mAdapter.updateAdapter(mItemData.getOrderList());
                             }
