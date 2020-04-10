@@ -76,7 +76,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     public static final int REQUEST_IMAGE_CAPTURE_1 = 100;
     private String mCurrentPhotoPath_1;
     private Uri contentUri;
-    private String mEncodedImage;
+    private String mEncodedImage, mItemCatId = "";
     private ImageView mUploadImage, mViewImage;
     private EditText mItemName, mItemPrice, mItemUnits, mMinQty;
     private AppCompatButton mRegisterItem;
@@ -117,6 +117,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
             mItemPrice.setText(mEditPojo.getItemPrice());
             mItemUnits.setText(mEditPojo.getItemSize());
             mMinQty.setText(mEditPojo.getMinqty());
+            mItemCatId = mEditPojo.getCategoryId();
             String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getItemImage();
 
             Picasso.get().load(imgUrl).resize(500, 500)
@@ -598,11 +599,16 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                                     mList.clear();
                                 }
                                 mList = mItemData.getCategoryDetails();
+                                int mSpinpos = 0;
                                 if (mList.size() > 0) {
                                     for (int i = 0; i < mList.size(); i++) {
+                                        if (mItemCatId.equalsIgnoreCase(mList.get(i).getId())) {
+                                            mSpinpos = i;
+                                        }
                                         spinner_array_category.add(new Spinner_global_model(mList.get(i).getId(), mList.get(i).getCategoryName()));
                                     }
                                     adapter_spinner_category.notifyDataSetChanged();
+                                    mCatSpinner.setSelection(mSpinpos);
                                 }
                                 // mAdapter.updateAdapter(mItemData.getOrderList());
                             }

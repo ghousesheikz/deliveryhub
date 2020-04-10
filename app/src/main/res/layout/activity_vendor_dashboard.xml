@@ -108,7 +108,7 @@
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_margin="8dp"
-                    android:src="@drawable/ic_add_items" />
+                    android:src="@drawable/ic_view_item" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -138,7 +138,7 @@
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_margin="8dp"
-                    android:src="@drawable/ic_add_employee" />
+                    android:src="@drawable/ic_my_order" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -147,7 +147,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="2dp"
                     android:gravity="center_horizontal"
-                    android:text="ADD EMPLOYEE" />
+                    android:text="MY ORDERS" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -159,6 +159,7 @@
             android:layout_marginBottom="15dp"
             android:background="@drawable/dashboard_left_style"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:padding="10dp">
 
             <RelativeLayout
@@ -222,6 +223,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="15dp"
+            android:visibility="gone"
             android:layout_marginBottom="15dp"
             android:background="@drawable/dashboard_right_style"
             android:orientation="horizontal"

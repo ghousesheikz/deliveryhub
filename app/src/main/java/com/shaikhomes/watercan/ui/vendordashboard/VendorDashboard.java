@@ -88,7 +88,6 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
             Intent intent = new Intent(VendorDashboard.this, SignUpActivity.class);
             intent.putExtra("isadmin", "3");
             startActivity(intent);
-            finish();
 
         }else if (v.getId() == R.id.view_items_ll) {
             Intent intent = new Intent(VendorDashboard.this, ViewItemsActivity.class);
