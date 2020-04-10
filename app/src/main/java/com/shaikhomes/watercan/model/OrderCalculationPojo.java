@@ -8,6 +8,7 @@ public class OrderCalculationPojo {
     public String VendorId;
     public String VendorName;
     public String MinQty;
+    public String CategoryId;
     public int itemcount;
     public int NoOfCans;
     public int unitAmount;
@@ -99,5 +100,13 @@ public class OrderCalculationPojo {
 
     public void setMinQty(String minQty) {
         MinQty = minQty;
+    }
+
+    public String getCategoryId() {
+        return CategoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        CategoryId = categoryId;
     }
 }

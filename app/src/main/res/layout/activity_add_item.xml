@@ -6,168 +6,184 @@
     android:layout_height="match_parent"
     tools:context=".ui.item.AddItemActivity">
 
-    <androidx.cardview.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:elevation="3dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="8dp">
+        android:layout_centerVertical="true">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
 
-            <TextView
+            android:layout_margin="8dp"
+            android:elevation="3dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/register_new_item"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="22sp" />
-
-            <EditText
-                android:id="@+id/edt_itemname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/edit_text_background"
-                android:hint="@string/item_name"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/darkgrey"
-                android:textSize="17sp" />
-
-            <EditText
-                android:id="@+id/edt_itemprice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/edit_text_background"
-                android:hint="@string/item_price"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/darkgrey"
-                android:textSize="17sp" />
-
-            <EditText
-                android:id="@+id/edt_itemunits"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/edit_text_background"
-                android:hint="@string/item_size_ex_kgs_ltrs_pieces_per_pack"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/darkgrey"
-                android:textSize="17sp" />
-
-            <EditText
-                android:id="@+id/edt_minqty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/edit_text_background"
-                android:hint="@string/minimum_quantity_order_minimum_qty"
-                android:padding="8dp"
-                android:inputType="number"
-                android:textColor="@color/black"
-                android:textColorHint="@color/darkgrey"
-                android:textSize="17sp" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/edit_text_background"
-                android:hint="@string/email"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/darkgrey"
-                android:textSize="17sp"
-                android:visibility="gone" />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="10dp">
 
-                <ImageView
-                    android:id="@+id/pickup_image"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignEnd="@+id/ll3"
-                    android:layout_alignRight="@+id/ll3"
-                    android:layout_alignParentTop="true"
-                    android:elevation="5dp"
-                    android:src="@drawable/ic_view_image"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/register_new_item"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="22sp" />
+
+                <EditText
+                    android:id="@+id/edt_itemname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/edit_text_background"
+                    android:hint="@string/item_name"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkgrey"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:id="@+id/edt_itemprice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/edit_text_background"
+                    android:hint="@string/item_price"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkgrey"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:id="@+id/edt_itemunits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/edit_text_background"
+                    android:hint="@string/item_size_ex_kgs_ltrs_pieces_per_pack"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkgrey"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:id="@+id/edt_minqty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/edit_text_background"
+                    android:hint="@string/minimum_quantity_order_minimum_qty"
+                    android:inputType="number"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkgrey"
+                    android:textSize="17sp" />
+
+                <Spinner
+                    android:id="@+id/spn_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/edit_text_background" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/edit_text_background"
+                    android:hint="@string/email"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkgrey"
+                    android:textSize="17sp"
                     android:visibility="gone" />
 
-                <LinearLayout
-                    android:id="@+id/ll3"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/custom_design_23"
-                    android:padding="5dp">
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <ImageView
-                        android:id="@+id/upload_image"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_photo_camera" />
-                </LinearLayout>
-            </RelativeLayout>
+                        android:id="@+id/pickup_image"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignEnd="@+id/ll3"
+                        android:layout_alignRight="@+id/ll3"
+                        android:layout_alignParentTop="true"
+                        android:elevation="5dp"
+                        android:src="@drawable/ic_view_image"
+                        android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/chk_terms_condition"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="5dp"
-                android:buttonTint="@color/black"
-                android:text="@string/i_agree_the_terms_and_conditions"
-                android:textSize="17sp"
-                android:visibility="gone" />
+                    <LinearLayout
+                        android:id="@+id/ll3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/custom_design_23"
+                        android:padding="5dp">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_submit"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/button_background"
-                android:text="@string/submit"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-        </LinearLayout>
+                        <ImageView
+                            android:id="@+id/upload_image"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_photo_camera" />
+                    </LinearLayout>
+                </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+                <CheckBox
+                    android:id="@+id/chk_terms_condition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:buttonTint="@color/black"
+                    android:text="@string/i_agree_the_terms_and_conditions"
+                    android:textSize="17sp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/button_background"
+                    android:text="@string/submit"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
 </RelativeLayout>

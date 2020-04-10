@@ -92,6 +92,15 @@ public class OrderDelivery {
         @SerializedName("PaymentType")
         @Expose
         private String paymentType;
+        @SerializedName("DeliveredBy")
+        @Expose
+        private String DeliveredBy;
+        @SerializedName("DeliveredDate")
+        @Expose
+        private String DeliveredDate;
+        @SerializedName("ItemCategory")
+        @Expose
+        private String ItemCategory;
 
         public String getOrderId() {
             return orderId;
@@ -229,6 +238,29 @@ public class OrderDelivery {
             this.paymentType = paymentType;
         }
 
+        public String getDeliveredBy() {
+            return DeliveredBy;
+        }
+
+        public void setDeliveredBy(String deliveredBy) {
+            DeliveredBy = deliveredBy;
+        }
+
+        public String getDeliveredDate() {
+            return DeliveredDate;
+        }
+
+        public void setDeliveredDate(String deliveredDate) {
+            DeliveredDate = deliveredDate;
+        }
+
+        public String getItemCategory() {
+            return ItemCategory;
+        }
+
+        public void setItemCategory(String itemCategory) {
+            ItemCategory = itemCategory;
+        }
     }
 
 }

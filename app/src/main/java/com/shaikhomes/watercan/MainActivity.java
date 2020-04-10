@@ -558,7 +558,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                     //Success Transaction
                     try {
                         mPostData = new Gson().fromJson(tinyDB.getString(ORDER_DATA), OrderDelivery.OrderList.class);
-                        mPostData.setPaidStatus("Paid");
+                        mPostData.setPaidStatus("Success");
                         Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
                         call.enqueue(new Callback<PostResponsePojo>() {
                             @Override
@@ -596,7 +596,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                 } else {
                     try {
                         mPostData = new Gson().fromJson(tinyDB.getString(ORDER_DATA), OrderDelivery.OrderList.class);
-                        mPostData.setPaidStatus("NotPaid");
+                        mPostData.setPaidStatus("Failure");
                         Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
                         call.enqueue(new Callback<PostResponsePojo>() {
                             @Override

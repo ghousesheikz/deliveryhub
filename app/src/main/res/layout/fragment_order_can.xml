@@ -6,6 +6,18 @@
     android:orientation="vertical"
     tools:context=".ui.orders.OrderCan">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:padding="@dimen/dimen_8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/item_menu_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbarSize="1dp" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/order_can_list"
         android:layout_width="match_parent"

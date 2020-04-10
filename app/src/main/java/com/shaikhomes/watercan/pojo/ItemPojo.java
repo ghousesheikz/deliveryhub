@@ -80,6 +80,10 @@ public class ItemPojo {
         @SerializedName("Update")
         @Expose
         private String Update;
+        @SerializedName("CategoryId")
+        @Expose
+        private String CategoryId;
+
 
         public String getItemId() {
             return itemId;
@@ -183,6 +187,14 @@ public class ItemPojo {
 
         public void setUpdate(String update) {
             Update = update;
+        }
+
+        public String getCategoryId() {
+            return CategoryId;
+        }
+
+        public void setCategoryId(String categoryId) {
+            CategoryId = categoryId;
         }
     }
 }

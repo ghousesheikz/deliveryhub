@@ -18,7 +18,9 @@ import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.api_services.ApiClient;
 import com.shaikhomes.watercan.api_services.ApiInterface;
 import com.shaikhomes.watercan.model.OrderCalculationPojo;
+import com.shaikhomes.watercan.pojo.CategoryPojo;
 import com.shaikhomes.watercan.pojo.ItemPojo;
+import com.shaikhomes.watercan.pojo.Spinner_global_model;
 import com.shaikhomes.watercan.utility.TinyDB;
 
 import org.json.JSONArray;
@@ -40,9 +42,10 @@ import static com.shaikhomes.watercan.utility.UtilityConstants.ORDER_CAN_LIST;
  * create an instance of this fragment.
  */
 public class OrderCan extends Fragment {
-    private RecyclerView mRecyclerview;
+    private RecyclerView mRecyclerview, mCatRecyclerview;
     private LinearLayoutManager mLinearLayoutmanager;
     private OrderCanAdapter mAdapter;
+    private CategoryAdapter mCatAdapter;
     private JSONObject jsonObject;
     private JSONArray jsonArray;
     private TinyDB tinyDB;
@@ -76,27 +79,30 @@ public class OrderCan extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            /*mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);*/
-        }
+        tinyDB = new TinyDB(getActivity());
+        apiService = ApiClient.getClient(getActivity()).create(ApiInterface.class);
+
     }
 
     View view;
     List<ItemPojo.Item> mList;
+    private List<CategoryPojo.CategoryDetail> mCatList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_order_can, container, false);
-        tinyDB = new TinyDB(getActivity());
-        apiService = ApiClient.getClient(getActivity()).create(ApiInterface.class);
+
         mRecyclerview = view.findViewById(R.id.order_can_list);
+        mCatRecyclerview = view.findViewById(R.id.item_menu_list);
+        mCatRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         mLinearLayoutmanager = new LinearLayoutManager(getActivity());
         mLinearLayoutmanager.setReverseLayout(true);
         mLinearLayoutmanager.setStackFromEnd(true);
         mRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         mList = new ArrayList<>();
+        mCatList = new ArrayList<>();
+
         mAdapter = new OrderCanAdapter(getActivity(), mList, new OrderCanAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(ItemPojo.Item response, int position) {
@@ -111,13 +117,14 @@ public class OrderCan extends Fragment {
                 mPojo.setVendorId(mList.get(position).getVendorId());
                 mPojo.setVendorName(mList.get(position).getVendorName());
                 mPojo.setMinQty(mList.get(position).getMinqty());
-                if(mList.get(position).getMinqty().equalsIgnoreCase("0")) {
+                mPojo.setCategoryId(mList.get(position).getCategoryId());
+                if (mList.get(position).getMinqty().equalsIgnoreCase("0")) {
                     mPojo.setNoOfCans(1);
-                }else{
+                } else {
                     mPojo.setNoOfCans(Integer.parseInt(mList.get(position).getMinqty()));
                 }
                 mPojo.setTotalAmount(Integer.parseInt(mList.get(position).getItemPrice()));
-                int amt = Integer.parseInt(mList.get(position).getMinqty())*Integer.parseInt(mList.get(position).getItemPrice());
+                int amt = Integer.parseInt(mList.get(position).getMinqty()) * Integer.parseInt(mList.get(position).getItemPrice());
                 mPojo.setUnitAmount(amt);
                 try {
 
@@ -136,7 +143,29 @@ public class OrderCan extends Fragment {
         });
         mRecyclerview.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
-
+        mCatAdapter = new CategoryAdapter(getActivity(), mCatList, new CategoryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(CategoryPojo.CategoryDetail response, int position) {
+                List<ItemPojo.Item> mFilterList = new ArrayList<>();
+                if (response.getId().equalsIgnoreCase("-1")) {
+                    mAdapter.updateAdapter(mList);
+                } else {
+                    for (int i = 0; i < mList.size(); i++) {
+                        if (response.getId().equalsIgnoreCase(mList.get(i).getCategoryId())) {
+                            mFilterList.add(mList.get(i));
+                        }
+                    }
+                    if (mFilterList.size() > 0) {
+                        mAdapter.updateAdapter(mFilterList);
+                    }else{
+                        mAdapter.updateAdapter(mFilterList);
+                    }
+                }
+            }
+        });
+        mCatRecyclerview.setAdapter(mCatAdapter);
+        mCatAdapter.notifyDataSetChanged();
+        getCategoryDetails("");
         // Inflate the layout for this fragment
         return view;
     }
@@ -157,7 +186,7 @@ public class OrderCan extends Fragment {
                     if (mItemData.getStatus().equalsIgnoreCase("200")) {
                         if (mItemData.getItemList() != null) {
                             if (mItemData.getItemList().size() > 0) {
-                                if(mList.size()>0){
+                                if (mList.size() > 0) {
                                     mList.clear();
                                 }
                                 mList = mItemData.getItemList();
@@ -170,6 +199,45 @@ public class OrderCan extends Fragment {
 
                 @Override
                 public void onFailure(Call<ItemPojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void getCategoryDetails(String number) {
+        try {
+            Call<CategoryPojo> call = apiService.GetCategoryDetails("");
+            call.enqueue(new Callback<CategoryPojo>() {
+                @Override
+                public void onResponse(Call<CategoryPojo> call, Response<CategoryPojo> response) {
+                    CategoryPojo mItemData = response.body();
+                    if (mItemData.getStatus().equalsIgnoreCase("200")) {
+                        if (mItemData.getCategoryDetails() != null) {
+                            if (mItemData.getCategoryDetails().size() > 0) {
+                                if (mCatList.size() > 0) {
+                                    mCatList.clear();
+                                }
+                                mCatList.add(new CategoryPojo.CategoryDetail("-1", "All", "ALL"));
+                                for (int i = 0; i < mItemData.getCategoryDetails().size(); i++) {
+                                    mCatList.add(new CategoryPojo.CategoryDetail(mItemData.getCategoryDetails().get(i).getId(), mItemData.getCategoryDetails().get(i).getCategoryImage(), mItemData.getCategoryDetails().get(i).getCategoryName()));
+                                }
+                                // mCatList = mItemData.getCategoryDetails();
+                                if (mCatList.size() > 0) {
+                                    mCatAdapter.updateAdapter(mCatList);
+                                }
+                                // mAdapter.updateAdapter(mItemData.getOrderList());
+                            }
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CategoryPojo> call, Throwable t) {
                     Log.i("ERROR", t.getMessage());
                 }
             });

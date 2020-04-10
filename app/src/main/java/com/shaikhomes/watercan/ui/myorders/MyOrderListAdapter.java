@@ -66,7 +66,7 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
         holder.mNoofCans.setText(mCanList.get(position).getItemQuantity());
         holder.mTotalPrice.setText(mCanList.get(position).getTotalamount());
         holder.mUnitPrice.setText(mCanList.get(position).getItemprice());
-        holder.mOrderType.setText(mCanList.get(position).getOrderType());
+        holder.mOrderType.setText(mCanList.get(position).getTypeoforder());
         SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         SimpleDateFormat format2 = new SimpleDateFormat("dd-MMM-yyyy");
         Date date = null;

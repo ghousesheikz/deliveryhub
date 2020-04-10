@@ -28,17 +28,22 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.shaikhomes.watercan.BaseActivity;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.SignUpActivity;
+import com.shaikhomes.watercan.pojo.CategoryPojo;
 import com.shaikhomes.watercan.pojo.ItemPojo;
+import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
+import com.shaikhomes.watercan.pojo.Spinner_global_model;
 import com.shaikhomes.watercan.utility.RoundedTransformation;
 import com.shaikhomes.watercan.utility.ZoomableImageView;
 import com.squareup.picasso.MemoryPolicy;
@@ -49,7 +54,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -75,12 +82,19 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     private AppCompatButton mRegisterItem;
     private String mEditItem = "";
     private ItemPojo.Item mEditPojo;
+    private List<CategoryPojo.CategoryDetail> mList;
+    private Spinner mCatSpinner;
+    private ArrayList<Spinner_global_model> spinner_array_category;
+    private ArrayAdapter<Spinner_global_model> adapter_spinner_category;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
-
+        mList = new ArrayList<>();
+        spinner_array_category = new ArrayList<>();
+        spinner_array_category.add(new Spinner_global_model("-1", "Select Category"));
         mUploadImage = findViewById(R.id.upload_image);
         mUploadImage.setOnClickListener(this);
         mViewImage = findViewById(R.id.pickup_image);
@@ -91,6 +105,11 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         mMinQty = findViewById(R.id.edt_minqty);
         mRegisterItem = findViewById(R.id.btn_submit);
         mRegisterItem.setOnClickListener(this);
+        mCatSpinner = findViewById(R.id.spn_category);
+        adapter_spinner_category = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, spinner_array_category);
+        adapter_spinner_category.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCatSpinner.setAdapter(adapter_spinner_category);
+        getCategoryDetails("");
         if (getIntent().getStringExtra("edititem") != null) {
             mEditItem = getIntent().getStringExtra("edititem");
             mEditPojo = new Gson().fromJson(mEditItem, ItemPojo.Item.class);
@@ -170,6 +189,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
 
                 break;
             case R.id.btn_submit:
+
                 if (TextUtils.isEmpty(mEncodedImage) && TextUtils.isEmpty(mEditItem)) {
                     Toasty.error(AddItemActivity.this, "Please click Image", Toasty.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mItemName.getText().toString())) {
@@ -180,6 +200,8 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                     Toasty.error(AddItemActivity.this, "Please enter item units", Toasty.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mMinQty.getText().toString())) {
                     Toasty.error(AddItemActivity.this, "Please enter item min quantity", Toasty.LENGTH_SHORT).show();
+                } else if (spinner_array_category.get(mCatSpinner.getSelectedItemPosition()).getId().equalsIgnoreCase("-1")) {
+                    Toasty.error(AddItemActivity.this, "Please select category", Toasty.LENGTH_SHORT).show();
                 } else {
                     if (TextUtils.isEmpty(mEditItem)) {
                         ItemPojo.Item mPostItem = new ItemPojo.Item();
@@ -195,6 +217,8 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         mPostItem.setVendorAddress("");
                         mPostItem.setVendorId(tinyDB.getString(USER_ID));
                         mPostItem.setVendorName(tinyDB.getString(USER_NAME));
+                        mPostItem.setCategoryId(spinner_array_category.get(mCatSpinner.getSelectedItemPosition()).getId());
+
 
                         Call<PostResponsePojo> call = apiService.PostItem(mPostItem);
                         call.enqueue(new Callback<PostResponsePojo>() {
@@ -234,7 +258,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         mPostItem.setVendorAddress("");
                         mPostItem.setVendorId(tinyDB.getString(USER_ID));
                         mPostItem.setVendorName(tinyDB.getString(USER_NAME));
-
+                        mPostItem.setCategoryId(spinner_array_category.get(mCatSpinner.getSelectedItemPosition()).getId());
                         Call<PostResponsePojo> call = apiService.UpdateItemDetails(mPostItem);
                         call.enqueue(new Callback<PostResponsePojo>() {
                             @Override
@@ -557,5 +581,44 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri
                 .getAuthority());
+    }
+
+
+    private void getCategoryDetails(String number) {
+        try {
+            Call<CategoryPojo> call = apiService.GetCategoryDetails("");
+            call.enqueue(new Callback<CategoryPojo>() {
+                @Override
+                public void onResponse(Call<CategoryPojo> call, Response<CategoryPojo> response) {
+                    CategoryPojo mItemData = response.body();
+                    if (mItemData.getStatus().equalsIgnoreCase("200")) {
+                        if (mItemData.getCategoryDetails() != null) {
+                            if (mItemData.getCategoryDetails().size() > 0) {
+                                if (mList.size() > 0) {
+                                    mList.clear();
+                                }
+                                mList = mItemData.getCategoryDetails();
+                                if (mList.size() > 0) {
+                                    for (int i = 0; i < mList.size(); i++) {
+                                        spinner_array_category.add(new Spinner_global_model(mList.get(i).getId(), mList.get(i).getCategoryName()));
+                                    }
+                                    adapter_spinner_category.notifyDataSetChanged();
+                                }
+                                // mAdapter.updateAdapter(mItemData.getOrderList());
+                            }
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CategoryPojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

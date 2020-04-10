@@ -194,6 +194,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                         mOrderPojo.setVendorName(jsonObject.getString("VendorName"));
                         mOrderPojo.setVendorId(jsonObject.getString("VendorId"));
                         mOrderPojo.setMinQty(jsonObject.getString("MinQty"));
+                        mOrderPojo.setCategoryId(jsonObject.getString("CategoryId"));
                         mOrdersList.add(mOrderPojo);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -320,6 +321,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                             OrderDelivery.OrderList mPostData = new OrderDelivery.OrderList();
                             mPostData.setItemName(mOrdersList.get(0).getName());
                             mPostData.setItemprice(mOrdersList.get(0).getPrice());
+
                             mPostData.setItemQuantity(String.valueOf(mAdapter.getlist().get(0).getItemcount()));
                             mPostData.setOTP(mOtp);
                             mPostData.setUserMobileNo(tinyDB.getString(USER_MOBILE));
@@ -338,6 +340,9 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                             mPostData.setOrderStatus("Pending");
                             mPostData.setOrderType("Online");
                             mPostData.setPaymentType("Online");
+                            mPostData.setItemCategory(mOrdersList.get(0).getCategoryId());
+                            mPostData.setDeliveredDate(null);
+                            mPostData.setDeliveredBy("");
                             tinyDB.putString(ORDER_DATA, new Gson().toJson(mPostData));
 
                             launchPayUMoneyFlow(tinyDB.getString(USER_NAME), tinyDB.getString(USER_MOBILE), mOrdersList.get(0).getName() + "DeliveryHUB", String.valueOf(mTotalPrice));

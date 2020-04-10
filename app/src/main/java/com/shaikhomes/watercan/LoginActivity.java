@@ -137,6 +137,7 @@ public class LoginActivity extends AppCompatActivity {
                                     tinyDB.putString(IS_ADMIN, mData.getIsadmin());
                                     tinyDB.putString(USER_ID, mData.getUserid());
                                     tinyDB.putString(USER_NAME, mData.getUsername());
+                                    tinyDB.putString(ADDRESS_LIST, mData.getAddress());
                                     tinyDB.putBoolean(OTP_ENABLED, true);
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                     finish();
@@ -153,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                                     tinyDB.putString(IS_ADMIN, mData.getIsadmin());
                                     tinyDB.putString(USER_ID, mData.getUserid());
                                     tinyDB.putString(USER_NAME, mData.getUsername());
+                                    tinyDB.putString(ADDRESS_LIST, mData.getAddress());
                                     tinyDB.putBoolean(OTP_ENABLED, true);
                                     startActivity(new Intent(LoginActivity.this, OTPAuthentication.class));
                                     finish();
