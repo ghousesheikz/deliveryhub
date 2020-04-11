@@ -25,18 +25,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.shaikhomes.watercan.utility.AppConstants.USER_ID;
+
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText mFirstName, mLastName, mMobileNumber;
     private CheckBox mTermsChk;
     private AppCompatButton mSignup;
     public ApiInterface apiService;
     private TinyDB tinyDB;
-    private String isAdmin = "";
+    private String isAdmin = "",vendorid="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        tinyDB = new TinyDB(this);
         apiService = ApiClient.getClient(this).create(ApiInterface.class);
         mFirstName = findViewById(R.id.signup_firstname);
         mLastName = findViewById(R.id.signup_lastname);
@@ -48,6 +51,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             isAdmin = getIntent().getStringExtra("isadmin");
         } else {
             isAdmin = "4";
+            vendorid = tinyDB.getString(USER_ID);
         }
     }
 
@@ -62,7 +66,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             Toasty.error(SignUpActivity.this, "Please enter mobilenumber", Toast.LENGTH_SHORT).show();
         } else {
             String mName = mFirstName.getText().toString() + " " + mLastName.getText().toString();
-            UserRegistrationPojo.UserData mPostData = new UserRegistrationPojo.UserData(mName, mMobileNumber.getText().toString(), isAdmin, "True", "", "", "", "", "");
+            UserRegistrationPojo.UserData mPostData = new UserRegistrationPojo.UserData(mName, mMobileNumber.getText().toString(), isAdmin, "True", "", "", "", "", "",vendorid);
             Call<PostResponsePojo> call = apiService.PostUserDetails(mPostData);
             call.enqueue(new Callback<PostResponsePojo>() {
                 @Override

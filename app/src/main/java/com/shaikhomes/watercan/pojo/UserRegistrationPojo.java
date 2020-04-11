@@ -70,6 +70,9 @@ public class UserRegistrationPojo {
         @SerializedName("agreementstatus")
         @Expose
         private String agreementstatus;
+        @SerializedName("vendorid")
+        @Expose
+        private String vendorid;
 
         public UserData() {
 
@@ -147,7 +150,15 @@ public class UserRegistrationPojo {
             this.agreementstatus = agreementstatus;
         }
 
-        public UserData(String username, String usermobileNumber, String isadmin, String active, String address, String otp, String userid, String paidstatus, String agreementstatus) {
+        public String getVendorid() {
+            return vendorid;
+        }
+
+        public void setVendorid(String vendorid) {
+            this.vendorid = vendorid;
+        }
+
+        public UserData(String username, String usermobileNumber, String isadmin, String active, String address, String otp, String userid, String paidstatus, String agreementstatus,String vendorid) {
             this.username = username;
             this.usermobileNumber = usermobileNumber;
             this.isadmin = isadmin;
@@ -157,6 +168,7 @@ public class UserRegistrationPojo {
             this.userid = userid;
             this.paidstatus = paidstatus;
             this.agreementstatus = agreementstatus;
+            this.vendorid=vendorid;
         }
     }
 }
