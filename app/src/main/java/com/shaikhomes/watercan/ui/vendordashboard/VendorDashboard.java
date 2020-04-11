@@ -19,6 +19,7 @@ import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.SignUpActivity;
 import com.shaikhomes.watercan.ui.item.AddItemActivity;
 import com.shaikhomes.watercan.ui.item.ViewItemsActivity;
+import com.shaikhomes.watercan.ui.venodrorderdetails.UpdateOrderDetailsActivity;
 import com.shaikhomes.watercan.utility.TinyDB;
 
 import es.dmoral.toasty.Toasty;
@@ -27,7 +28,7 @@ import static com.shaikhomes.watercan.utility.AppConstants.LOGIN_ENABLED;
 
 public class VendorDashboard extends AppCompatActivity implements View.OnClickListener {
     TinyDB tinyDB;
-    RelativeLayout mAddItem, mAddEmployee,mViewItems;
+    RelativeLayout mAddItem, mAddEmployee, mViewItems, mMyOrders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,8 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
         mViewItems = findViewById(R.id.view_items_ll);
         mViewItems.setOnClickListener(this);
         mAddItem = findViewById(R.id.add_tems_ll);
+        mMyOrders = findViewById(R.id.my_orders_ll);
+        mMyOrders.setOnClickListener(this);
         mAddItem.setOnClickListener(this);
         mAddEmployee.setOnClickListener(this);
     }
@@ -89,8 +92,13 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
             intent.putExtra("isadmin", "3");
             startActivity(intent);
 
-        }else if (v.getId() == R.id.view_items_ll) {
+        } else if (v.getId() == R.id.view_items_ll) {
             Intent intent = new Intent(VendorDashboard.this, ViewItemsActivity.class);
+            startActivity(intent);
+
+
+        } else if (v.getId() == R.id.my_orders_ll) {
+            Intent intent = new Intent(VendorDashboard.this, UpdateOrderDetailsActivity.class);
             startActivity(intent);
 
 

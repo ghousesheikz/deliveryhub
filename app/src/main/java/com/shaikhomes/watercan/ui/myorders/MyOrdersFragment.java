@@ -96,7 +96,7 @@ public class MyOrdersFragment extends Fragment {
         bottomSheetView.BottomSheetDesignView("hide");
         mList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.my_order_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,true));
         mAdapter = new MyOrderListAdapter(getActivity(), mList, new MyOrderListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(List<OrderCalculationPojo> response, int position) {

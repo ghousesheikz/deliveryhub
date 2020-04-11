@@ -101,6 +101,9 @@ public class OrderDelivery {
         @SerializedName("ItemCategory")
         @Expose
         private String ItemCategory;
+        @SerializedName("PaymentTxnId")
+        @Expose
+        private String PaymentTxnId;
 
         public String getOrderId() {
             return orderId;
@@ -260,6 +263,16 @@ public class OrderDelivery {
 
         public void setItemCategory(String itemCategory) {
             ItemCategory = itemCategory;
+        }
+
+
+
+        public String getPaymentTxnId() {
+            return PaymentTxnId;
+        }
+
+        public void setPaymentTxnId(String paymentTxnId) {
+            PaymentTxnId = paymentTxnId;
         }
     }
 

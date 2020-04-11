@@ -5,6 +5,7 @@ import com.shaikhomes.watercan.pojo.CategoryPojo;
 import com.shaikhomes.watercan.pojo.ItemPojo;
 import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
+import com.shaikhomes.watercan.pojo.UpdateOrderPojo;
 import com.shaikhomes.watercan.pojo.UserRegistrationPojo;
 
 import okhttp3.ResponseBody;
@@ -46,7 +47,11 @@ public interface ApiInterface {
     @GET("api/Category?")
     Call<CategoryPojo> GetCategoryDetails(@Query("message") String message);
 
+    @GET("api/UpdateOrder?")
+    Call<OrderDelivery> GetVendorOrderDetails(@Query("vendorid") String vendorid, @Query("orderdate") String orderdate);
 
+    @POST("api/UpdateOrder?")
+    Call<PostResponsePojo> UpdateOrderDetails(@Body UpdateOrderPojo updateOrderPojo);
   /*  @POST("api/LeadsRegistration")
     Call<PostResponsePojo> PostLeads(@Body AddLeadsPojo writeoffPost);
 

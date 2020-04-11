@@ -589,6 +589,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                     try {
                         mPostData = new Gson().fromJson(tinyDB.getString(ORDER_DATA), OrderDelivery.OrderList.class);
                         mPostData.setPaidStatus("Success");
+                        mPostData.setPaymentTxnId(getData.getResult().getPayuMoneyId());
                         Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
                         call.enqueue(new Callback<PostResponsePojo>() {
                             @Override
@@ -627,6 +628,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                     try {
                         mPostData = new Gson().fromJson(tinyDB.getString(ORDER_DATA), OrderDelivery.OrderList.class);
                         mPostData.setPaidStatus("Failure");
+                        mPostData.setPaymentTxnId("0");
                         Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
                         call.enqueue(new Callback<PostResponsePojo>() {
                             @Override
@@ -637,7 +639,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                                     if (pojo.getStatus().equalsIgnoreCase("200")) {
                                         //clearData();
                                         tinyDB.remove(ORDER_DATA);
-                                        Toasty.success(MainActivity.this, "Item Ordered Successfully", Toast.LENGTH_SHORT, true).show();
+                                        Toasty.error(MainActivity.this, "Payment Failed", Toast.LENGTH_SHORT, true).show();
 
                                     }
                             }
