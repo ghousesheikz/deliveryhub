@@ -39,12 +39,15 @@ import com.shaikhomes.watercan.pojo.PayuResponse;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
 import com.shaikhomes.watercan.ui.BottomSheetView;
 import com.shaikhomes.watercan.ui.address.AddressAdapter;
+import com.shaikhomes.watercan.ui.logout.LogoutFragment;
 import com.shaikhomes.watercan.utility.TinyDB;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -82,7 +85,7 @@ import static com.shaikhomes.watercan.utility.AppConstants.USER_ID;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_MOBILE;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
 
-public class MainActivity extends BaseActivity implements BottomSheetView, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements BottomSheetView, View.OnClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private BottomSheetBehavior behavior;
@@ -127,7 +130,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navView = navigationView.getHeaderView(0);
-        navigationView.setNavigationItemSelectedListener(this);
+
         mUserName = navView.findViewById(R.id.txt_name);
         mUserNumber = navView.findViewById(R.id.txt_number);
         mUserName.setText("Hello ! " + tinyDB.getString(USER_NAME));
@@ -143,6 +146,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
         persistentbottomSheet = coordinatorLayout.findViewById(R.id.bottomsheet);
         mBtnAddAddress = coordinatorLayout.findViewById(R.id.btn_addaddress);
@@ -228,18 +232,17 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
     }
 
 
-
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
-
-    @Override
+    }*/
+    public static final String LOGOUT_TAG = "LOGOUT_TAG";
+    /*@Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
-            new AlertDialog.Builder(MainActivity.this).setTitle("LOGOUT").setMessage("Do you want to logout?").setPositiveButton("YES", new DialogInterface.OnClickListener() {
+           *//* new AlertDialog.Builder(MainActivity.this).setTitle("LOGOUT").setMessage("Do you want to logout?").setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -263,15 +266,21 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                     dialog.dismiss();
 
                 }
-            }).create().show();
+            }).create().show();*//*
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment prev = getSupportFragmentManager().findFragmentByTag(LOGOUT_TAG);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            ft.addToBackStack(null);
+            LogoutFragment logoutFragment = LogoutFragment.newInstance();
+
+            logoutFragment.setCancelable(true);
+            logoutFragment.show(ft, LOGOUT_TAG);
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        return super.onContextItemSelected(item);
-    }
+*/
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -282,11 +291,12 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
 
     @Override
     public void BottomSheetDesignView(String collapse) {
-        if(collapse.equalsIgnoreCase("hide")){
+        if (collapse.equalsIgnoreCase("hide")) {
             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
 
     }
+
 
     @Override
     public void BottomSheetDesignLocation(LatLng latLng) {
@@ -314,6 +324,26 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
         String country = addresses.get(0).getCountryName();
         String postalCode = addresses.get(0).getPostalCode();
         String knownName = addresses.get(0).getFeatureName();
+    }
+
+    @Override
+    public void DialogYes(String yes) {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+        Toasty.success(MainActivity.this, "Successfully logout", Toasty.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void DialogNo(String no) {
+        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_home);
+
+    }
+
+    @Override
+    public void CustomerCare(String hide) {
+        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
@@ -653,11 +683,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getGroupId() == R.id.nav_myorders) {
 
-        }
-        return false;
-    }
+
+
 }

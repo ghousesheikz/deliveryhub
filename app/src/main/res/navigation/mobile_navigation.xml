@@ -62,8 +62,8 @@
 
     <fragment
         android:id="@+id/nav_logout"
-        android:name="com.shaikhomes.watercan.views.MyCustomDialog"
+        android:name="com.shaikhomes.watercan.ui.logout.LogoutFragment"
         android:label="@string/search_places"
-        tools:layout="@layout/fragment_search_places" />
+        tools:layout="@layout/logout_dialog" />
 
 </navigation>

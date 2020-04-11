@@ -1,7 +1,14 @@
 package com.shaikhomes.watercan.ui.customercare;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,6 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shaikhomes.watercan.R;
+import com.shaikhomes.watercan.SplashActivity;
+import com.shaikhomes.watercan.ui.BottomSheetView;
+
+import es.dmoral.toasty.Toasty;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +31,7 @@ public class CustomerCareFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    BottomSheetView bottomSheetView;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -56,10 +68,49 @@ public class CustomerCareFragment extends Fragment {
         }
     }
 
+    CardView mCardview;
+    View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_customer_care, container, false);
+        bottomSheetView = (BottomSheetView) view.getContext();
+        bottomSheetView.CustomerCare("hide");
+        mCardview = view.findViewById(R.id.call_btn);
+        mCardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    callNumber("9966009289");
+                } else {
+                    Toasty.info(getActivity(), "Please give permission for calling", Toasty.LENGTH_SHORT).show();
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.CALL_PHONE},
+                            1);
+                }
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_customer_care, container, false);
+        return view;
+    }
+
+    public void callNumber(String number) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        number = "+91" + number;
+        intent.setData(Uri.parse("tel:" + number));
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        getActivity().startActivity(intent);
+
     }
 }
