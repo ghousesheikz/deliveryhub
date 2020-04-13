@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.model.OrderCalculationPojo;
@@ -71,8 +72,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                         .centerCrop().transform(new RoundedTransformation())
                         .into(holder.mImgCategory);
             } else {
+                CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+                circularProgressDrawable.setStrokeWidth(5f);
+                circularProgressDrawable.setCenterRadius(30f);
+                int[] COLORS = new int[]{
+                        R.color.colorPrimary
+                };
+                circularProgressDrawable.setColorSchemeColors(COLORS);
+                circularProgressDrawable.start();
                 String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + mCanList.get(position).getCategoryImage();
-                Picasso.get().load(imgUrl).resize(300, 300)
+                Picasso.get().load(imgUrl).resize(300, 300).placeholder(circularProgressDrawable)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .centerCrop().transform(new RoundedTransformation())

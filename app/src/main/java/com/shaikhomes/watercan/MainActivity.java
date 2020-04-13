@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,9 +38,14 @@ import com.shaikhomes.watercan.pojo.ItemPojo;
 import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PayuResponse;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
+import com.shaikhomes.watercan.pojo.SMSResponse;
+import com.shaikhomes.watercan.pojo.UpdateOrderPojo;
+import com.shaikhomes.watercan.pojo.UpdateWalletPojo;
 import com.shaikhomes.watercan.ui.BottomSheetView;
 import com.shaikhomes.watercan.ui.address.AddressAdapter;
 import com.shaikhomes.watercan.ui.logout.LogoutFragment;
+import com.shaikhomes.watercan.ui.ordercalculation.OrderCalculation;
+import com.shaikhomes.watercan.ui.venodrorderdetails.UpdateOrderDetailsActivity;
 import com.shaikhomes.watercan.utility.TinyDB;
 
 import androidx.annotation.NonNull;
@@ -63,7 +69,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -108,6 +118,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
     private LinearLayoutManager linearLayoutManager;
     private AddressAdapter adapter;
     private List<AddressPojo> mAddressList;
+    SMSResponse getData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,12 +243,12 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
     }
 
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }*/
+    /* @Override
+     public boolean onCreateOptionsMenu(Menu menu) {
+         // Inflate the menu; this adds items to the action bar if it is present.
+         getMenuInflater().inflate(R.menu.main, menu);
+         return true;
+     }*/
     public static final String LOGOUT_TAG = "LOGOUT_TAG";
     /*@Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -591,6 +602,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                         mPostData.setPaidStatus("Success");
                         mPostData.setPaymentTxnId(getData.getResult().getPayuMoneyId());
                         Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
+                        OrderDelivery.OrderList finalMPostData = mPostData;
                         call.enqueue(new Callback<PostResponsePojo>() {
                             @Override
                             public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
@@ -599,9 +611,10 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                                 if (pojo != null)
                                     if (pojo.getStatus().equalsIgnoreCase("200")) {
                                         //clearData();
-                                        tinyDB.remove(ORDER_DATA);
-                                        Toasty.success(MainActivity.this, "Item Ordered Successfully", Toast.LENGTH_SHORT, true).show();
-
+                                        UpdateWalletPojo.WalletDetail mPojo = new UpdateWalletPojo.WalletDetail();
+                                        mPojo.setVendorId(finalMPostData.getVendorName());
+                                        mPojo.setOnlineAmount(finalMPostData.getTotalamount());
+                                        UpdateWalletStatus(mPojo, finalMPostData.getOTP());
                                     }
                             }
 
@@ -672,6 +685,36 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                 Log.d("RESPONSE", "Both objects are null!");
             }
         } else {
+            /*try {
+                mPostData = new Gson().fromJson(tinyDB.getString(ORDER_DATA), OrderDelivery.OrderList.class);
+                mPostData.setPaidStatus("Success");
+                mPostData.setPaymentTxnId("10020");
+                Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
+                OrderDelivery.OrderList finalMPostData = mPostData;
+                call.enqueue(new Callback<PostResponsePojo>() {
+                    @Override
+                    public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
+
+                        PostResponsePojo pojo = response.body();
+                        if (pojo != null)
+                            if (pojo.getStatus().equalsIgnoreCase("200")) {
+                                //clearData();
+                                UpdateWalletPojo.WalletDetail mPojo = new UpdateWalletPojo.WalletDetail();
+                                mPojo.setVendorId(finalMPostData.getVendorName());
+                                mPojo.setOnlineAmount(finalMPostData.getTotalamount());
+                                UpdateWalletStatus(mPojo);
+                            }
+                    }
+
+                    @Override
+                    public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+                        // hud.dismiss();
+                    }
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
             new AlertDialog.Builder(MainActivity.this)
                     .setCancelable(false)
                     .setTitle("Failed")
@@ -685,7 +728,90 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
         }
     }
 
+    private void UpdateWalletStatus(UpdateWalletPojo.WalletDetail mPojo, String mOtp) {
+        Call<PostResponsePojo> call = apiService.UpdateWalletDetails(mPojo);
+        call.enqueue(new Callback<PostResponsePojo>() {
+            @Override
+            public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
+                PostResponsePojo pojo = response.body();
+                if (pojo != null)
+                    if (pojo.getStatus().equalsIgnoreCase("200")) {
+                        tinyDB.remove(ORDER_DATA);
+                        Toasty.success(MainActivity.this, "Item Ordered Successfully", Toast.LENGTH_SHORT, true).show();
+                        sendSms("91" + tinyDB.getString(USER_MOBILE), "Thank you for ordering with DeliveryHUB OTP : " + mOtp + ". Please share OTP with the delivery person for verification.");
+                    }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+            }
+        });
+    }
+
+    public void sendSms(String number, String msg) {
+        try {
+            // Construct data
+            String apiKey = "apikey=" + "rHjrP/vVGC0-6QwewVQbHjh1xnWwlnoMWXiC4ofDcK";
+            String message = "&message=" + msg;
+            String sender = "&sender=" + "SHAIKH";
+            String numbers = "&numbers=" + number;
+
+            // Send data
+            String url = apiKey + numbers + message + sender;
+            new RetrieveFeedTask().execute(url);
+        } catch (Exception e) {
 
 
+        }
+    }
+
+    class RetrieveFeedTask extends AsyncTask<String, Void, String> {
+
+        private Exception exception;
+
+        protected String doInBackground(String... urls) {
+            try {
+                HttpURLConnection conn = (HttpURLConnection) new URL("https://api.textlocal.in/send/?").openConnection();
+                String data = urls[0];
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Length", Integer.toString(data.length()));
+                conn.getOutputStream().write(data.getBytes("UTF-8"));
+                final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                final StringBuffer stringBuffer = new StringBuffer();
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    stringBuffer.append(line);
+                }
+                rd.close();
+                JsonParser parser = new JsonParser();
+                JsonElement mJson = parser.parse(stringBuffer.toString());
+                Gson gson = new Gson();
+                getData = gson.fromJson(mJson, SMSResponse.class);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getData.getStatus().toLowerCase().equalsIgnoreCase("success")) {
+                            Toasty.success(MainActivity.this, getData.getStatus(), Toasty.LENGTH_LONG).show();
+                        } else {
+                            Toasty.error(MainActivity.this, getData.getStatus(), Toasty.LENGTH_LONG).show();
+
+                        }
+                    }
+                });
+                Log.v("response", stringBuffer.toString());
+                return stringBuffer.toString();
+            } catch (Exception e) {
+                this.exception = e;
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+    }
 
 }

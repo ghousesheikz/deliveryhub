@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.model.OrderCalculationPojo;
@@ -56,12 +57,21 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
     public void onBindViewHolder(final OrderListAdapter.MyViewHolder holder, final int position) {
         //  animator.animateAdd(holder);
         if (!TextUtils.isEmpty(mCanList.get(position).getImageURL())) {
+            CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+            circularProgressDrawable.setStrokeWidth(5f);
+            circularProgressDrawable.setCenterRadius(30f);
+            int[] COLORS = new int[]{
+                    R.color.colorPrimary
+            };
+            circularProgressDrawable.setColorSchemeColors(COLORS);
+            circularProgressDrawable.start();
             String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + mCanList.get(position).getImageURL();
-            Picasso.get().load(imgUrl).resize(800, 1200)
+            Picasso.get().load(imgUrl).resize(800, 1200).placeholder(circularProgressDrawable)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .into(holder.mCanImage);
         }
+        holder.mTxtDistributor.setText(mCanList.get(position).getVendorName());
         mCount = mCanList.get(position).getNoOfCans();
 
         holder.mCanCount.setText(String.valueOf(mCount));
@@ -132,7 +142,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView mCanCount, mCanAmt;
+        TextView mCanCount, mCanAmt,mTxtDistributor;
         ImageView mPlusCnt, mMinusCnt, mCanImage;
 
         public MyViewHolder(View v) {
@@ -142,6 +152,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
             mMinusCnt = v.findViewById(R.id.minus_count);
             mCanAmt = v.findViewById(R.id.txt_amt);
             mCanImage = v.findViewById(R.id.image_);
+            mTxtDistributor = v.findViewById(R.id.distributor_name);
 
         }
 

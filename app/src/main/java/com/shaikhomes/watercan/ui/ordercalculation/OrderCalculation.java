@@ -314,7 +314,6 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                         Toasty.success(getActivity(), "Your Total Order AMount is " + mtxtTotalAmt.getText().toString().trim() + mPaymentChk, Toast.LENGTH_SHORT).show();
                         try {
                             String mOtp = generateOTP();
-                            sendSms("91" + tinyDB.getString(USER_MOBILE), "Thank you for ordering with DeliveryHUB OTP : " + mOtp + ". Please share OTP with the delivery person for verification.");
 
                             Date c = Calendar.getInstance().getTime();
                             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");

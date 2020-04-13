@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.pojo.ItemPojo;
@@ -53,8 +54,16 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         //  animator.animateAdd(holder);
         if (!TextUtils.isEmpty(mJoblist.get(position).getItemImage())) {
+            CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+            circularProgressDrawable.setStrokeWidth(5f);
+            circularProgressDrawable.setCenterRadius(30f);
+            int[] COLORS = new int[]{
+                    R.color.colorPrimary
+            };
+            circularProgressDrawable.setColorSchemeColors(COLORS);
+            circularProgressDrawable.start();
             String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + mJoblist.get(position).getItemImage();
-            Picasso.get().load(imgUrl).resize(800, 1200)
+            Picasso.get().load(imgUrl).placeholder(circularProgressDrawable).resize(800, 1200)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .into(holder.mCanImage);

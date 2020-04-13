@@ -6,6 +6,7 @@ import com.shaikhomes.watercan.pojo.ItemPojo;
 import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
 import com.shaikhomes.watercan.pojo.UpdateOrderPojo;
+import com.shaikhomes.watercan.pojo.UpdateWalletPojo;
 import com.shaikhomes.watercan.pojo.UserRegistrationPojo;
 
 import okhttp3.ResponseBody;
@@ -52,6 +53,14 @@ public interface ApiInterface {
 
     @POST("api/UpdateOrder?")
     Call<PostResponsePojo> UpdateOrderDetails(@Body UpdateOrderPojo updateOrderPojo);
+
+    @POST("api/UpdateWallet?")
+    Call<PostResponsePojo> UpdateWalletDetails(@Body UpdateWalletPojo.WalletDetail updateOrderPojo);
+
+    @GET("api/UpdateWallet?")
+    Call<UpdateWalletPojo> GetWalletDetails(@Query("vendorid") String vendorid);
+
+
   /*  @POST("api/LeadsRegistration")
     Call<PostResponsePojo> PostLeads(@Body AddLeadsPojo writeoffPost);
 

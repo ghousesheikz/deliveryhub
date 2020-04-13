@@ -17,12 +17,11 @@
         android:textColor="@color/orange"
         android:textSize="17sp" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/image_"
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
-        android:background="@drawable/bisleri_2"
         android:scaleType="fitCenter" />
 
     <LinearLayout
