@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.vendoruserprofile.UserProfile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="0dp"
+
+                android:foregroundGravity="top"
+                android:src="@drawable/app_delivery" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="100dp"
+                android:foregroundGravity="top"
+                android:scaleType="centerCrop"
+                android:src="@drawable/fading_background" />
+
+
+            <com.shaikhomes.watercan.custom_views.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="150dp"
+                android:elevation="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_man"
+                app:civ_border_color="@color/colorPrimaryDark"
+                app:civ_border_width="2dp" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_image"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato_regular"
+                android:gravity="center"
+                android:text="Mohammed Ghouse"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_name"
+                android:fontFamily="@font/lato_light"
+                android:gravity="center"
+                android:text="Delivery HUB"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/address_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:fitsSystemWindows="true"
+                        android:padding="16dp"
+                        android:src="@drawable/ic_address"
+                        android:tint="@color/colorPrimaryDark" />
+
+
+                    <TextView
+                        android:id="@+id/address_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/address_icon"
+                        android:fontFamily="@font/lato_regular"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="User Address"
+                        android:textColor="@color/gray" />
+
+
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/address_title"
+                        android:layout_toEndOf="@id/address_icon"
+                        android:fontFamily="@font/lato_regular"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="ic - 18, bishrampur, surguja, c.g"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/pincode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/address"
+                        android:layout_toEndOf="@id/address_icon"
+                        android:fontFamily="@font/lato_regular"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="India"
+                        android:textColor="@color/black" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+
+                    <ImageView
+                        android:id="@+id/phone_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:fitsSystemWindows="true"
+                        android:padding="16dp"
+                        android:src="@drawable/ic_smartphone"
+                        android:tint="@color/colorPrimaryDark" />
+
+
+                    <TextView
+                        android:id="@+id/phone_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/phone_icon"
+                        android:fontFamily="@font/lato_regular"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="User Mobile Number"
+                        android:textColor="@color/gray" />
+
+
+                    <TextView
+                        android:id="@+id/phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/phone_title"
+                        android:layout_toEndOf="@id/phone_icon"
+                        android:fontFamily="@font/lato_regular"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="+91 - 9109936775"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp">
+
+                    <ImageView
+                        android:id="@+id/gst_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:fitsSystemWindows="true"
+                        android:padding="16dp"
+                        android:src="@drawable/ic_wallet"
+                        android:tint="@color/colorPrimaryDark" />
+
+
+                    <TextView
+                        android:id="@+id/gst_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/gst_icon"
+                        android:fontFamily="@font/lato_regular"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Wallet Details"
+                        android:textColor="@color/gray" />
+
+
+                    <TextView
+                        android:id="@+id/total_amt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/gst_title"
+                        android:layout_toEndOf="@id/gst_icon"
+                        android:fontFamily="@font/lato_regular"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Total Amount : 0"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/online_amt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/total_amt"
+                        android:layout_toEndOf="@id/gst_icon"
+                        android:fontFamily="@font/lato_regular"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Online amt : "
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/cod_amt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/online_amt"
+                        android:layout_toEndOf="@id/gst_icon"
+                        android:fontFamily="@font/lato_regular"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Cod amt : "
+                        android:textColor="@color/black" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+
+</ScrollView>

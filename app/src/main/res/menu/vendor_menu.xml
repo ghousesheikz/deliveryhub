@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        
+        <item
+            android:id="@+id/nav_additem"
+            android:icon="@drawable/ic_add_item"
+            android:iconTint="@color/grey"
+            android:title="@string/add_item" />
+        <item
+            android:id="@+id/nav_addemp"
+            android:icon="@drawable/ic_emp_jobs"
+            android:iconTint="@color/grey"
+            android:title="@string/add_employee" />
+
+        <item
+            android:id="@+id/nav_viewitem"
+            android:icon="@drawable/ic_view_item"
+            android:iconTint="@color/grey"
+            android:title="@string/view_item" />
+        <item
+            android:id="@+id/nav_myorders"
+            android:icon="@drawable/ic_my_orders_menu"
+            android:iconTint="@color/grey"
+            android:title="@string/my_orders" />
+        <item
+            android:id="@+id/nav_userprofile"
+            android:icon="@drawable/ic_employ_navi"
+            android:iconTint="@color/grey"
+            android:title="@string/user_profile" />
+
+        <item
+            android:id="@+id/nav_customercare"
+            android:icon="@drawable/ic_cust_care"
+            android:iconTint="@color/grey"
+            android:title="@string/call_customer_care" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:iconTint="@color/grey"
+            android:title="@string/logout" />
+
+    </group>
+</menu>

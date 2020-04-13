@@ -31,6 +31,50 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="22sp" />
 
+            <LinearLayout
+                android:id="@+id/btn_users_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/edit_text_background"
+                android:orientation="horizontal"
+
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/btn_user"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="USER"
+                    android:textColor="@color/white" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/grey" />
+
+                <TextView
+                    android:id="@+id/btn_retailer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="RETAILER"
+                    android:background="@color/light_grey"
+                    android:textColor="@color/black" />
+
+
+                android:textColor="@color/black" />
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/signup_firstname"
                 android:layout_width="match_parent"
@@ -99,6 +143,7 @@
             </LinearLayout>
 
             <EditText
+                android:id="@+id/edt_shopname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -106,7 +151,23 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/edit_text_background"
-                android:hint="@string/email"
+                android:hint="@string/shopname"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/darkgrey"
+                android:textSize="17sp"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/edt_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="@string/_address"
                 android:padding="8dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/darkgrey"
@@ -119,12 +180,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
-                android:visibility="gone"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
                 android:buttonTint="@color/black"
                 android:text="@string/i_agree_the_terms_and_conditions"
-                android:textSize="17sp" />
+                android:textSize="17sp"
+                android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_signup"

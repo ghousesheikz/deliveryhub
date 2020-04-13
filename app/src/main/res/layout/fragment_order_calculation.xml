@@ -125,6 +125,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -149,6 +150,30 @@
                     android:textSize="17sp" />
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:padding="8dp"
+                    android:text="@string/service_tax"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:gravity="end"
+                    android:padding="8dp"
+                    android:text="₹0 "
+                    android:textSize="17sp" />
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

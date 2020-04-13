@@ -66,4 +66,11 @@
     <string name="select_address">Select address</string>
     <string name="products">Products</string>
     <string name="my_cart">My Cart</string>
+    <string name="service_tax">Service Tax</string>
+    <string name="add_item">Add Item</string>
+    <string name="add_employee">Add Employee</string>
+    <string name="view_item">View Item</string>
+    <string name="user_profile">User Profile</string>
+    <string name="shopname">Shopname</string>
+    <string name="_address">Address</string>
 </resources>
