@@ -7,6 +7,7 @@ import android.os.Handler;
 import androidx.core.app.ActivityCompat;
 
 import android.os.Bundle;
+import android.util.Log;
 
 
 import com.shaikhomes.watercan.pojo.UserRegistrationPojo;
@@ -96,7 +97,7 @@ public class SplashActivity extends BaseActivity {
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                                                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                                                 finish();
                                             }
                                         }, SPLASH_DISPLAY_LENGTH);

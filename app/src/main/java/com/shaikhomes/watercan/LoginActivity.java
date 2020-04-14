@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                                     tinyDB.putString(USER_NAME, mData.getUsername());
                                     tinyDB.putString(ADDRESS_LIST, mData.getAddress());
                                     tinyDB.putBoolean(OTP_ENABLED, true);
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    startActivity(new Intent(LoginActivity.this, OTPAuthentication.class));
                                     finish();
                                 } else if (mData.getIsadmin().equalsIgnoreCase("3")) {
                                     tinyDB.putString(USER_MOBILE, mData.getUsermobileNumber());
@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                                     tinyDB.putString(USER_ID, mData.getUserid());
                                     tinyDB.putString(USER_NAME, mData.getUsername());
                                     tinyDB.putBoolean(OTP_ENABLED, true);
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    startActivity(new Intent(LoginActivity.this, OTPAuthentication.class));
                                     finish();
                                 } else if (mData.getIsadmin().equalsIgnoreCase("4")) {
                                     tinyDB.putString(USER_MOBILE, mData.getUsermobileNumber());
