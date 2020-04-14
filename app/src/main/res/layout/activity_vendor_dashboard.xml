@@ -41,15 +41,15 @@
                 <RelativeLayout
                     android:id="@+id/add_tems_ll"
                     android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_height="180dp"
                     android:layout_margin="@dimen/dimen_8dp"
                     android:layout_weight="1"
                     android:background="@drawable/card_background_style">
 
                     <ImageView
                         android:id="@+id/ll1"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_centerHorizontal="true"
                         android:layout_margin="12dp"
                         android:src="@drawable/ic_add_items" />
@@ -76,7 +76,7 @@
                 <RelativeLayout
                     android:id="@+id/add_employee_ll"
                     android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_height="180dp"
                     android:layout_margin="@dimen/dimen_8dp"
                     android:layout_weight="1"
                     android:background="@drawable/card_background_style"
@@ -84,8 +84,8 @@
 
                     <ImageView
                         android:id="@+id/ll2"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_centerHorizontal="true"
                         android:layout_margin="12dp"
                         android:src="@drawable/ic_add_employee" />
@@ -117,7 +117,7 @@
                 <RelativeLayout
                     android:id="@+id/view_items_ll"
                     android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_height="180dp"
                     android:layout_margin="@dimen/dimen_8dp"
 
                     android:layout_weight="1"
@@ -126,8 +126,8 @@
 
                     <ImageView
                         android:id="@+id/ll3"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_centerHorizontal="true"
                         android:layout_margin="12dp"
                         android:src="@drawable/ic_item_list_items" />
@@ -154,7 +154,7 @@
                 <RelativeLayout
                     android:id="@+id/my_orders_ll"
                     android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_height="180dp"
                     android:layout_margin="@dimen/dimen_8dp"
 
                     android:layout_weight="1"
@@ -163,8 +163,8 @@
 
                     <ImageView
                         android:id="@+id/ll4"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_centerHorizontal="true"
                         android:layout_margin="12dp"
                         android:src="@drawable/ic_my_order" />
