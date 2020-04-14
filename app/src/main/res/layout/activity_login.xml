@@ -186,6 +186,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_weight="0.5"
                     android:gravity="right"
+                    android:fontFamily="@font/lato_regular"
                     android:padding="5dp"
                     android:paddingRight="8dp"
                     android:text="@string/signup"

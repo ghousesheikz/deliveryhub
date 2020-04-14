@@ -61,6 +61,8 @@ public class ViewItemsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_items);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         tinyDB= new TinyDB(this);
         apiService = ApiClient.getClient(this).create(ApiInterface.class);
         mRecyclerview = findViewById(R.id.order_item_list);
@@ -105,7 +107,11 @@ public class ViewItemsActivity extends BaseActivity {
         mAdapter.notifyDataSetChanged();
 
     }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
     @Override
     protected void onResume() {
         super.onResume();

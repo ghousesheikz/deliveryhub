@@ -1,6 +1,7 @@
 package com.shaikhomes.watercan.ui.item;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -76,7 +77,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     public static final int REQUEST_IMAGE_CAPTURE_1 = 100;
     private String mCurrentPhotoPath_1;
     private Uri contentUri;
-    private String mEncodedImage, mItemCatId = "";
+    private String mEncodedImage, mItemCatId = "",mActive="";
     private ImageView mUploadImage, mViewImage;
     private EditText mItemName, mItemPrice, mItemUnits, mMinQty;
     private AppCompatButton mRegisterItem;
@@ -86,12 +87,16 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     private Spinner mCatSpinner;
     private ArrayList<Spinner_global_model> spinner_array_category;
     private ArrayAdapter<Spinner_global_model> adapter_spinner_category;
+    private AppCompatButton mBtnActive,mBtnDeactive;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         mList = new ArrayList<>();
         spinner_array_category = new ArrayList<>();
         spinner_array_category.add(new Spinner_global_model("-1", "Select Category"));
@@ -104,6 +109,10 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         mItemUnits = findViewById(R.id.edt_itemunits);
         mMinQty = findViewById(R.id.edt_minqty);
         mRegisterItem = findViewById(R.id.btn_submit);
+        mBtnActive = findViewById(R.id.btn_active);
+        mBtnDeactive = findViewById(R.id.btn_deactive);
+        mBtnActive.setOnClickListener(this);
+        mBtnDeactive.setOnClickListener(this);
         mRegisterItem.setOnClickListener(this);
         mCatSpinner = findViewById(R.id.spn_category);
         adapter_spinner_category = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, spinner_array_category);
@@ -118,13 +127,24 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
             mItemUnits.setText(mEditPojo.getItemSize());
             mMinQty.setText(mEditPojo.getMinqty());
             mItemCatId = mEditPojo.getCategoryId();
+            mActive = mEditPojo.getItemActive();
             String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getItemImage();
 
             Picasso.get().load(imgUrl).resize(500, 500)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .centerCrop().transform(new RoundedTransformation()).into(mUploadImage);
-
+            if(mActive.toLowerCase().equalsIgnoreCase("true")){
+                mBtnActive.setBackgroundResource(R.drawable.accept_border);
+                mBtnDeactive.setBackgroundResource(R.drawable.button_border);
+                mBtnActive.setTextColor(this.getColor(R.color.white));
+                mBtnDeactive.setTextColor(this.getColor(R.color.red));
+            }else if(mActive.toLowerCase().equalsIgnoreCase("false")){
+                mBtnDeactive.setBackgroundResource(R.drawable.decline_button);
+                mBtnActive.setBackgroundResource(R.drawable.button_border);
+                mBtnActive.setTextColor(this.getColor(R.color.green));
+                mBtnDeactive.setTextColor(this.getColor(R.color.white));
+            }
 
         }
         getCategoryDetails("");
@@ -183,12 +203,27 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         return image;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.upload_image:
                 dialogforChoice();
 
+                break;
+            case R.id.btn_active:
+                mActive="True";
+                mBtnActive.setBackgroundResource(R.drawable.accept_border);
+                mBtnDeactive.setBackgroundResource(R.drawable.button_border);
+                mBtnActive.setTextColor(this.getColor(R.color.white));
+                mBtnDeactive.setTextColor(this.getColor(R.color.red));
+                break;
+            case R.id.btn_deactive:
+                mActive="False";
+                mBtnDeactive.setBackgroundResource(R.drawable.decline_button);
+                mBtnActive.setBackgroundResource(R.drawable.button_border);
+                mBtnActive.setTextColor(this.getColor(R.color.green));
+                mBtnDeactive.setTextColor(this.getColor(R.color.white));
                 break;
             case R.id.btn_submit:
 
@@ -204,10 +239,12 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                     Toasty.error(AddItemActivity.this, "Please enter item min quantity", Toasty.LENGTH_SHORT).show();
                 } else if (spinner_array_category.get(mCatSpinner.getSelectedItemPosition()).getId().equalsIgnoreCase("-1")) {
                     Toasty.error(AddItemActivity.this, "Please select category", Toasty.LENGTH_SHORT).show();
+                }else if (TextUtils.isEmpty(mActive)) {
+                    Toasty.error(AddItemActivity.this, "Please select item active/deactive", Toasty.LENGTH_SHORT).show();
                 } else {
                     if (TextUtils.isEmpty(mEditItem)) {
                         ItemPojo.Item mPostItem = new ItemPojo.Item();
-                        mPostItem.setItemActive("True");
+                        mPostItem.setItemActive(mActive);
                         mPostItem.setItemCompany("");
                         mPostItem.setItemId("");
                         mPostItem.setItemImage(mEncodedImage);
@@ -394,6 +431,12 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
 
         Log.e("LOOK", imageEncoded);
         return imageEncoded;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override

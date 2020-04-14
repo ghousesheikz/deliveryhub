@@ -26,7 +26,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.vendoruserprofile.UserProfile"></activity>
+        <activity android:name=".ui.customercare.CustomerCareActivity"></activity>
+        <activity android:name=".ui.vendoruserprofile.UserProfile" />
         <activity android:name=".ui.venodrorderdetails.UpdateOrderDetailsActivity" />
         <activity android:name=".ui.item.ViewItemsActivity" />
         <activity android:name=".ui.item.ModifyItems" />

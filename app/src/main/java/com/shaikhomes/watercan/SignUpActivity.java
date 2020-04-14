@@ -45,7 +45,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
         tinyDB = new TinyDB(this);
         apiService = ApiClient.getClient(this).create(ApiInterface.class);
         mFirstName = findViewById(R.id.signup_firstname);
@@ -168,6 +169,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             Toasty.error(SignUpActivity.this, "Please Check the terms and conditions", Toast.LENGTH_SHORT).show();
         }*/
     }
+
+    /*@Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }*/
+
+
 
     private void clearData() {
         mFirstName.setText("");

@@ -55,6 +55,8 @@ public class UpdateOrderDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_order_details);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         tinyDB = new TinyDB(this);
         mList = new ArrayList<>();
         recyclerView = findViewById(R.id.my_order_list);
@@ -94,6 +96,12 @@ public class UpdateOrderDetailsActivity extends BaseActivity {
         recyclerView.setAdapter(mAdapter);
         // Inflate the layout for this fragment
         getOrderDetails(tinyDB.getString(USER_ID));
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void UpdateOrderStatus(UpdateOrderPojo mPojo) {

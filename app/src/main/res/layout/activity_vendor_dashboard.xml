@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#d3d3d3"
     android:orientation="vertical"
     tools:context=".ui.vendordashboard.VendorDashboard">
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -20,283 +22,302 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/dashboard_left_style"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:weightSum="2">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="2">
 
 
-            <RelativeLayout
-                android:id="@+id/add_tems_ll"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:background="@drawable/card_background_style"
-                android:padding="8dp">
+                <RelativeLayout
+                    android:id="@+id/add_tems_ll"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="@dimen/dimen_8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_background_style">
 
-                <ImageView
-                    android:id="@+id/ll1"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/ic_add_items" />
+                    <ImageView
+                        android:id="@+id/ll1"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="12dp"
+                        android:src="@drawable/ic_add_items" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ll1"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center_horizontal"
-                    android:text="ADD ITEM" />
-            </RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/ll1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/dashboard_left_style"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="center"
+                        android:text="ADD ITEM"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </RelativeLayout>
 
-            <View
-                android:layout_width="10dp"
-                android:layout_height="match_parent" />
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent" />
 
 
-            <RelativeLayout
-                android:id="@+id/add_employee_ll"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:background="@drawable/card_background_style"
-                android:padding="8dp">
+                <RelativeLayout
+                    android:id="@+id/add_employee_ll"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="@dimen/dimen_8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_background_style"
+                    android:padding="0dp">
 
-                <ImageView
-                    android:id="@+id/ll2"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/ic_add_employee" />
+                    <ImageView
+                        android:id="@+id/ll2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="12dp"
+                        android:src="@drawable/ic_add_employee" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ll2"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center_horizontal"
-                    android:text="ADD EMPLOYEE" />
-            </RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/ll2"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/dashboard_left_style"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="center"
+                        android:text="ADD EMPLOYEE"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <RelativeLayout
+                    android:id="@+id/view_items_ll"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="@dimen/dimen_8dp"
+
+                    android:layout_weight="1"
+                    android:background="@drawable/card_background_style"
+                    android:padding="0dp">
+
+                    <ImageView
+                        android:id="@+id/ll3"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="12dp"
+                        android:src="@drawable/ic_item_list_items" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/ll3"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/dashboard_left_style"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="center"
+                        android:text="VIEW ITEM"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent" />
+
+
+                <RelativeLayout
+                    android:id="@+id/my_orders_ll"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="@dimen/dimen_8dp"
+
+                    android:layout_weight="1"
+                    android:background="@drawable/card_background_style"
+                    android:padding="0dp">
+
+                    <ImageView
+                        android:id="@+id/ll4"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="12dp"
+                        android:src="@drawable/ic_my_order" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/ll4"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/dashboard_left_style"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="center"
+                        android:text="MY ORDERS"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/dashboard_left_style"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_background_style"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@+id/ll5"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="8dp"
+                        android:src="@drawable/ic_add_items" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ll5"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center_horizontal"
+                        android:text="ADD ITEM" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent" />
+
+
+                <RelativeLayout
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_background_style"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@+id/ll6"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="8dp"
+                        android:src="@drawable/ic_add_employee" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ll6"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center_horizontal"
+                        android:text="ADD EMPLOYEE" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/dashboard_right_style"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_background_style"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@+id/ll7"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="8dp"
+                        android:src="@drawable/ic_add_items" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ll7"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center_horizontal"
+                        android:text="ADD ITEM" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent" />
+
+
+                <RelativeLayout
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/card_background_style"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:id="@+id/ll8"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="8dp"
+                        android:src="@drawable/ic_add_employee" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ll8"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center_horizontal"
+                        android:text="ADD EMPLOYEE" />
+                </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/dashboard_right_style"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <RelativeLayout
-                android:id="@+id/view_items_ll"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:background="@drawable/card_background_style"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/ll3"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/ic_view_item" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ll3"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center_horizontal"
-                    android:text="VIEW ITEM" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="10dp"
-                android:layout_height="match_parent" />
-
-
-            <RelativeLayout
-                android:id="@+id/my_orders_ll"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:background="@drawable/card_background_style"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/ll4"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/ic_my_order" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ll4"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center_horizontal"
-                    android:text="MY ORDERS" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/dashboard_left_style"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:padding="10dp">
-
-            <RelativeLayout
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:background="@drawable/card_background_style"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/ll5"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/ic_add_items" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ll5"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center_horizontal"
-                    android:text="ADD ITEM" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="10dp"
-                android:layout_height="match_parent" />
-
-
-            <RelativeLayout
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:background="@drawable/card_background_style"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/ll6"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/ic_add_employee" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ll6"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center_horizontal"
-                    android:text="ADD EMPLOYEE" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="15dp"
-            android:visibility="gone"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/dashboard_right_style"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <RelativeLayout
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:background="@drawable/card_background_style"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/ll7"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/ic_add_items" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ll7"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center_horizontal"
-                    android:text="ADD ITEM" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="10dp"
-                android:layout_height="match_parent" />
-
-
-            <RelativeLayout
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
-                android:background="@drawable/card_background_style"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/ll8"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/ic_add_employee" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ll8"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center_horizontal"
-                    android:text="ADD EMPLOYEE" />
-            </RelativeLayout>
-        </LinearLayout>
-    </LinearLayout>
 </LinearLayout>

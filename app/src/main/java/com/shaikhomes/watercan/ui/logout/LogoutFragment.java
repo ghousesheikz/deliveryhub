@@ -103,6 +103,7 @@ public class LogoutFragment extends DialogFragment implements View.OnClickListen
         mBtnYes.setOnClickListener(this);
         mBtnNo = v.findViewById(R.id.btn_no);
         mBtnNo.setOnClickListener(this);
+
         bottomSheetView = (BottomSheetView) v.getContext();
         return v;
 

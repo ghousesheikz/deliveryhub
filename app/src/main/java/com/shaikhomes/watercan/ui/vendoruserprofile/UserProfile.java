@@ -29,6 +29,8 @@ public class UserProfile extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         tinyDB = new TinyDB(this);
         mUserName = findViewById(R.id.user_name);
         mAddress = findViewById(R.id.address);
@@ -41,7 +43,11 @@ public class UserProfile extends BaseActivity {
         mMobileNumber.setText("+91 - "+tinyDB.getString(USER_MOBILE));
         getWalletData(tinyDB.getString(USER_ID));
     }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
     private void getWalletData(String userid) {
         try {
             Call<UpdateWalletPojo> call = apiService.GetWalletDetails(userid);
