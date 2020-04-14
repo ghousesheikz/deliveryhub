@@ -56,8 +56,8 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/ll1"
+                        android:layout_height="45dp"
+                        android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:background="@drawable/dashboard_left_style"
@@ -92,8 +92,8 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/ll2"
+                        android:layout_height="45dp"
+                        android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:background="@drawable/dashboard_left_style"
@@ -134,8 +134,8 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/ll3"
+                        android:layout_height="45dp"
+                        android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:background="@drawable/dashboard_left_style"
@@ -171,8 +171,8 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/ll4"
+                        android:layout_height="45dp"
+                        android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"
                         android:background="@drawable/dashboard_left_style"

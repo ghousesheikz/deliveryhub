@@ -380,7 +380,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void dialogforChoice() {
-        new AlertDialog.Builder(this).setTitle("Upload Image").setMessage("Select uploading options").setPositiveButton("Camera", new DialogInterface.OnClickListener() {
+      /*  new AlertDialog.Builder(this).setTitle("Upload Image").setMessage("Select uploading options").setPositiveButton("Camera", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -419,6 +419,17 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                 intent.setAction(Intent.ACTION_GET_CONTENT);//
                 startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
             }
+        }).create().show();*/
+
+        new AlertDialog.Builder(this).setTitle("Upload Image").setMessage("Select uploading options").setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);//
+                startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+            }
         }).create().show();
     }
 
@@ -442,7 +453,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE_1 && resultCode == RESULT_OK) {
+       /* if (requestCode == REQUEST_IMAGE_CAPTURE_1 && resultCode == RESULT_OK) {
             //  if (data != null) {
             File f = new File(mCurrentPhotoPath_1);
             contentUri = Uri.fromFile(f);
@@ -474,7 +485,8 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                 }
             }
             // }
-        } else if (requestCode == SELECT_FILE && resultCode == RESULT_OK) {
+        } else */
+            if (requestCode == SELECT_FILE && resultCode == RESULT_OK) {
             if (data != null) {
                 contentUri = null;
                 File f = new File(getPath(this, data.getData()));
