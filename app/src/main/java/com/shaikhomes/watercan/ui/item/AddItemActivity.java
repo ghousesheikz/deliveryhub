@@ -77,7 +77,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     public static final int REQUEST_IMAGE_CAPTURE_1 = 100;
     private String mCurrentPhotoPath_1;
     private Uri contentUri;
-    private String mEncodedImage, mItemCatId = "",mActive="";
+    private String mEncodedImage, mItemCatId = "", mActive = "";
     private ImageView mUploadImage, mViewImage;
     private EditText mItemName, mItemPrice, mItemUnits, mMinQty;
     private AppCompatButton mRegisterItem;
@@ -87,7 +87,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     private Spinner mCatSpinner;
     private ArrayList<Spinner_global_model> spinner_array_category;
     private ArrayAdapter<Spinner_global_model> adapter_spinner_category;
-    private AppCompatButton mBtnActive,mBtnDeactive;
+    private AppCompatButton mBtnActive, mBtnDeactive;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -134,12 +134,12 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .centerCrop().transform(new RoundedTransformation()).into(mUploadImage);
-            if(mActive.toLowerCase().equalsIgnoreCase("true")){
+            if (mActive.toLowerCase().equalsIgnoreCase("true")) {
                 mBtnActive.setBackgroundResource(R.drawable.accept_border);
                 mBtnDeactive.setBackgroundResource(R.drawable.button_border);
                 mBtnActive.setTextColor(this.getColor(R.color.white));
                 mBtnDeactive.setTextColor(this.getColor(R.color.red));
-            }else if(mActive.toLowerCase().equalsIgnoreCase("false")){
+            } else if (mActive.toLowerCase().equalsIgnoreCase("false")) {
                 mBtnDeactive.setBackgroundResource(R.drawable.decline_button);
                 mBtnActive.setBackgroundResource(R.drawable.button_border);
                 mBtnActive.setTextColor(this.getColor(R.color.green));
@@ -212,14 +212,14 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
 
                 break;
             case R.id.btn_active:
-                mActive="True";
+                mActive = "True";
                 mBtnActive.setBackgroundResource(R.drawable.accept_border);
                 mBtnDeactive.setBackgroundResource(R.drawable.button_border);
                 mBtnActive.setTextColor(this.getColor(R.color.white));
                 mBtnDeactive.setTextColor(this.getColor(R.color.red));
                 break;
             case R.id.btn_deactive:
-                mActive="False";
+                mActive = "False";
                 mBtnDeactive.setBackgroundResource(R.drawable.decline_button);
                 mBtnActive.setBackgroundResource(R.drawable.button_border);
                 mBtnActive.setTextColor(this.getColor(R.color.green));
@@ -239,7 +239,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                     Toasty.error(AddItemActivity.this, "Please enter item min quantity", Toasty.LENGTH_SHORT).show();
                 } else if (spinner_array_category.get(mCatSpinner.getSelectedItemPosition()).getId().equalsIgnoreCase("-1")) {
                     Toasty.error(AddItemActivity.this, "Please select category", Toasty.LENGTH_SHORT).show();
-                }else if (TextUtils.isEmpty(mActive)) {
+                } else if (TextUtils.isEmpty(mActive)) {
                     Toasty.error(AddItemActivity.this, "Please select item active/deactive", Toasty.LENGTH_SHORT).show();
                 } else {
                     if (TextUtils.isEmpty(mEditItem)) {
@@ -652,7 +652,9 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                                         spinner_array_category.add(new Spinner_global_model(mList.get(i).getId(), mList.get(i).getCategoryName()));
                                     }
                                     adapter_spinner_category.notifyDataSetChanged();
-                                    mCatSpinner.setSelection(mSpinpos+1);
+                                    if (!TextUtils.isEmpty(mItemCatId)) {
+                                        mCatSpinner.setSelection(mSpinpos + 1);
+                                    }
                                 }
                                 // mAdapter.updateAdapter(mItemData.getOrderList());
                             }
