@@ -26,12 +26,18 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.customercare.CustomerCareActivity"></activity>
-        <activity android:name=".ui.vendoruserprofile.UserProfile" />
-        <activity android:name=".ui.venodrorderdetails.UpdateOrderDetailsActivity" />
-        <activity android:name=".ui.item.ViewItemsActivity" />
-        <activity android:name=".ui.item.ModifyItems" />
-        <activity android:name=".ui.item.AddItemActivity" />
+        <activity android:name=".ui.customercare.CustomerCareActivity"
+            android:label="@string/call_customer_care"/>
+        <activity android:name=".ui.vendoruserprofile.UserProfile"
+            android:label="@string/user_profile"/>
+        <activity android:name=".ui.venodrorderdetails.UpdateOrderDetailsActivity"
+            android:label="@string/update_order"/>
+        <activity android:name=".ui.item.ViewItemsActivity"
+            android:label="@string/view_item"/>
+        <activity android:name=".ui.item.ModifyItems"
+            android:label="@string/modify_item"/>
+        <activity android:name=".ui.item.AddItemActivity"
+            android:label="@string/add_item"/>
         <activity
             android:name=".ui.vendordashboard.VendorDashboard"
             android:label="@string/app_name"
@@ -42,7 +48,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SignUpActivity"
-            android:label="@string/app_name"
+            android:label="@string/sign_up"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"

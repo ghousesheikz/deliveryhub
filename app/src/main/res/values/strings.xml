@@ -70,7 +70,9 @@
     <string name="add_item">Add Item</string>
     <string name="add_employee">Add Employee</string>
     <string name="view_item">View Item</string>
-    <string name="user_profile">User Profile</string>
+    <string name="user_profile">My Profile</string>
     <string name="shopname">Shopname</string>
     <string name="_address">Address</string>
+    <string name="modify_item">Modify Item</string>
+    <string name="update_order">Update Order</string>
 </resources>
