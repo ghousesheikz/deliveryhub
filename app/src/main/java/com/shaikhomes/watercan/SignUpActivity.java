@@ -64,9 +64,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             isAdmin = getIntent().getStringExtra("isadmin");
             mBtnLL.setVisibility(View.GONE);
             mUserType = "user";
+            vendorid = tinyDB.getString(USER_ID);
         } else {
             isAdmin = "4";
-            vendorid = tinyDB.getString(USER_ID);
+
             mBtnLL.setVisibility(View.VISIBLE);
             mUserType = "user";
         }

@@ -172,7 +172,7 @@ public class SearchPlaces extends Fragment {
 
         @Override
         protected String doInBackground(String... place) {
-            // For storing data from web service
+          /*  // For storing data from web service
             String data = "";
 
             // Obtain browser key from https://code.google.com/apis/console
@@ -207,19 +207,19 @@ public class SearchPlaces extends Fragment {
                 data = downloadUrl(url);
             } catch (Exception e) {
                 Log.d("Background Task", e.toString());
-            }
-            return data;
+            }*/
+            return "";
         }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            // Creating ParserTask
+          /*  // Creating ParserTask
             parserTask = new ParserTask();
 
             // Starting Parsing the JSON string returned by Web Service
-            parserTask.execute(result);
+            parserTask.execute(result);*/
         }
     }
 

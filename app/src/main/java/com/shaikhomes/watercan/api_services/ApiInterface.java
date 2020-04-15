@@ -2,6 +2,7 @@ package com.shaikhomes.watercan.api_services;
 
 
 import com.shaikhomes.watercan.pojo.CategoryPojo;
+import com.shaikhomes.watercan.pojo.EmployeeDetailsPojo;
 import com.shaikhomes.watercan.pojo.ItemPojo;
 import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
@@ -59,6 +60,9 @@ public interface ApiInterface {
 
     @GET("api/UpdateWallet?")
     Call<UpdateWalletPojo> GetWalletDetails(@Query("vendorid") String vendorid);
+
+    @GET("api/EmployeeDetails?")
+    Call<EmployeeDetailsPojo> GetEmployeeDetails(@Query("employeeid") String employeeid,@Query("vendorid") String vendorid,@Query("orderdate") String orderdate);
 
 
   /*  @POST("api/LeadsRegistration")

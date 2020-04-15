@@ -3,6 +3,7 @@ package com.shaikhomes.watercan.ui.venodrorderdetails;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,7 @@ public class UpdateOrderAdapter extends RecyclerView.Adapter<UpdateOrderAdapter.
     public void onBindViewHolder(final UpdateOrderAdapter.MyViewHolder holder, final int position) {
         //  animator.animateAdd(holder);
 
-        holder.mOrderId.setText("DH00"+mCanList.get(position).getOrderId());
+        holder.mOrderId.setText("DH00" + mCanList.get(position).getOrderId());
         holder.mItemName.setText(mCanList.get(position).getItemName());
         holder.mNoofCans.setText(mCanList.get(position).getItemQuantity());
         holder.mTotalPrice.setText(mCanList.get(position).getTotalamount());
@@ -74,12 +75,12 @@ public class UpdateOrderAdapter extends RecyclerView.Adapter<UpdateOrderAdapter.
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if(mCanList.get(position).getOrderStatus().toLowerCase().equalsIgnoreCase("accepted")){
+        if (mCanList.get(position).getOrderStatus().toLowerCase().equalsIgnoreCase("accepted")) {
             holder.mBtnAccept.setBackgroundResource(R.drawable.accept_border);
             holder.mBtnDecline.setBackgroundResource(R.drawable.button_border);
             holder.mBtnAccept.setTextColor(context.getColor(R.color.white));
             holder.mBtnDecline.setTextColor(context.getColor(R.color.red));
-        }else if(mCanList.get(position).getOrderStatus().toLowerCase().equalsIgnoreCase("declined")){
+        } else if (mCanList.get(position).getOrderStatus().toLowerCase().equalsIgnoreCase("declined")) {
             holder.mBtnDecline.setBackgroundResource(R.drawable.decline_button);
             holder.mBtnAccept.setBackgroundResource(R.drawable.button_border);
             holder.mBtnAccept.setTextColor(context.getColor(R.color.green));
@@ -99,7 +100,7 @@ public class UpdateOrderAdapter extends RecyclerView.Adapter<UpdateOrderAdapter.
                 holder.mBtnDecline.setBackgroundResource(R.drawable.button_border);
                 holder.mBtnAccept.setTextColor(context.getColor(R.color.white));
                 holder.mBtnDecline.setTextColor(context.getColor(R.color.red));
-                itemClickListener.onItemClick(mCanList.get(position),"Accepted",position);
+                itemClickListener.onItemClick(mCanList.get(position), "Accepted", position);
             }
         });
 
@@ -111,14 +112,26 @@ public class UpdateOrderAdapter extends RecyclerView.Adapter<UpdateOrderAdapter.
                 holder.mBtnAccept.setBackgroundResource(R.drawable.button_border);
                 holder.mBtnAccept.setTextColor(context.getColor(R.color.green));
                 holder.mBtnDecline.setTextColor(context.getColor(R.color.white));
-                itemClickListener.onItemClick(mCanList.get(position),"Declined",position);
+                itemClickListener.onItemClick(mCanList.get(position), "Declined", position);
             }
         });
+
+        holder.TxtAssign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onAssignEmp(mCanList.get(position).getOrderId(),position,holder.TxtAssign);
+            }
+        });
+
+        if(!TextUtils.isEmpty(mCanList.get(position).getDeliveredBy())){
+            holder.TxtAssign.setText(mCanList.get(position).getDeliveredBy().split("_")[1]);
+        }
 
     }
 
     public interface OnItemClickListener {
-        void onItemClick(OrderDelivery.OrderList response,String status, int position);
+        void onItemClick(OrderDelivery.OrderList response, String status, int position);
+        void onAssignEmp(String status, int position,TextView assignEmp);
     }
 
     @Override
@@ -136,8 +149,8 @@ public class UpdateOrderAdapter extends RecyclerView.Adapter<UpdateOrderAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView mOrderId, mItemName, mNoofCans, mTotalPrice, mUnitPrice,
-                mOrderType, mOrderDate, mPaymentStatus, mOrderStatus, mPaymentMethod,mPaymentTxnId;
-        AppCompatButton mBtnAccept,mBtnDecline;
+                mOrderType, mOrderDate, mPaymentStatus, mOrderStatus, mPaymentMethod, mPaymentTxnId, TxtAssign;
+        AppCompatButton mBtnAccept, mBtnDecline;
 
 
         public MyViewHolder(View v) {
@@ -156,7 +169,7 @@ public class UpdateOrderAdapter extends RecyclerView.Adapter<UpdateOrderAdapter.
             mPaymentTxnId = v.findViewById(R.id.txt_paymenttxnid);
             mBtnAccept = v.findViewById(R.id.btn_accept);
             mBtnDecline = v.findViewById(R.id.btn_decline);
-
+            TxtAssign = v.findViewById(R.id.txt_assignemp);
         }
 
     }

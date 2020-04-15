@@ -4,15 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shaikhomes.watercan.BaseActivity;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.model.OrderCalculationPojo;
+import com.shaikhomes.watercan.pojo.EmployeeDetailsPojo;
 import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
 import com.shaikhomes.watercan.pojo.UpdateOrderPojo;
@@ -50,6 +63,8 @@ public class UpdateOrderDetailsActivity extends BaseActivity {
     private List<OrderDelivery.OrderList> mList;
     UpdateOrderAdapter mAdapter;
     JSONObject jsonObj = null;
+    private List<EmployeeDetailsPojo.Datum> mUsersList;
+    private String mSelectedEmpId = "", mSelectedVendorId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +75,7 @@ public class UpdateOrderDetailsActivity extends BaseActivity {
         tinyDB = new TinyDB(this);
         mList = new ArrayList<>();
         recyclerView = findViewById(R.id.my_order_list);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -91,6 +106,11 @@ public class UpdateOrderDetailsActivity extends BaseActivity {
                 } catch (Exception ex) {
                 }
 
+            }
+
+            @Override
+            public void onAssignEmp(String orderid, int position, TextView assignEmp) {
+                showdialogUsers(position, assignEmp, orderid);
             }
         });
         recyclerView.setAdapter(mAdapter);
@@ -224,6 +244,99 @@ public class UpdateOrderDetailsActivity extends BaseActivity {
         public Exception getException() {
             return exception;
         }
+    }
+
+    private void showdialogUsers(int pos, TextView assignEmp, String orderid) {
+
+        try {
+
+            Call<EmployeeDetailsPojo> call = apiService.GetEmployeeDetails("", tinyDB.getString(USER_ID), "");
+            call.enqueue(new Callback<EmployeeDetailsPojo>() {
+                @Override
+                public void onResponse(Call<EmployeeDetailsPojo> call, Response<EmployeeDetailsPojo> response) {
+
+                    if (response != null) {
+                        if (response.body().getStatus().equalsIgnoreCase("200"))
+                            mUsersList = response.body().getData();
+                        try {
+                            DisplayMetrics displaymetrics = new DisplayMetrics();
+                            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                            int screenWidth = displaymetrics.widthPixels;
+                            final Dialog dialogcust = new Dialog(UpdateOrderDetailsActivity.this, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar_MinWidth);
+                            dialogcust.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                            dialogcust.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialogcust.setContentView(R.layout.dialog_reasons);
+                            dialogcust.setCancelable(true);
+                            dialogcust.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                            dialogcust.getWindow().setLayout(screenWidth, WindowManager.LayoutParams.MATCH_PARENT);
+                            dialogcust.getWindow().setGravity(Gravity.CENTER);
+                            dialogcust.show();
+                            LinearLayout mReasonLayout = dialogcust.findViewById(R.id.reason_ll);
+                            mReasonLayout.removeAllViews();
+                            for (int j = 0; j < mUsersList.size(); j++) {
+                                LayoutInflater layoutInflater = (LayoutInflater) UpdateOrderDetailsActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                final View view = layoutInflater.inflate(R.layout.reason_text, null);
+                                final TextView mReasonTxt = view.findViewById(R.id.reason_txt);
+                                mReasonTxt.setPadding(8, 8, 8, 8);
+                                mReasonTxt.setText(mUsersList.get(j).getUsername());
+                                mReasonTxt.setTextSize(20.0f);
+                                mReasonTxt.setTextColor(Color.parseColor("#FF4500"));
+                                mReasonLayout.addView(view);
+                                final int finalJ = j;
+                                int finalJ1 = j;
+                                mReasonTxt.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View v) {
+                                        mSelectedEmpId = "";
+                                        mSelectedEmpId = mUsersList.get(finalJ1).getUserid();
+                                        mSelectedVendorId = mUsersList.get(finalJ1).getVendorid();
+                                        assignEmp.setText(mUsersList.get(finalJ1).getUsername());
+                                        mReasonTxt.setBackgroundColor(Color.parseColor("#35BF34"));
+                                        mReasonTxt.setTextColor(Color.parseColor("#FFFFFF"));
+                                        final Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                jsonObj = new JSONObject();
+                                                try {
+                                                    Date c = Calendar.getInstance().getTime();
+                                                    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+
+                                                    jsonObj.put("OrderId", orderid);
+                                                    jsonObj.put("Update", "assign");
+                                                    jsonObj.put("OrderStatus", "");
+                                                    jsonObj.put("DeliveredBy", mSelectedEmpId+"_"+mUsersList.get(finalJ1).getUsername());
+                                                    jsonObj.put("DeliveredDate", "");
+                                                    RetreiveFeedTask feedTask = new RetreiveFeedTask();
+                                                    feedTask.execute();
+                                                    dialogcust.dismiss();
+                                                    // updateData(mData, mUsersList.get(finalJ).getUsername(), mUsersList.get(finalJ).getUsermobileNumber(), pos);
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                        }, 200);
+
+                                    }
+                                });
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<EmployeeDetailsPojo> call, Throwable t) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 

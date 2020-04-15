@@ -50,6 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public String PATH = Environment.getExternalStorageDirectory() + "/Download/";
     public TinyDB tinyDB;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
