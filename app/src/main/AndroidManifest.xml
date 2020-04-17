@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -26,18 +25,26 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.customercare.CustomerCareActivity"
-            android:label="@string/call_customer_care"/>
-        <activity android:name=".ui.vendoruserprofile.UserProfile"
-            android:label="@string/user_profile"/>
-        <activity android:name=".ui.venodrorderdetails.UpdateOrderDetailsActivity"
-            android:label="@string/update_order"/>
-        <activity android:name=".ui.item.ViewItemsActivity"
-            android:label="@string/view_item"/>
-        <activity android:name=".ui.item.ModifyItems"
-            android:label="@string/modify_item"/>
-        <activity android:name=".ui.item.AddItemActivity"
-            android:label="@string/add_item"/>
+        <activity android:name=".ui.employeedashboard.EmployeeOrders"></activity>
+        <activity android:name=".ui.employeedashboard.EmployeeDashboard" />
+        <activity
+            android:name=".ui.customercare.CustomerCareActivity"
+            android:label="@string/call_customer_care" />
+        <activity
+            android:name=".ui.vendoruserprofile.UserProfile"
+            android:label="@string/user_profile" />
+        <activity
+            android:name=".ui.venodrorderdetails.UpdateOrderDetailsActivity"
+            android:label="@string/update_order" />
+        <activity
+            android:name=".ui.item.ViewItemsActivity"
+            android:label="@string/view_item" />
+        <activity
+            android:name=".ui.item.ModifyItems"
+            android:label="@string/modify_item" />
+        <activity
+            android:name=".ui.item.AddItemActivity"
+            android:label="@string/add_item" />
         <activity
             android:name=".ui.vendordashboard.VendorDashboard"
             android:label="@string/app_name"

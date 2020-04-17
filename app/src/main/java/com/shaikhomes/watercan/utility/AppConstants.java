@@ -11,5 +11,6 @@ public class AppConstants {
     public final static String DELIVERY_TYPE = "delivery_type";
     public final static String ADDRESS_LIST = "address_list";
     public final static String ORDER_DATA = "order_data";
+    public final static String VENDOR_ID = "vendor_id";
 
 }

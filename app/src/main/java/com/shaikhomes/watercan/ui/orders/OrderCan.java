@@ -110,21 +110,21 @@ public class OrderCan extends Fragment {
                 args.putString("ARG_PARAM1", "");
                 args.putString("ARG_PARAM2", "arguments");
                 OrderCalculationPojo mPojo = new OrderCalculationPojo();
-                mPojo.setImageURL(mList.get(position).getItemImage());
-                mPojo.setLiters(mList.get(position).getItemSize());
-                mPojo.setPrice(mList.get(position).getItemPrice());
-                mPojo.setName(mList.get(position).getItemName());
-                mPojo.setVendorId(mList.get(position).getVendorId());
-                mPojo.setVendorName(mList.get(position).getVendorName());
-                mPojo.setMinQty(mList.get(position).getMinqty());
-                mPojo.setCategoryId(mList.get(position).getCategoryId());
-                if (mList.get(position).getMinqty().equalsIgnoreCase("0")) {
+                mPojo.setImageURL(response.getItemImage());
+                mPojo.setLiters(response.getItemSize());
+                mPojo.setPrice(response.getItemPrice());
+                mPojo.setName(response.getItemName());
+                mPojo.setVendorId(response.getVendorId());
+                mPojo.setVendorName(response.getVendorName());
+                mPojo.setMinQty(response.getMinqty());
+                mPojo.setCategoryId(response.getCategoryId());
+                if (response.getMinqty().equalsIgnoreCase("0")) {
                     mPojo.setNoOfCans(1);
                 } else {
-                    mPojo.setNoOfCans(Integer.parseInt(mList.get(position).getMinqty()));
+                    mPojo.setNoOfCans(Integer.parseInt(response.getMinqty()));
                 }
-                mPojo.setTotalAmount(Integer.parseInt(mList.get(position).getItemPrice()));
-                int amt = Integer.parseInt(mList.get(position).getMinqty()) * Integer.parseInt(mList.get(position).getItemPrice());
+                mPojo.setTotalAmount(Integer.parseInt(response.getItemPrice()));
+                int amt = Integer.parseInt(response.getMinqty()) * Integer.parseInt(response.getItemPrice());
                 mPojo.setUnitAmount(amt);
                 try {
 

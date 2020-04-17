@@ -11,6 +11,7 @@ import android.util.Log;
 
 
 import com.shaikhomes.watercan.pojo.UserRegistrationPojo;
+import com.shaikhomes.watercan.ui.employeedashboard.EmployeeDashboard;
 import com.shaikhomes.watercan.ui.vendordashboard.VendorDashboard;
 import com.shaikhomes.watercan.utility.TinyDB;
 
@@ -97,7 +98,7 @@ public class SplashActivity extends BaseActivity {
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                                                startActivity(new Intent(SplashActivity.this, EmployeeDashboard.class));
                                                 finish();
                                             }
                                         }, SPLASH_DISPLAY_LENGTH);

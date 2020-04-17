@@ -15,6 +15,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.shaikhomes.watercan.custom_views.PassCodeView;
 import com.shaikhomes.watercan.pojo.SMSResponse;
+import com.shaikhomes.watercan.ui.employeedashboard.EmployeeDashboard;
 import com.shaikhomes.watercan.ui.vendordashboard.VendorDashboard;
 import com.shaikhomes.watercan.utility.TinyDB;
 
@@ -68,7 +69,7 @@ public class OTPAuthentication extends AppCompatActivity {
                         startActivity(new Intent(OTPAuthentication.this, VendorDashboard.class));
                         finish();
                     } else if (tinyDB.getString(IS_ADMIN).equalsIgnoreCase("3")) {
-                        startActivity(new Intent(OTPAuthentication.this, MainActivity.class));
+                        startActivity(new Intent(OTPAuthentication.this, EmployeeDashboard.class));
                         finish();
                     } else if (tinyDB.getString(IS_ADMIN).equalsIgnoreCase("4")) {
                         startActivity(new Intent(OTPAuthentication.this, MainActivity.class));

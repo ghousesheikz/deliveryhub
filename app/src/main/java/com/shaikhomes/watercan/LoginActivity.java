@@ -42,6 +42,7 @@ import static com.shaikhomes.watercan.utility.AppConstants.OTP_ENABLED;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_ID;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_MOBILE;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
+import static com.shaikhomes.watercan.utility.AppConstants.VENDOR_ID;
 
 public class LoginActivity extends AppCompatActivity {
     private AppCompatButton mLoginBtn;
@@ -147,6 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                                     tinyDB.putString(USER_ID, mData.getUserid());
                                     tinyDB.putString(USER_NAME, mData.getUsername());
                                     tinyDB.putBoolean(OTP_ENABLED, true);
+                                    tinyDB.putString(VENDOR_ID, mData.getVendorid());
                                     startActivity(new Intent(LoginActivity.this, OTPAuthentication.class));
                                     finish();
                                 } else if (mData.getIsadmin().equalsIgnoreCase("4")) {
