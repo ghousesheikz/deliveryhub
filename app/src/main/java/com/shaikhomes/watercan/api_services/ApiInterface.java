@@ -62,7 +62,7 @@ public interface ApiInterface {
     Call<UpdateWalletPojo> GetWalletDetails(@Query("vendorid") String vendorid);
 
     @GET("api/EmployeeDetails?")
-    Call<EmployeeDetailsPojo> GetEmployeeDetails(@Query("employeeid") String employeeid,@Query("vendorid") String vendorid,@Query("orderdate") String orderdate);
+    Call<ResponseBody> GetEmployeeDetails(@Query("employeeid") String employeeid,@Query("vendorid") String vendorid,@Query("orderdate") String orderdate);
 
 
   /*  @POST("api/LeadsRegistration")
