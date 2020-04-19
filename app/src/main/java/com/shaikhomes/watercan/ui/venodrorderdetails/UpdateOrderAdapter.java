@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -116,14 +117,21 @@ public class UpdateOrderAdapter extends RecyclerView.Adapter<UpdateOrderAdapter.
             }
         });
 
+        if (mCanList.get(position).getPaidStatus().toLowerCase().equalsIgnoreCase("failure")||mCanList.get(position).getOrderStatus().toLowerCase().equalsIgnoreCase("delivered")) {
+            holder.mAssignLL.setVisibility(View.GONE);
+        } else {
+            holder.mAssignLL.setVisibility(View.VISIBLE);
+        }
+
+
         holder.TxtAssign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.onAssignEmp(mCanList.get(position).getOrderId(),position,holder.TxtAssign);
+                itemClickListener.onAssignEmp(mCanList.get(position).getOrderId(), position, holder.TxtAssign);
             }
         });
 
-        if(!TextUtils.isEmpty(mCanList.get(position).getDeliveredBy())){
+        if (!TextUtils.isEmpty(mCanList.get(position).getDeliveredBy())) {
             holder.TxtAssign.setText(mCanList.get(position).getDeliveredBy().split("_")[1]);
         }
 
@@ -131,7 +139,8 @@ public class UpdateOrderAdapter extends RecyclerView.Adapter<UpdateOrderAdapter.
 
     public interface OnItemClickListener {
         void onItemClick(OrderDelivery.OrderList response, String status, int position);
-        void onAssignEmp(String status, int position,TextView assignEmp);
+
+        void onAssignEmp(String status, int position, TextView assignEmp);
     }
 
     @Override
@@ -151,6 +160,7 @@ public class UpdateOrderAdapter extends RecyclerView.Adapter<UpdateOrderAdapter.
         TextView mOrderId, mItemName, mNoofCans, mTotalPrice, mUnitPrice,
                 mOrderType, mOrderDate, mPaymentStatus, mOrderStatus, mPaymentMethod, mPaymentTxnId, TxtAssign;
         AppCompatButton mBtnAccept, mBtnDecline;
+        RelativeLayout mAssignLL;
 
 
         public MyViewHolder(View v) {
@@ -170,6 +180,7 @@ public class UpdateOrderAdapter extends RecyclerView.Adapter<UpdateOrderAdapter.
             mBtnAccept = v.findViewById(R.id.btn_accept);
             mBtnDecline = v.findViewById(R.id.btn_decline);
             TxtAssign = v.findViewById(R.id.txt_assignemp);
+            mAssignLL = v.findViewById(R.id.assign_ll);
         }
 
     }

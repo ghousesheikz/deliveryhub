@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -74,12 +75,19 @@ public class EmployeeOrderAdapter extends RecyclerView.Adapter<EmployeeOrderAdap
             e.printStackTrace();
         }
 
+
         holder.mOrderDate.setText(format2.format(date));
         holder.mPaymentStatus.setText(mCanList.get(position).getPaidStatus());
         holder.mOrderStatus.setText(mCanList.get(position).getOrderStatus());
         holder.mPaymentMethod.setText(mCanList.get(position).getPaymentType());
         holder.mPaymentTxnId.setText(mCanList.get(position).getPaymentTxnId());
 
+        if (mCanList.get(position).getOrderStatus().toLowerCase().equalsIgnoreCase("delivered")) {
+
+            holder.mDelLL.setVisibility(View.GONE);
+        } else {
+            holder.mDelLL.setVisibility(View.VISIBLE);
+        }
         holder.TxtDeliverOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,11 +96,10 @@ public class EmployeeOrderAdapter extends RecyclerView.Adapter<EmployeeOrderAdap
         });
 
 
-
     }
 
     public interface OnItemClickListener {
-        void onItemClick(OrderDelivery.OrderList response,int position);
+        void onItemClick(OrderDelivery.OrderList response, int position);
 
         void onAssignEmp(String status, int position, TextView assignEmp);
     }
@@ -114,6 +121,7 @@ public class EmployeeOrderAdapter extends RecyclerView.Adapter<EmployeeOrderAdap
         TextView mOrderId, mItemName, mNoofCans, mTotalPrice, mUnitPrice,
                 mOrderType, mOrderDate, mPaymentStatus, mOrderStatus, mPaymentMethod, mPaymentTxnId;
         AppCompatButton TxtDeliverOrder;
+        RelativeLayout mDelLL;
 
         public MyViewHolder(View v) {
             super(v);
@@ -131,6 +139,8 @@ public class EmployeeOrderAdapter extends RecyclerView.Adapter<EmployeeOrderAdap
             mPaymentTxnId = v.findViewById(R.id.txt_paymenttxnid);
 
             TxtDeliverOrder = v.findViewById(R.id.txt_deliverorder);
+            mDelLL = v.findViewById(R.id.del_ll);
+
         }
 
     }

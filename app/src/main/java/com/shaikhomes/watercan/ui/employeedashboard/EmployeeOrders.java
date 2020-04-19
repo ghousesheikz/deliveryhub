@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -33,17 +34,26 @@ import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.pojo.EmployeeDetailsPojo;
 import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.ui.venodrorderdetails.UpdateOrderAdapter;
+import com.shaikhomes.watercan.ui.venodrorderdetails.UpdateOrderDetailsActivity;
 import com.shaikhomes.watercan.utility.TinyDB;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,6 +77,8 @@ public class EmployeeOrders extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_orders);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         tinyDB = new TinyDB(this);
         mList = new ArrayList<>();
         recyclerView = findViewById(R.id.my_order_list);
@@ -77,7 +89,7 @@ public class EmployeeOrders extends BaseActivity {
         mAdapter = new EmployeeOrderAdapter(this, mList, new EmployeeOrderAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(OrderDelivery.OrderList response, int position) {
-                dialogshowbtn(response.getOTP());
+                dialogshowbtn(response.getOTP(), response.getOrderId());
             }
 
             @Override
@@ -88,7 +100,13 @@ public class EmployeeOrders extends BaseActivity {
         recyclerView.setAdapter(mAdapter);
 
         String mEmpId = tinyDB.getString(USER_ID) + "_" + tinyDB.getString(USER_NAME);
-        getOrderDetails("27_Ishaq Syed", "1");
+        getOrderDetails(mEmpId, tinyDB.getString(VENDOR_ID));
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void getOrderDetails(String id, String vendorId) {
@@ -123,7 +141,7 @@ public class EmployeeOrders extends BaseActivity {
     }
 
 
-    public void dialogshowbtn(String mOtp) {
+    public void dialogshowbtn(String mOtp, String orderId) {
         mChk = false;
         mPin = "";
         final Dialog dialog = new Dialog(EmployeeOrders.this);
@@ -191,8 +209,26 @@ public class EmployeeOrders extends BaseActivity {
                     if (!TextUtils.isEmpty(mPin)) {
                         if (mPin.equalsIgnoreCase(mOtp)) {
                             dialog.dismiss();
+                            jsonObj = new JSONObject();
+                            try {
+                                Date c = Calendar.getInstance().getTime();
+                                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                                jsonObj.put("OrderId", orderId);
+                                jsonObj.put("Update", "employee");
+                                jsonObj.put("OrderStatus", "Delivered");
+                                jsonObj.put("DeliveredBy", "");
+                                jsonObj.put("DeliveredDate", df.format(c.getTime()));
+                                RetreiveFeedTask feedTask = new RetreiveFeedTask();
+                                feedTask.execute();
+                                // updateData(mData, mUsersList.get(finalJ).getUsername(), mUsersList.get(finalJ).getUsermobileNumber(), pos);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             Toasty.success(EmployeeOrders.this, "OTP Success", Toasty.LENGTH_SHORT).show();
                         }
+                    } else {
+                        Toasty.error(EmployeeOrders.this, "OTP is not valid", Toasty.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -201,5 +237,75 @@ public class EmployeeOrders extends BaseActivity {
 
         });
 
+    }
+
+    class RetreiveFeedTask extends AsyncTask<String, Void, Integer> {
+        URL url;
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        String mEmpId = "", mFeedback = "";
+
+
+        private Exception exception;
+
+        protected Integer doInBackground(String... datas) {
+
+
+            final String serverURL = "https://delapi.shaikhomes.com/api/UpdateOrder?";
+
+            RequestBody body = RequestBody.create(mediaType, jsonObj.toString());
+            /*Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();*/
+            Request request = new Request.Builder()
+                    .url(serverURL)
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("cache-control", "no-cache")
+                    .addHeader("Postman-Token", "74edb4b6-3c73-4cbd-85f9-357f8a160d55")
+                    .build();
+            try {
+                okhttp3.Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    String some = response.body().string();
+                    JSONObject jsonObject1 = null;
+                    try {
+                        jsonObject1 = new JSONObject(some);
+                        if (jsonObject1.getString("status").equalsIgnoreCase("200")) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getOrderDetails(tinyDB.getString(USER_ID) + "_" + tinyDB.getString(USER_NAME), tinyDB.getString(VENDOR_ID));
+                                    Toasty.success(EmployeeOrders.this, "Order updated successwfully", Toasty.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                // Do something with the response.
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return 1;
+        }
+
+        protected void onPostExecute(Void void1) {
+            // do nothing;
+
+            //  new AsyncHttpSendWhatsapp().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
+            //  feedbackDialog(feed_saleslist, "", mEnquiryMessage, spSalesId.getSelectedItemPosition(), edCustName.getText().toString().trim(), mEnquiryMessage);
+        }
+
+        public RetreiveFeedTask() {
+        }
+
+        public Exception getException() {
+            return exception;
+        }
     }
 }

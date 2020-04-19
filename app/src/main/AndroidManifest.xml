@@ -25,32 +25,47 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.employeedashboard.EmployeeOrders"></activity>
-       <!-- <activity android:name=".ui.employeedashboard.EmployeeDashboard" />-->
+        <activity android:name=".ui.employeedashboard.EmployeeProfile"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".ui.employeedashboard.EmployeeOrders"
+            android:screenOrientation="nosensor"/>
+        <activity
+            android:name=".ui.employeedashboard.EmployeeDashboard"
+            android:screenOrientation="nosensor"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.customercare.CustomerCareActivity"
+            android:screenOrientation="nosensor"
             android:label="@string/call_customer_care" />
         <activity
             android:name=".ui.vendoruserprofile.UserProfile"
+            android:screenOrientation="nosensor"
             android:label="@string/user_profile" />
         <activity
             android:name=".ui.venodrorderdetails.UpdateOrderDetailsActivity"
+            android:screenOrientation="nosensor"
             android:label="@string/update_order" />
         <activity
             android:name=".ui.item.ViewItemsActivity"
+            android:screenOrientation="nosensor"
             android:label="@string/view_item" />
         <activity
             android:name=".ui.item.ModifyItems"
+            android:screenOrientation="nosensor"
             android:label="@string/modify_item" />
         <activity
             android:name=".ui.item.AddItemActivity"
+            android:screenOrientation="nosensor"
             android:label="@string/add_item" />
         <activity
             android:name=".ui.vendordashboard.VendorDashboard"
+            android:screenOrientation="nosensor"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".OTPAuthentication"
+            android:screenOrientation="nosensor"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -59,14 +74,17 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="nosensor"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
+            android:screenOrientation="nosensor"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.MyCustomDialog"
+            android:screenOrientation="nosensor"
             android:noHistory="true"
             android:theme="@android:style/Theme.DeviceDefault.Dialog.NoActionBar.MinWidth" />
 
@@ -81,7 +99,8 @@
         </provider>
 
         <activity
-            android:name=".ui.employeedashboard.EmployeeDashboard"
+            android:name=".SplashActivity"
+            android:screenOrientation="nosensor"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

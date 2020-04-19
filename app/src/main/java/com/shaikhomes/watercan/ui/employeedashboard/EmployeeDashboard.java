@@ -111,7 +111,7 @@ public class EmployeeDashboard extends AppCompatActivity implements View.OnClick
             Intent intent = new Intent(EmployeeDashboard.this, EmployeeOrders.class);
             startActivity(intent);
         } else if (id == R.id.nav_userprofile) {
-            Intent intent = new Intent(EmployeeDashboard.this, UserProfile.class);
+            Intent intent = new Intent(EmployeeDashboard.this, EmployeeProfile.class);
             startActivity(intent);
         } else if (id == R.id.nav_customercare) {
             Intent intent = new Intent(EmployeeDashboard.this, CustomerCareActivity.class);

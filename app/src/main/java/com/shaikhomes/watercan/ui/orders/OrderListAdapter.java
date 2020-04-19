@@ -71,6 +71,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .into(holder.mCanImage);
         }
+        holder.mItemName.setText(mCanList.get(position).getName());
         holder.mTxtDistributor.setText(mCanList.get(position).getVendorName());
         mCount = mCanList.get(position).getNoOfCans();
 
@@ -142,7 +143,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView mCanCount, mCanAmt,mTxtDistributor;
+        TextView mCanCount, mCanAmt,mTxtDistributor,mItemName;
         ImageView mPlusCnt, mMinusCnt, mCanImage;
 
         public MyViewHolder(View v) {
@@ -153,6 +154,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
             mCanAmt = v.findViewById(R.id.txt_amt);
             mCanImage = v.findViewById(R.id.image_);
             mTxtDistributor = v.findViewById(R.id.distributor_name);
+            mItemName = v.findViewById(R.id.item_name);
 
         }
 
