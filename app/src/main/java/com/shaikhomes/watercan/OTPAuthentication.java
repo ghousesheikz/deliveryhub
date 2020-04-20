@@ -63,10 +63,14 @@ public class OTPAuthentication extends AppCompatActivity {
                 if (mOtp.equalsIgnoreCase(text.toString())) {
                     tinyDB.putBoolean(LOGIN_ENABLED, true);
                     if (tinyDB.getString(IS_ADMIN).equalsIgnoreCase("1")) {
-                        startActivity(new Intent(OTPAuthentication.this, VendorDashboard.class));
+                        Intent intent = new Intent(OTPAuthentication.this, VendorDashboard.class);
+                        intent.putExtra("admin","1");
+                        startActivity(intent);
                         finish();
                     } else if (tinyDB.getString(IS_ADMIN).equalsIgnoreCase("2")) {
-                        startActivity(new Intent(OTPAuthentication.this, VendorDashboard.class));
+                        Intent intent = new Intent(OTPAuthentication.this, VendorDashboard.class);
+                        intent.putExtra("admin","2");
+                        startActivity(intent);
                         finish();
                     } else if (tinyDB.getString(IS_ADMIN).equalsIgnoreCase("3")) {
                         startActivity(new Intent(OTPAuthentication.this, EmployeeDashboard.class));

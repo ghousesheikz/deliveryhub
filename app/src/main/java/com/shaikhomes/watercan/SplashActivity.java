@@ -80,7 +80,9 @@ public class SplashActivity extends BaseActivity {
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                startActivity(new Intent(SplashActivity.this, VendorDashboard.class));
+                                                Intent intent = new Intent(SplashActivity.this, VendorDashboard.class);
+                                                intent.putExtra("admin","1");
+                                                startActivity(intent);
                                                 finish();
                                             }
                                         }, SPLASH_DISPLAY_LENGTH);
@@ -89,7 +91,9 @@ public class SplashActivity extends BaseActivity {
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                startActivity(new Intent(SplashActivity.this, VendorDashboard.class));
+                                                Intent intent = new Intent(SplashActivity.this, VendorDashboard.class);
+                                                intent.putExtra("admin","2");
+                                                startActivity(intent);
                                                 finish();
                                             }
                                         }, SPLASH_DISPLAY_LENGTH);

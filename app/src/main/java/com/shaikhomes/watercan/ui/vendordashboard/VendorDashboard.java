@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import com.shaikhomes.watercan.LoginActivity;
 import com.shaikhomes.watercan.MainActivity;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.SignUpActivity;
+import com.shaikhomes.watercan.ui.addcategories.AddCategories;
 import com.shaikhomes.watercan.ui.customercare.CustomerCareActivity;
 import com.shaikhomes.watercan.ui.item.AddItemActivity;
 import com.shaikhomes.watercan.ui.item.ViewItemsActivity;
@@ -48,10 +50,11 @@ import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
 
 public class VendorDashboard extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     TinyDB tinyDB;
-    RelativeLayout mAddItem, mAddEmployee, mViewItems, mMyOrders;
+    RelativeLayout mAddItem, mAddEmployee, mViewItems, mMyOrders,mAddCat;
     private View navView;
     private TextView mUserName, mUserNumber;
     boolean doubleBackToExitPressedOnce = false;
+    LinearLayout mAdminLL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,8 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
         //payment environment
        /* ((BaseApplication) getApplication()).setAppEnvironment(AppEnvironment.PRODUCTION);
         launchPayUMoneyFlow("ghouse", "9966009289", "test_data", "2");*/
@@ -86,9 +91,17 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
         mViewItems.setOnClickListener(this);
         mAddItem = findViewById(R.id.add_tems_ll);
         mMyOrders = findViewById(R.id.my_orders_ll);
+        mAdminLL = findViewById(R.id.admin1_ll);
+        mAddCat = findViewById(R.id.add_cat_ll);
         mMyOrders.setOnClickListener(this);
         mAddItem.setOnClickListener(this);
         mAddEmployee.setOnClickListener(this);
+        mAddCat.setOnClickListener(this);
+        if(getIntent().getStringExtra("admin").equalsIgnoreCase("1")){
+            mAdminLL.setVisibility(View.VISIBLE);
+        }else{
+            mAdminLL.setVisibility(View.VISIBLE);
+        }
     }
 
   /*  public boolean onCreateOptionsMenu(Menu menu) {
@@ -146,8 +159,9 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
         } else if (v.getId() == R.id.my_orders_ll) {
             Intent intent = new Intent(VendorDashboard.this, UpdateOrderDetailsActivity.class);
             startActivity(intent);
-
-
+        }else if(v.getId()==R.id.add_cat_ll){
+            Intent intent = new Intent(VendorDashboard.this, AddCategories.class);
+            startActivity(intent);
         }
     }
 

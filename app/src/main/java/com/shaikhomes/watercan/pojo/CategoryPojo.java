@@ -52,6 +52,10 @@ public class CategoryPojo {
         @Expose
         private String categoryName;
 
+        public CategoryDetail() {
+
+        }
+
         public String getId() {
             return id;
         }
