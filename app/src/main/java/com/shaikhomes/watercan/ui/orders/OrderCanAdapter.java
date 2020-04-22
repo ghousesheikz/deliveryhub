@@ -68,7 +68,7 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .into(holder.mCanImage);
         }
-        holder.mCompName.setText(mJoblist.get(position).getItemName());
+        holder.mCompName.setText(mJoblist.get(position).getItemName().trim());
         holder.mPrice.setText(rupee +" "+ mJoblist.get(position).getItemPrice()+" ");
         holder.mLiters.setText(mJoblist.get(position).getItemSize());
 

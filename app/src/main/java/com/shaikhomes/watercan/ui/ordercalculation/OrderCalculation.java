@@ -195,6 +195,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                         mOrderPojo.setVendorId(jsonObject.getString("VendorId"));
                         mOrderPojo.setMinQty(jsonObject.getString("MinQty"));
                         mOrderPojo.setCategoryId(jsonObject.getString("CategoryId"));
+                        mOrderPojo.setDescription(jsonObject.getString("Description"));
                         mOrdersList.add(mOrderPojo);
                     } catch (JSONException e) {
                         e.printStackTrace();

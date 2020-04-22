@@ -92,7 +92,6 @@ public class OrderCan extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_order_can, container, false);
-
         mRecyclerview = view.findViewById(R.id.order_can_list);
         mCatRecyclerview = view.findViewById(R.id.item_menu_list);
         mCatRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
@@ -102,7 +101,6 @@ public class OrderCan extends Fragment {
         mRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         mList = new ArrayList<>();
         mCatList = new ArrayList<>();
-
         mAdapter = new OrderCanAdapter(getActivity(), mList, new OrderCanAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(ItemPojo.Item response, int position) {
@@ -118,6 +116,7 @@ public class OrderCan extends Fragment {
                 mPojo.setVendorName(response.getVendorName());
                 mPojo.setMinQty(response.getMinqty());
                 mPojo.setCategoryId(response.getCategoryId());
+                mPojo.setDescription(response.getItemDescription());
                 if (response.getMinqty().equalsIgnoreCase("0")) {
                     mPojo.setNoOfCans(1);
                 } else {

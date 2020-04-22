@@ -83,6 +83,18 @@ public class ItemPojo {
         @SerializedName("CategoryId")
         @Expose
         private String CategoryId;
+        @SerializedName("ItemDescription")
+        @Expose
+        private String ItemDescription;
+        @SerializedName("Image1")
+        @Expose
+        private String Image1;
+        @SerializedName("Image2")
+        @Expose
+        private String Image2;
+        @SerializedName("Image3")
+        @Expose
+        private String Image3;
 
 
         public String getItemId() {
@@ -195,6 +207,38 @@ public class ItemPojo {
 
         public void setCategoryId(String categoryId) {
             CategoryId = categoryId;
+        }
+
+        public String getItemDescription() {
+            return ItemDescription;
+        }
+
+        public void setItemDescription(String itemDescription) {
+            ItemDescription = itemDescription;
+        }
+
+        public String getImage1() {
+            return Image1;
+        }
+
+        public void setImage1(String image1) {
+            Image1 = image1;
+        }
+
+        public String getImage2() {
+            return Image2;
+        }
+
+        public void setImage2(String image2) {
+            Image2 = image2;
+        }
+
+        public String getImage3() {
+            return Image3;
+        }
+
+        public void setImage3(String image3) {
+            Image3 = image3;
         }
     }
 }

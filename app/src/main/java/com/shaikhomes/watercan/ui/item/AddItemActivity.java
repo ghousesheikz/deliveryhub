@@ -74,12 +74,15 @@ import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
 public class AddItemActivity extends BaseActivity implements View.OnClickListener {
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     public static final int SELECT_FILE = 10;
+    public static final int SELECT_FILE2 = 20;
+    public static final int SELECT_FILE3 = 30;
+    public static final int SELECT_FILE4 = 40;
     public static final int REQUEST_IMAGE_CAPTURE_1 = 100;
     private String mCurrentPhotoPath_1;
     private Uri contentUri;
-    private String mEncodedImage, mItemCatId = "", mActive = "";
-    private ImageView mUploadImage, mViewImage;
-    private EditText mItemName, mItemPrice, mItemUnits, mMinQty;
+    private String mEncodedImage, mEncodedImage2, mEncodedImage3, mEncodedImage4, mItemCatId = "", mActive = "";
+    private ImageView mUploadImage, mViewImage, mUploadImage2, mUploadImage3, mUploadImage4;
+    private EditText mItemName, mItemPrice, mItemUnits, mMinQty, mItemDesc;
     private AppCompatButton mRegisterItem;
     private String mEditItem = "";
     private ItemPojo.Item mEditPojo;
@@ -102,6 +105,12 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         spinner_array_category.add(new Spinner_global_model("-1", "Select Category"));
         mUploadImage = findViewById(R.id.upload_image);
         mUploadImage.setOnClickListener(this);
+        mUploadImage2 = findViewById(R.id.upload_image2);
+        mUploadImage2.setOnClickListener(this);
+        mUploadImage3 = findViewById(R.id.upload_image3);
+        mUploadImage3.setOnClickListener(this);
+        mUploadImage4 = findViewById(R.id.upload_image4);
+        mUploadImage4.setOnClickListener(this);
         mViewImage = findViewById(R.id.pickup_image);
         mViewImage.setOnClickListener(this);
         mItemName = findViewById(R.id.edt_itemname);
@@ -111,6 +120,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         mRegisterItem = findViewById(R.id.btn_submit);
         mBtnActive = findViewById(R.id.btn_active);
         mBtnDeactive = findViewById(R.id.btn_deactive);
+        mItemDesc = findViewById(R.id.edt_itemdesc);
         mBtnActive.setOnClickListener(this);
         mBtnDeactive.setOnClickListener(this);
         mRegisterItem.setOnClickListener(this);
@@ -126,14 +136,30 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
             mItemPrice.setText(mEditPojo.getItemPrice());
             mItemUnits.setText(mEditPojo.getItemSize());
             mMinQty.setText(mEditPojo.getMinqty());
+            mItemDesc.setText(mEditPojo.getItemDescription());
             mItemCatId = mEditPojo.getCategoryId();
             mActive = mEditPojo.getItemActive();
             String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getItemImage();
+            String imgUrl2 = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getImage1();
+            String imgUrl3 = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getImage2();
+            String imgUrl4 = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getImage3();
 
             Picasso.get().load(imgUrl).resize(500, 500)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .centerCrop().transform(new RoundedTransformation()).into(mUploadImage);
+            Picasso.get().load(imgUrl2).resize(500, 500)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .centerCrop().transform(new RoundedTransformation()).into(mUploadImage2);
+            Picasso.get().load(imgUrl3).resize(500, 500)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .centerCrop().transform(new RoundedTransformation()).into(mUploadImage3);
+            Picasso.get().load(imgUrl4).resize(500, 500)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .centerCrop().transform(new RoundedTransformation()).into(mUploadImage4);
             if (mActive.toLowerCase().equalsIgnoreCase("true")) {
                 mBtnActive.setBackgroundResource(R.drawable.accept_border);
                 mBtnDeactive.setBackgroundResource(R.drawable.button_border);
@@ -211,6 +237,45 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                 dialogforChoice();
 
                 break;
+            case R.id.upload_image2:
+                new AlertDialog.Builder(this).setTitle("Upload Image").setMessage("Select uploading options").setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);//
+                        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE2);
+                    }
+                }).create().show();
+
+                break;
+            case R.id.upload_image3:
+                new AlertDialog.Builder(this).setTitle("Upload Image").setMessage("Select uploading options").setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);//
+                        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE3);
+                    }
+                }).create().show();
+
+                break;
+            case R.id.upload_image4:
+                new AlertDialog.Builder(this).setTitle("Upload Image").setMessage("Select uploading options").setPositiveButton("Gallery", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);//
+                        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE4);
+                    }
+                }).create().show();
+
+                break;
             case R.id.btn_active:
                 mActive = "True";
                 mBtnActive.setBackgroundResource(R.drawable.accept_border);
@@ -229,6 +294,12 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
 
                 if (TextUtils.isEmpty(mEncodedImage) && TextUtils.isEmpty(mEditItem)) {
                     Toasty.error(AddItemActivity.this, "Please click Image", Toasty.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(mEncodedImage2) && TextUtils.isEmpty(mEditItem)) {
+                    Toasty.error(AddItemActivity.this, "Please click Image", Toasty.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(mEncodedImage3) && TextUtils.isEmpty(mEditItem)) {
+                    Toasty.error(AddItemActivity.this, "Please click Image", Toasty.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(mEncodedImage4) && TextUtils.isEmpty(mEditItem)) {
+                    Toasty.error(AddItemActivity.this, "Please click Image", Toasty.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mItemName.getText().toString())) {
                     Toasty.error(AddItemActivity.this, "Please enter item name", Toasty.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mItemPrice.getText().toString())) {
@@ -241,6 +312,8 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                     Toasty.error(AddItemActivity.this, "Please select category", Toasty.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mActive)) {
                     Toasty.error(AddItemActivity.this, "Please select item active/deactive", Toasty.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(mItemDesc.getText().toString())) {
+                    Toasty.error(AddItemActivity.this, "Please select item description", Toasty.LENGTH_SHORT).show();
                 } else {
                     if (TextUtils.isEmpty(mEditItem)) {
                         ItemPojo.Item mPostItem = new ItemPojo.Item();
@@ -248,12 +321,13 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         mPostItem.setItemCompany("");
                         mPostItem.setItemId("");
                         mPostItem.setItemImage(mEncodedImage);
-                        mPostItem.setItemName(mItemName.getText().toString());
-                        mPostItem.setItemPrice(mItemPrice.getText().toString());
+                        mPostItem.setItemName(mItemName.getText().toString().trim());
+                        mPostItem.setItemPrice(mItemPrice.getText().toString().trim());
                         mPostItem.setItemQuantity("1");
-                        mPostItem.setItemSize(mItemUnits.getText().toString());
-                        mPostItem.setMinqty(mMinQty.getText().toString());
+                        mPostItem.setItemSize(mItemUnits.getText().toString().trim());
+                        mPostItem.setMinqty(mMinQty.getText().toString().trim());
                         mPostItem.setVendorAddress("");
+                        mPostItem.setItemDescription(mItemDesc.getText().toString().trim());
                         mPostItem.setVendorId(tinyDB.getString(USER_ID));
                         mPostItem.setVendorName(tinyDB.getString(USER_NAME));
                         mPostItem.setCategoryId(spinner_array_category.get(mCatSpinner.getSelectedItemPosition()).getId());
@@ -284,9 +358,15 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         mPostItem.setItemId(mEditPojo.getItemId());
                         if (TextUtils.isEmpty(mEncodedImage)) {
                             mPostItem.setItemImage(mEditPojo.getItemImage());
+                            mPostItem.setImage1(mEditPojo.getImage1());
+                            mPostItem.setImage2(mEditPojo.getImage2());
+                            mPostItem.setImage3(mEditPojo.getImage3());
                             mPostItem.setUpdate("update");
                         } else {
                             mPostItem.setItemImage(mEncodedImage);
+                            mPostItem.setImage1(mEncodedImage2);
+                            mPostItem.setImage2(mEncodedImage3);
+                            mPostItem.setImage3(mEncodedImage4);
                             mPostItem.setUpdate("updateimage");
                         }
                         mPostItem.setItemName(mItemName.getText().toString());
@@ -486,7 +566,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
             }
             // }
         } else */
-            if (requestCode == SELECT_FILE && resultCode == RESULT_OK) {
+        if (requestCode == SELECT_FILE && resultCode == RESULT_OK) {
             if (data != null) {
                 contentUri = null;
                 File f = new File(getPath(this, data.getData()));
@@ -508,6 +588,84 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                     mEncodedImage = "";
                     encoded = encodeImage(Objects.requireNonNull(encoded_new));
                     mEncodedImage = encoded;
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (requestCode == SELECT_FILE2 && resultCode == RESULT_OK) {
+            if (data != null) {
+                contentUri = null;
+                File f = new File(getPath(this, data.getData()));
+                contentUri = Uri.fromFile(f);
+                Bitmap encoded_new = null;
+                try {
+                    encoded_new = Compressor.getDefault(this).compressToBitmap(f);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Picasso.get().load(contentUri).resize(500, 500)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .centerCrop().transform(new RoundedTransformation()).into(mUploadImage);
+
+                String encoded = null;
+                try {
+                    mEncodedImage2 = "";
+                    encoded = encodeImage(Objects.requireNonNull(encoded_new));
+                    mEncodedImage2 = encoded;
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (requestCode == SELECT_FILE3 && resultCode == RESULT_OK) {
+            if (data != null) {
+                contentUri = null;
+                File f = new File(getPath(this, data.getData()));
+                contentUri = Uri.fromFile(f);
+                Bitmap encoded_new = null;
+                try {
+                    encoded_new = Compressor.getDefault(this).compressToBitmap(f);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Picasso.get().load(contentUri).resize(500, 500)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .centerCrop().transform(new RoundedTransformation()).into(mUploadImage);
+
+                String encoded = null;
+                try {
+                    mEncodedImage3 = "";
+                    encoded = encodeImage(Objects.requireNonNull(encoded_new));
+                    mEncodedImage3 = encoded;
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (requestCode == SELECT_FILE4 && resultCode == RESULT_OK) {
+            if (data != null) {
+                contentUri = null;
+                File f = new File(getPath(this, data.getData()));
+                contentUri = Uri.fromFile(f);
+                Bitmap encoded_new = null;
+                try {
+                    encoded_new = Compressor.getDefault(this).compressToBitmap(f);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Picasso.get().load(contentUri).resize(500, 500)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .centerCrop().transform(new RoundedTransformation()).into(mUploadImage);
+
+                String encoded = null;
+                try {
+                    mEncodedImage4 = "";
+                    encoded = encodeImage(Objects.requireNonNull(encoded_new));
+                    mEncodedImage4 = encoded;
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }

@@ -3,6 +3,7 @@ package com.shaikhomes.watercan.model;
 public class OrderCalculationPojo {
     public String imageURL;
     public String Name;
+    public String Description;
     public String Price;
     public String Liters;
     public String VendorId;
@@ -108,5 +109,13 @@ public class OrderCalculationPojo {
 
     public void setCategoryId(String categoryId) {
         CategoryId = categoryId;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
     }
 }

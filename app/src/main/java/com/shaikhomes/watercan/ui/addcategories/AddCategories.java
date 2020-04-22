@@ -91,6 +91,9 @@ public class AddCategories extends BaseActivity implements View.OnClickListener 
         mViewImage = findViewById(R.id.pickup_image);
         mViewImage.setOnClickListener(this);
         mItemName = findViewById(R.id.edt_itemname);
+        mRegisterItem = findViewById(R.id.btn_submit);
+        mRegisterItem.setOnClickListener(this);
+
     }
 
 
