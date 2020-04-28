@@ -18,89 +18,95 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:weightSum="2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
                 <TextView
 
                     android:layout_width="0dp"
-                    android:layout_weight="0.6"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
                     android:fontFamily="@font/lato_regular"
                     android:gravity="center_vertical"
                     android:padding="@dimen/dimen_5dp"
                     android:text="Distribuor : "
-                    android:textColor="@color/orange"
+                    android:textColor="@color/black"
                     android:textSize="14sp" />
+
                 <TextView
                     android:id="@+id/distributor_name"
                     android:layout_width="0dp"
-                    android:layout_weight="1.4"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
                     android:fontFamily="@font/lato_regular"
                     android:gravity="left"
                     android:padding="@dimen/dimen_5dp"
                     android:text="Vendor Name"
-                    android:textColor="@color/black"
+                    android:textColor="@color/darker_gray"
                     android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:weightSum="2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
                 <TextView
 
                     android:layout_width="0dp"
-                    android:layout_weight="0.6"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
                     android:fontFamily="@font/lato_regular"
                     android:gravity="center_vertical"
                     android:padding="@dimen/dimen_5dp"
                     android:text="Item : "
-                    android:textColor="@color/orange"
+                    android:textColor="@color/black"
                     android:textSize="14sp" />
+
                 <TextView
                     android:id="@+id/item_name"
                     android:layout_width="0dp"
-                    android:layout_weight="1.4"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
                     android:fontFamily="@font/lato_regular"
                     android:gravity="left"
                     android:padding="@dimen/dimen_5dp"
                     android:text="Vendor Name"
-                    android:textColor="@color/black"
+                    android:textColor="@color/darker_gray"
                     android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:weightSum="2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
                 <TextView
 
                     android:layout_width="0dp"
-                    android:layout_weight="0.6"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
                     android:fontFamily="@font/lato_regular"
                     android:gravity="center_vertical"
                     android:padding="@dimen/dimen_5dp"
                     android:text="Description : "
-                    android:textColor="@color/orange"
+                    android:textColor="@color/black"
                     android:textSize="14sp" />
+
                 <TextView
                     android:id="@+id/item_desc"
                     android:layout_width="0dp"
-                    android:layout_weight="1.4"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
                     android:fontFamily="@font/lato_regular"
                     android:gravity="left"
                     android:padding="@dimen/dimen_5dp"
                     android:text="Vendor Name"
-                    android:textColor="@color/black"
+                    android:textColor="@color/darker_gray"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -110,11 +116,58 @@
                 android:orientation="horizontal"
                 android:padding="8dp">
 
-                <ImageView
-                    android:id="@+id/image_"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/ic_no_image" />
+                <HorizontalScrollView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/border_layout"
+                    android:scrollbarSize="0dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <ImageView
+                            android:id="@+id/image_"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginRight="3dp"
+                            android:src="@drawable/ic_no_image" />
+
+                        <ImageView
+                            android:id="@+id/image_2"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginRight="3dp"
+                            android:src="@drawable/ic_no_image" />
+
+                        <ImageView
+                            android:id="@+id/image_3"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginRight="3dp"
+                            android:src="@drawable/ic_no_image" />
+
+                        <ImageView
+                            android:id="@+id/image_4"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginRight="3dp"
+                            android:src="@drawable/ic_no_image" />
+                    </LinearLayout>
+                </HorizontalScrollView>
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -50,7 +50,7 @@ import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
 
 public class VendorDashboard extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     TinyDB tinyDB;
-    RelativeLayout mAddItem, mAddEmployee, mViewItems, mMyOrders,mAddCat;
+    RelativeLayout mAddItem, mAddEmployee, mViewItems, mMyOrders, mAddCat,mVendorsList;
     private View navView;
     private TextView mUserName, mUserNumber;
     boolean doubleBackToExitPressedOnce = false;
@@ -93,55 +93,57 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
         mMyOrders = findViewById(R.id.my_orders_ll);
         mAdminLL = findViewById(R.id.admin1_ll);
         mAddCat = findViewById(R.id.add_cat_ll);
+        mVendorsList = findViewById(R.id.vendors_list);
+        mVendorsList.setOnClickListener(this);
         mMyOrders.setOnClickListener(this);
         mAddItem.setOnClickListener(this);
         mAddEmployee.setOnClickListener(this);
         mAddCat.setOnClickListener(this);
-        if(getIntent().getStringExtra("admin").equalsIgnoreCase("1")){
+        if (getIntent().getStringExtra("admin").equalsIgnoreCase("1")) {
             mAdminLL.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mAdminLL.setVisibility(View.VISIBLE);
         }
     }
 
-  /*  public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+    /*  public boolean onCreateOptionsMenu(Menu menu) {
+          // Inflate the menu; this adds items to the action bar if it is present.
+          getMenuInflater().inflate(R.menu.main, menu);
+          return true;
+      }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_logout) {
-            new AlertDialog.Builder(VendorDashboard.this).setTitle("LOGOUT").setMessage("Do you want to logout?").setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    try {
+      @Override
+      public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+          if (item.getItemId() == R.id.action_logout) {
+              new AlertDialog.Builder(VendorDashboard.this).setTitle("LOGOUT").setMessage("Do you want to logout?").setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialog, int which) {
+                      dialog.dismiss();
+                      try {
 
-                        tinyDB.remove(LOGIN_ENABLED);
-                        Intent intent = new Intent(VendorDashboard.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                        Toasty.success(VendorDashboard.this, "Successfully logout", Toasty.LENGTH_SHORT).show();
+                          tinyDB.remove(LOGIN_ENABLED);
+                          Intent intent = new Intent(VendorDashboard.this, LoginActivity.class);
+                          startActivity(intent);
+                          finish();
+                          Toasty.success(VendorDashboard.this, "Successfully logout", Toasty.LENGTH_SHORT).show();
 
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                      } catch (Exception e) {
+                          e.printStackTrace();
+                      }
 
-                }
-            }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                  }
+              }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialog, int which) {
+                      dialog.dismiss();
 
-                }
-            }).create().show();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-*/
+                  }
+              }).create().show();
+          }
+          return super.onOptionsItemSelected(item);
+      }
+  */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.add_tems_ll) {
@@ -159,8 +161,11 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
         } else if (v.getId() == R.id.my_orders_ll) {
             Intent intent = new Intent(VendorDashboard.this, UpdateOrderDetailsActivity.class);
             startActivity(intent);
-        }else if(v.getId()==R.id.add_cat_ll){
+        } else if (v.getId() == R.id.add_cat_ll) {
             Intent intent = new Intent(VendorDashboard.this, AddCategories.class);
+            startActivity(intent);
+        } else if (v.getId() == R.id.vendors_list) {
+            Intent intent = new Intent(VendorDashboard.this, VendorsList.class);
             startActivity(intent);
         }
     }
@@ -174,20 +179,20 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
             Intent intent = new Intent(VendorDashboard.this, SignUpActivity.class);
             intent.putExtra("isadmin", "3");
             startActivity(intent);
-        }else if (id == R.id.nav_viewitem) {
+        } else if (id == R.id.nav_viewitem) {
             Intent intent = new Intent(VendorDashboard.this, ViewItemsActivity.class);
             startActivity(intent);
 
-        }else if (id == R.id.nav_myorders) {
+        } else if (id == R.id.nav_myorders) {
             Intent intent = new Intent(VendorDashboard.this, UpdateOrderDetailsActivity.class);
             startActivity(intent);
-        }else if (id == R.id.nav_userprofile) {
+        } else if (id == R.id.nav_userprofile) {
             Intent intent = new Intent(VendorDashboard.this, UserProfile.class);
             startActivity(intent);
-        }else if (id == R.id.nav_customercare) {
+        } else if (id == R.id.nav_customercare) {
             Intent intent = new Intent(VendorDashboard.this, CustomerCareActivity.class);
             startActivity(intent);
-        }else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
@@ -196,7 +201,6 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
         }
         return true;
     }
-
 
 
     @Override
@@ -223,7 +227,7 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    public void LogoutDialog(){
+    public void LogoutDialog() {
         AppCompatButton mBtnYes, mBtnNo;
         final Dialog dialog = new Dialog(this, R.style.Theme_AppCompat_DayNight_Dialog);
         dialog.setCancelable(true);

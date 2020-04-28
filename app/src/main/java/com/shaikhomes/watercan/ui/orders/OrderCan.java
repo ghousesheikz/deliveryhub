@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,7 @@ public class OrderCan extends Fragment {
     private JSONObject jsonObject;
     private JSONArray jsonArray;
     private TinyDB tinyDB;
+    private String mVendoprId="";
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -116,7 +118,27 @@ public class OrderCan extends Fragment {
                 mPojo.setVendorName(response.getVendorName());
                 mPojo.setMinQty(response.getMinqty());
                 mPojo.setCategoryId(response.getCategoryId());
-                mPojo.setDescription(response.getItemDescription());
+                if(TextUtils.isEmpty(response.getItemDescription())){
+                    mPojo.setDescription("");
+                }else{
+                    mPojo.setDescription(response.getItemDescription());
+                }
+                if(TextUtils.isEmpty(response.getImage1())){
+                    mPojo.setImageURL2("");
+                }else{
+                    mPojo.setImageURL2(response.getImage1());
+                }
+                if(TextUtils.isEmpty(response.getImage2())){
+                    mPojo.setImageURL3("");
+                }else{
+                    mPojo.setImageURL3(response.getImage2());
+                }
+                if(TextUtils.isEmpty(response.getImage3())){
+                    mPojo.setImageURL4("");
+                }else{
+                    mPojo.setImageURL4(response.getImage3());
+                }
+
                 if (response.getMinqty().equalsIgnoreCase("0")) {
                     mPojo.setNoOfCans(1);
                 } else {

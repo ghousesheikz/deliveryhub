@@ -70,6 +70,27 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .into(holder.mCanImage);
+            if (!TextUtils.isEmpty(mCanList.get(position).getImageURL2())) {
+                String imgUrl2 = "http://delapi.shaikhomes.com/ImageStorage/" + mCanList.get(position).getImageURL2();
+                Picasso.get().load(imgUrl2).resize(800, 1200).placeholder(circularProgressDrawable)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .into(holder.mCanImage2);
+            }
+            if (!TextUtils.isEmpty(mCanList.get(position).getImageURL3())) {
+                String imgUrl3 = "http://delapi.shaikhomes.com/ImageStorage/" + mCanList.get(position).getImageURL3();
+                Picasso.get().load(imgUrl3).resize(800, 1200).placeholder(circularProgressDrawable)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .into(holder.mCanImage3);
+            }
+            if (!TextUtils.isEmpty(mCanList.get(position).getImageURL4())) {
+                String imgUrl4 = "http://delapi.shaikhomes.com/ImageStorage/" + mCanList.get(position).getImageURL4();
+                Picasso.get().load(imgUrl4).resize(800, 1200).placeholder(circularProgressDrawable)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .into(holder.mCanImage4);
+            }
         }
         holder.mItemName.setText(mCanList.get(position).getName());
         holder.mItemDesc.setText(mCanList.get(position).getDescription());
@@ -98,8 +119,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
             public void onClick(View v) {
                 mCount = mCanList.get(position).getNoOfCans();
                 mCount = mCount - 1;
-                if(mCount<Integer.parseInt(mCanList.get(position).getMinQty())){
-                    mCount=Integer.parseInt(mCanList.get(position).getMinQty());
+                if (mCount < Integer.parseInt(mCanList.get(position).getMinQty())) {
+                    mCount = Integer.parseInt(mCanList.get(position).getMinQty());
                 }
                 if (mCount < 0) {
                     mCount = 0;
@@ -144,8 +165,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView mCanCount, mCanAmt,mTxtDistributor,mItemName,mItemDesc;
-        ImageView mPlusCnt, mMinusCnt, mCanImage;
+        TextView mCanCount, mCanAmt, mTxtDistributor, mItemName, mItemDesc;
+        ImageView mPlusCnt, mMinusCnt, mCanImage, mCanImage2, mCanImage3, mCanImage4;
 
         public MyViewHolder(View v) {
             super(v);
@@ -154,6 +175,9 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
             mMinusCnt = v.findViewById(R.id.minus_count);
             mCanAmt = v.findViewById(R.id.txt_amt);
             mCanImage = v.findViewById(R.id.image_);
+            mCanImage2 = v.findViewById(R.id.image_2);
+            mCanImage3 = v.findViewById(R.id.image_3);
+            mCanImage4 = v.findViewById(R.id.image_4);
             mTxtDistributor = v.findViewById(R.id.distributor_name);
             mItemName = v.findViewById(R.id.item_name);
             mItemDesc = v.findViewById(R.id.item_desc);

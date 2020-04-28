@@ -25,7 +25,11 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.addcategories.AddCategories"></activity>
+        <activity
+            android:name=".ui.vendordashboard.VendorsList"
+            android:label="@string/vendors_list"
+            android:screenOrientation="nosensor" />
+        <activity android:name=".ui.addcategories.AddCategories" />
         <activity
             android:name=".ui.employeedashboard.EmployeeProfile"
             android:screenOrientation="nosensor" />

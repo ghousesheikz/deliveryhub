@@ -56,6 +56,7 @@ public class ViewItemsActivity extends BaseActivity {
     private TinyDB tinyDB;
     private ApiInterface apiService;
     List<ItemPojo.Item> mList;
+    private String mVendorId = "", mActive = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,13 @@ public class ViewItemsActivity extends BaseActivity {
         setContentView(R.layout.activity_view_items);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        tinyDB= new TinyDB(this);
+        tinyDB = new TinyDB(this);
+        if (getIntent().getStringExtra("vendorid") != null) {
+            mVendorId = getIntent().getStringExtra("vendorid");
+        } else {
+            mVendorId = tinyDB.getString(USER_ID);
+        }
+
         apiService = ApiClient.getClient(this).create(ApiInterface.class);
         mRecyclerview = findViewById(R.id.order_item_list);
         mLinearLayoutmanager = new LinearLayoutManager(this);
@@ -99,19 +106,19 @@ public class ViewItemsActivity extends BaseActivity {
                 }).create().show();
 
 
-
-
             }
         });
         mRecyclerview.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -120,7 +127,7 @@ public class ViewItemsActivity extends BaseActivity {
 
     private void getItemData() {
         try {
-            Call<ItemPojo> call = apiService.GetItemList(tinyDB.getString(USER_ID), "");
+            Call<ItemPojo> call = apiService.GetItemList(mVendorId, "");
             call.enqueue(new Callback<ItemPojo>() {
                 @Override
                 public void onResponse(Call<ItemPojo> call, Response<ItemPojo> response) {

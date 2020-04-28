@@ -1,7 +1,9 @@
 package com.shaikhomes.watercan.ui.orders;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,8 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyViewHolder> {
 
@@ -69,9 +73,29 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
                     .into(holder.mCanImage);
         }
         holder.mCompName.setText(mJoblist.get(position).getItemName().trim());
-        holder.mPrice.setText(rupee +" "+ mJoblist.get(position).getItemPrice()+" ");
+        holder.mPrice.setText(rupee + " " + mJoblist.get(position).getItemPrice() + " ");
         holder.mLiters.setText(mJoblist.get(position).getItemSize());
+        holder.mItemDsc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(mJoblist.get(position).getItemDescription())) {
+                    new AlertDialog.Builder(context).setTitle("Item Info").setMessage(mJoblist.get(position).getItemDescription()).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            try {
 
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }).create().show();
+                } else {
+                    Toasty.error(context, "Item description not mentioned", Toasty.LENGTH_SHORT).show();
+                }
+            }
+        });
         holder.mOrderCanLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +131,7 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView mCompName, mPrice, mLiters;
-        ImageView mCanImage;
+        ImageView mCanImage, mItemDsc;
         LinearLayout mOrderCanLL;
 
 
@@ -118,6 +142,7 @@ public class OrderCanAdapter extends RecyclerView.Adapter<OrderCanAdapter.MyView
             mLiters = v.findViewById(R.id.liters_);
             mCanImage = v.findViewById(R.id.image_);
             mOrderCanLL = v.findViewById(R.id.order_can_ll);
+            mItemDsc = v.findViewById(R.id.item_desc);
         }
 
     }

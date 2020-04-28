@@ -18,8 +18,8 @@ public class ApiClient extends Application {
     static Context Appcontext;
     static ApiInterface service;
 
-  //  public static final String BASE_URL ="http://192.168.43.179/DELAPI/";
-   public static final String BASE_URL ="https://delapi.shaikhomes.com/";
+    public static final String BASE_URL ="https://deliveryhub.shaikhomes.com/";
+  // public static final String BASE_URL ="https://delapi.shaikhomes.com/";
     private static Retrofit retrofit = null;
 
     @Override

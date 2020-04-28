@@ -2,6 +2,9 @@ package com.shaikhomes.watercan.model;
 
 public class OrderCalculationPojo {
     public String imageURL;
+    public String imageURL2;
+    public String imageURL3;
+    public String imageURL4;
     public String Name;
     public String Description;
     public String Price;
@@ -17,6 +20,30 @@ public class OrderCalculationPojo {
 
     public String getImageURL() {
         return imageURL;
+    }
+
+    public String getImageURL2() {
+        return imageURL2;
+    }
+
+    public void setImageURL2(String imageURL2) {
+        this.imageURL2 = imageURL2;
+    }
+
+    public String getImageURL3() {
+        return imageURL3;
+    }
+
+    public void setImageURL3(String imageURL3) {
+        this.imageURL3 = imageURL3;
+    }
+
+    public String getImageURL4() {
+        return imageURL4;
+    }
+
+    public void setImageURL4(String imageURL4) {
+        this.imageURL4 = imageURL4;
     }
 
     public void setImageURL(String imageURL) {

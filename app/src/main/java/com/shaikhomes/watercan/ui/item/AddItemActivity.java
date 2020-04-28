@@ -321,6 +321,9 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         mPostItem.setItemCompany("");
                         mPostItem.setItemId("");
                         mPostItem.setItemImage(mEncodedImage);
+                        mPostItem.setImage1(mEncodedImage2);
+                        mPostItem.setImage2(mEncodedImage3);
+                        mPostItem.setImage3(mEncodedImage4);
                         mPostItem.setItemName(mItemName.getText().toString().trim());
                         mPostItem.setItemPrice(mItemPrice.getText().toString().trim());
                         mPostItem.setItemQuantity("1");
@@ -369,14 +372,15 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                             mPostItem.setImage3(mEncodedImage4);
                             mPostItem.setUpdate("updateimage");
                         }
-                        mPostItem.setItemName(mItemName.getText().toString());
-                        mPostItem.setItemPrice(mItemPrice.getText().toString());
+                        mPostItem.setItemName(mItemName.getText().toString().trim());
+                        mPostItem.setItemPrice(mItemPrice.getText().toString().trim());
                         mPostItem.setItemQuantity("1");
-                        mPostItem.setItemSize(mItemUnits.getText().toString());
-                        mPostItem.setMinqty(mMinQty.getText().toString());
+                        mPostItem.setItemSize(mItemUnits.getText().toString().trim());
+                        mPostItem.setMinqty(mMinQty.getText().toString().trim());
                         mPostItem.setVendorAddress("");
                         mPostItem.setVendorId(tinyDB.getString(USER_ID));
                         mPostItem.setVendorName(tinyDB.getString(USER_NAME));
+                        mPostItem.setItemDescription(mItemDesc.getText().toString().trim());
                         mPostItem.setCategoryId(spinner_array_category.get(mCatSpinner.getSelectedItemPosition()).getId());
                         Call<PostResponsePojo> call = apiService.UpdateItemDetails(mPostItem);
                         call.enqueue(new Callback<PostResponsePojo>() {
