@@ -139,7 +139,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
             mItemDesc.setText(mEditPojo.getItemDescription());
             mItemCatId = mEditPojo.getCategoryId();
             mActive = mEditPojo.getItemActive();
-            String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getItemImage();
+            String imgUrl =  "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getItemImage();
             String imgUrl2 = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getImage1();
             String imgUrl3 = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getImage2();
             String imgUrl4 = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getImage3();
@@ -354,7 +354,6 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                             }
                         });
                     } else {
-
                         ItemPojo.Item mPostItem = new ItemPojo.Item();
                         mPostItem.setItemActive("True");
                         mPostItem.setItemCompany("");
