@@ -102,7 +102,7 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
         if (getIntent().getStringExtra("admin").equalsIgnoreCase("1")) {
             mAdminLL.setVisibility(View.VISIBLE);
         } else {
-            mAdminLL.setVisibility(View.VISIBLE);
+            mAdminLL.setVisibility(View.GONE);
         }
     }
 

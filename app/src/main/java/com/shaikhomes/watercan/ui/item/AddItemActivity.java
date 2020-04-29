@@ -611,7 +611,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                 Picasso.get().load(contentUri).resize(500, 500)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
-                        .centerCrop().transform(new RoundedTransformation()).into(mUploadImage);
+                        .centerCrop().transform(new RoundedTransformation()).into(mUploadImage2);
 
                 String encoded = null;
                 try {
@@ -637,7 +637,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                 Picasso.get().load(contentUri).resize(500, 500)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
-                        .centerCrop().transform(new RoundedTransformation()).into(mUploadImage);
+                        .centerCrop().transform(new RoundedTransformation()).into(mUploadImage3);
 
                 String encoded = null;
                 try {
@@ -663,7 +663,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                 Picasso.get().load(contentUri).resize(500, 500)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
-                        .centerCrop().transform(new RoundedTransformation()).into(mUploadImage);
+                        .centerCrop().transform(new RoundedTransformation()).into(mUploadImage4);
 
                 String encoded = null;
                 try {
