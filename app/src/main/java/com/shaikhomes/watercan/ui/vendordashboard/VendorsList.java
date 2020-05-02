@@ -69,6 +69,8 @@ public class VendorsList extends BaseActivity {
             public void onItemViewClick(UserRegistrationPojo.UserData response, int position) {
                 Intent mIntent = new Intent(VendorsList.this, ViewItemsActivity.class);
                 mIntent.putExtra("vendorid", response.getUserid());
+                mIntent.putExtra("vendorname", response.getUsername());
+                mIntent.putExtra("vendoraddress", response.getAddress());
                 startActivity(mIntent);
             }
         });

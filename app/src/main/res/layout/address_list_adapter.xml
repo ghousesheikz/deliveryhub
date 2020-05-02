@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/select_address_ll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/select_address_ll"
-    android:orientation="vertical">
+    android:layout_weight="1"
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/add_type"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lato_regular"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:layout_weight="0.9"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/add_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/lato_regular"
-        android:textColor="@color/darkgrey"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/add_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/add_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/darkgrey"
+            android:textSize="16sp" />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/delete_address"
+        android:scaleType="fitXY"
+        android:layout_width="@dimen/dimen_30dp"
+        android:layout_height="@dimen/dimen_30dp"
+        android:src="@drawable/ic_action_delete"
+        android:layout_gravity="center_vertical"/>
 </LinearLayout>

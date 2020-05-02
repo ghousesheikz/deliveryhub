@@ -91,6 +91,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     private ArrayList<Spinner_global_model> spinner_array_category;
     private ArrayAdapter<Spinner_global_model> adapter_spinner_category;
     private AppCompatButton mBtnActive, mBtnDeactive;
+    private String mVendorId = "", mVendorName = "", mVendorAddress = "";
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -131,6 +132,9 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
 
         if (getIntent().getStringExtra("edititem") != null) {
             mEditItem = getIntent().getStringExtra("edititem");
+            mVendorId = getIntent().getStringExtra("vendorid");
+            mVendorName = getIntent().getStringExtra("vendorname");
+            mVendorAddress = getIntent().getStringExtra("vendoraddress");
             mEditPojo = new Gson().fromJson(mEditItem, ItemPojo.Item.class);
             mItemName.setText(mEditPojo.getItemName());
             mItemPrice.setText(mEditPojo.getItemPrice());
@@ -139,7 +143,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
             mItemDesc.setText(mEditPojo.getItemDescription());
             mItemCatId = mEditPojo.getCategoryId();
             mActive = mEditPojo.getItemActive();
-            String imgUrl =  "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getItemImage();
+            String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getItemImage();
             String imgUrl2 = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getImage1();
             String imgUrl3 = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getImage2();
             String imgUrl4 = "http://delapi.shaikhomes.com/ImageStorage/" + mEditPojo.getImage3();
@@ -376,9 +380,15 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         mPostItem.setItemQuantity("1");
                         mPostItem.setItemSize(mItemUnits.getText().toString().trim());
                         mPostItem.setMinqty(mMinQty.getText().toString().trim());
-                        mPostItem.setVendorAddress("");
-                        mPostItem.setVendorId(tinyDB.getString(USER_ID));
-                        mPostItem.setVendorName(tinyDB.getString(USER_NAME));
+                        if (TextUtils.isEmpty(mVendorId)) {
+                            mPostItem.setVendorAddress("");
+                            mPostItem.setVendorId(tinyDB.getString(USER_ID));
+                            mPostItem.setVendorName(tinyDB.getString(USER_NAME));
+                        } else {
+                            mPostItem.setVendorAddress(mVendorAddress);
+                            mPostItem.setVendorId(mVendorId);
+                            mPostItem.setVendorName(mVendorName);
+                        }
                         mPostItem.setItemDescription(mItemDesc.getText().toString().trim());
                         mPostItem.setCategoryId(spinner_array_category.get(mCatSpinner.getSelectedItemPosition()).getId());
                         Call<PostResponsePojo> call = apiService.UpdateItemDetails(mPostItem);

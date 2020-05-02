@@ -66,11 +66,19 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.MyViewHo
             }
         });
 
+        holder.mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onItemDelete(mJoblist.get(position), position);
+            }
+        });
+
 
     }
 
     public interface OnItemClickListener {
         void onItemClick(AddressPojo response, int position);
+        void onItemDelete(AddressPojo response, int position);
     }
 
     @Override
@@ -89,13 +97,14 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.MyViewHo
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView mAddType, mAddDetails;
         LinearLayout mSelectAddress;
+        ImageView mDelete;
 
         public MyViewHolder(View v) {
             super(v);
             mAddType = v.findViewById(R.id.add_type);
             mAddDetails = v.findViewById(R.id.add_details);
             mSelectAddress = v.findViewById(R.id.select_address_ll);
-
+            mDelete = v.findViewById(R.id.delete_address);
         }
 
     }

@@ -2,10 +2,15 @@ package com.shaikhomes.watercan.ui.orders;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +19,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.model.OrderCalculationPojo;
+import com.shaikhomes.watercan.utility.MySpannable;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -52,6 +58,79 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
         return position;
     }
 
+    public static void makeTextViewResizable(final TextView tv, final int maxLine, final String expandText, final boolean viewMore) {
+
+        if (tv.getTag() == null) {
+            tv.setTag(tv.getText());
+        }
+        ViewTreeObserver vto = tv.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onGlobalLayout() {
+
+                ViewTreeObserver obs = tv.getViewTreeObserver();
+                obs.removeGlobalOnLayoutListener(this);
+                if (maxLine == 0) {
+                    int lineEndIndex = tv.getLayout().getLineEnd(0);
+                    String text = tv.getText().subSequence(0, lineEndIndex - expandText.length() + 1) + " " + expandText;
+                    tv.setText(text);
+                    tv.setMovementMethod(LinkMovementMethod.getInstance());
+                    tv.setText(
+                            addClickablePartTextViewResizable(Html.fromHtml(tv.getText().toString()), tv, maxLine, expandText,
+                                    viewMore), TextView.BufferType.SPANNABLE);
+                } else if (maxLine > 0 && tv.getLineCount() >= maxLine) {
+                    int lineEndIndex = tv.getLayout().getLineEnd(maxLine - 1);
+                    String text = tv.getText().subSequence(0, lineEndIndex - expandText.length() + 1) + " " + expandText;
+                    tv.setText(text);
+                    tv.setMovementMethod(LinkMovementMethod.getInstance());
+                    tv.setText(
+                            addClickablePartTextViewResizable(Html.fromHtml(tv.getText().toString()), tv, maxLine, expandText,
+                                    viewMore), TextView.BufferType.SPANNABLE);
+                } else {
+                    int lineEndIndex = tv.getLayout().getLineEnd(tv.getLayout().getLineCount() - 1);
+                    String text = tv.getText().subSequence(0, lineEndIndex) + " " + expandText;
+                    tv.setText(text);
+                    tv.setMovementMethod(LinkMovementMethod.getInstance());
+                    tv.setText(
+                            addClickablePartTextViewResizable(Html.fromHtml(tv.getText().toString()), tv, lineEndIndex, expandText,
+                                    viewMore), TextView.BufferType.SPANNABLE);
+                }
+            }
+        });
+
+    }
+
+    private static SpannableStringBuilder addClickablePartTextViewResizable(final Spanned strSpanned, final TextView tv,
+                                                                            final int maxLine, final String spanableText, final boolean viewMore) {
+        String str = strSpanned.toString();
+        SpannableStringBuilder ssb = new SpannableStringBuilder(strSpanned);
+
+        if (str.contains(spanableText)) {
+
+
+            ssb.setSpan(new MySpannable(false) {
+                @Override
+                public void onClick(View widget) {
+                    if (viewMore) {
+                        tv.setLayoutParams(tv.getLayoutParams());
+                        tv.setText(tv.getTag().toString(), TextView.BufferType.SPANNABLE);
+                        tv.invalidate();
+                        makeTextViewResizable(tv, -1, "View Less", false);
+                    } else {
+                        tv.setLayoutParams(tv.getLayoutParams());
+                        tv.setText(tv.getTag().toString(), TextView.BufferType.SPANNABLE);
+                        tv.invalidate();
+                        makeTextViewResizable(tv, 3, ".. View More", true);
+                    }
+                }
+            }, str.indexOf(spanableText), str.indexOf(spanableText) + spanableText.length(), 0);
+
+        }
+        return ssb;
+
+    }
 
     @Override
     public void onBindViewHolder(final OrderListAdapter.MyViewHolder holder, final int position) {
@@ -93,12 +172,18 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
             }
         }
         holder.mItemName.setText(mCanList.get(position).getName());
-        holder.mItemDesc.setText(mCanList.get(position).getDescription());
+
+        if(!TextUtils.isEmpty(mCanList.get(position).getDescription())) {
+            holder.mItemDesc.setText(mCanList.get(position).getDescription());
+            makeTextViewResizable(holder.mItemDesc, 2, "View More", true);
+        }else{
+            holder.mItemDesc.setText("Not Available");
+        }
         holder.mTxtDistributor.setText(mCanList.get(position).getVendorName());
         mCount = mCanList.get(position).getNoOfCans();
 
         holder.mCanCount.setText(String.valueOf(mCount));
-        holder.mCanAmt.setText("Amount : ₹" + mCanList.get(position).getUnitAmount());
+        holder.mCanAmt.setText("Price : ₹" + mCanList.get(position).getPrice());
         holder.mPlusCnt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,11 +229,36 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
             }
         });
 
-
+        holder.mCanImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onImageClick(mCanList.get(position), position, "1", holder.mCanImage);
+            }
+        });
+        holder.mCanImage2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onImageClick(mCanList.get(position), position, "2", holder.mCanImage2);
+            }
+        });
+        holder.mCanImage3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onImageClick(mCanList.get(position), position, "3", holder.mCanImage3);
+            }
+        });
+        holder.mCanImage4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onImageClick(mCanList.get(position), position, "4", holder.mCanImage4);
+            }
+        });
     }
 
     public interface OnItemClickListener {
         void onItemClick(List<OrderCalculationPojo> response, int position);
+
+        void onImageClick(OrderCalculationPojo response, int position, String imageno, ImageView imageView);
     }
 
     @Override

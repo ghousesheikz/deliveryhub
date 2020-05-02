@@ -7,7 +7,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="3dp"
         app:cardCornerRadius="8dp">
 
 
@@ -79,46 +79,17 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
 
-                <TextView
-
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:fontFamily="@font/lato_regular"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/dimen_5dp"
-                    android:text="Description : "
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/item_desc"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.4"
-                    android:fontFamily="@font/lato_regular"
-                    android:gravity="left"
-                    android:padding="@dimen/dimen_5dp"
-                    android:text="Vendor Name"
-                    android:textColor="@color/darker_gray"
-                    android:textSize="14sp" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="8dp">
 
                 <HorizontalScrollView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
                     android:layout_gravity="center"
                     android:background="@drawable/border_layout"
                     android:scrollbarSize="0dp"
@@ -133,8 +104,8 @@
 
                         <ImageView
                             android:id="@+id/image_"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:layout_width="270dp"
+                            android:layout_height="270dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="3dp"
                             android:layout_marginRight="3dp"
@@ -142,8 +113,8 @@
 
                         <ImageView
                             android:id="@+id/image_2"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:layout_width="270dp"
+                            android:layout_height="270dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="3dp"
                             android:layout_marginRight="3dp"
@@ -151,8 +122,8 @@
 
                         <ImageView
                             android:id="@+id/image_3"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:layout_width="270dp"
+                            android:layout_height="270dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="3dp"
                             android:layout_marginRight="3dp"
@@ -160,25 +131,84 @@
 
                         <ImageView
                             android:id="@+id/image_4"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:layout_width="270dp"
+                            android:layout_height="270dp"
                             android:layout_gravity="center"
                             android:layout_marginLeft="3dp"
                             android:layout_marginRight="3dp"
                             android:src="@drawable/ic_no_image" />
                     </LinearLayout>
                 </HorizontalScrollView>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:weightSum="3">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/dimen_5dp"
+                        android:text="Description : "
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/item_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.4"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="left"
+                        android:padding="@dimen/dimen_5dp"
+                        android:text="Vendor Name"
+                        android:textColor="@color/darker_gray"
+                        android:textSize="14sp" />
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_8dp"
+                    android:orientation="horizontal">
+
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
+                        android:layout_alignParentLeft="true"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txt_amt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="0.7"
+                                android:gravity="start"
+                                android:text="Amount :"
+                                android:textColor="@color/red"
+                                android:textSize="20sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -209,49 +239,8 @@
                             android:src="@drawable/ic_plus" />
 
                     </LinearLayout>
+                </RelativeLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.7"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/txt_amt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="bottom"
-                                android:layout_marginTop="15dp"
-                                android:layout_weight="0.7"
-                                android:gravity="end"
-                                android:text="Amount :"
-                                android:textColor="@color/red"
-                                android:textSize="20sp" />
-                        </LinearLayout>
-
-                        <com.airbnb.lottie.LottieAnimationView
-                            android:layout_width="0dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="0.3"
-                            android:padding="10dp"
-                            android:scaleType="fitCenter"
-                            android:visibility="gone"
-                            app:lottie_autoPlay="true"
-                            app:lottie_loop="true"
-                            app:lottie_rawRes="@raw/rupee"
-                            app:lottie_repeatCount="100"
-                            app:lottie_repeatMode="restart" />
-                    </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton

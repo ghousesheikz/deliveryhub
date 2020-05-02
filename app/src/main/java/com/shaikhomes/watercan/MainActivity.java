@@ -443,6 +443,30 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                     dialog.dismiss();
 
                 }
+
+                @Override
+                public void onItemDelete(AddressPojo response, int position) {
+                    JSONObject mJsonObject = null;
+                    JSONArray mJsonArray = null;
+                    mAddressList.remove(position);
+                    adapter.updateAdapter(mAddressList);
+                    try {
+                        for (int i = 0; i < adapter.getlist().size(); i++) {
+
+                            mJsonObject = new JSONObject(new Gson().toJson(adapter.getlist().get(i)));
+                            if (mJsonArray == null) {
+                                mJsonArray = new JSONArray();
+                            }
+                            mJsonArray.put(mJsonObject);
+
+                        }
+                        tinyDB.remove(ADDRESS_LIST);
+                        tinyDB.putString(ADDRESS_LIST, mJsonArray.toString());
+                        saveAddress(mJsonArray.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             });
             mRecyclerview.setAdapter(adapter);
             adapter.notifyDataSetChanged();
@@ -561,7 +585,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                 public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
                     PostResponsePojo mItemData = response.body();
                     if (mItemData.getStatus().equalsIgnoreCase("200")) {
-                        Toasty.success(MainActivity.this, "Address saved Successfully", Toasty.LENGTH_SHORT).show();
+                        Toasty.success(MainActivity.this, "Address updated Successfully", Toasty.LENGTH_SHORT).show();
 
                     }
                 }
@@ -817,9 +841,9 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
         }
     }
 
-    @Override
+   /* @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+      *//*  DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -838,6 +862,6 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                 }
             }, 2000);
             // dialog("Do you want to Logout?");
-        }
-    }
+        }*//*
+    }*/
 }

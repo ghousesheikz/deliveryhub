@@ -1,6 +1,7 @@
 package com.shaikhomes.watercan.ui.ordercalculation;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -16,9 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -53,11 +56,16 @@ import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PayuResponse;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
 import com.shaikhomes.watercan.pojo.SMSResponse;
+import com.shaikhomes.watercan.ui.item.AddItemActivity;
 import com.shaikhomes.watercan.ui.orders.OrderCanAdapter;
 import com.shaikhomes.watercan.ui.orders.OrderListAdapter;
 import com.shaikhomes.watercan.utility.AppEnvironment;
 import com.shaikhomes.watercan.utility.BaseApplication;
 import com.shaikhomes.watercan.utility.TinyDB;
+import com.shaikhomes.watercan.utility.ZoomableImageView;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,6 +83,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 
 import es.dmoral.toasty.Toasty;
@@ -287,6 +296,127 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                 }
                 mTxtWaterPrice.setText("₹ " + totAmt + " ");
                 getTotalAmt();
+            }
+
+            @Override
+            public void onImageClick(OrderCalculationPojo response, int position, String imageno, ImageView mImageView) {
+                final Dialog dialog = new Dialog(getActivity(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                dialog.setContentView(R.layout.dialog_layout);
+                dialog.setCancelable(false);
+                ZoomableImageView imageView = dialog.findViewById(R.id.image_display);
+                ImageView mImg1 = dialog.findViewById(R.id.img1);
+                ImageView mImg2 = dialog.findViewById(R.id.img2);
+                ImageView mImg3 = dialog.findViewById(R.id.img3);
+                ImageView mImg4 = dialog.findViewById(R.id.img4);
+                //imageView.setImageBitmap(bitmap);
+                String imgUrl3 = "";
+                if (imageno.equalsIgnoreCase("1")) {
+                    imgUrl3 = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL();
+                } else if (imageno.equalsIgnoreCase("2")) {
+                    imgUrl3 = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL2();
+                } else if (imageno.equalsIgnoreCase("3")) {
+                    imgUrl3 = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL3();
+                } else if (imageno.equalsIgnoreCase("4")) {
+                    imgUrl3 = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL4();
+                }
+                Picasso.get().load(imgUrl3)
+                        .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .into(imageView);
+                Picasso.get().load("http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL())
+                        .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .into(mImg1);
+                Picasso.get().load("http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL2())
+                        .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .into(mImg2);
+                Picasso.get().load("http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL3())
+                        .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .into(mImg3);
+                Picasso.get().load("http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL4())
+                        .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .networkPolicy(NetworkPolicy.NO_CACHE)
+                        .into(mImg4);
+                mImg1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String mImgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL();
+                        Picasso.get().load(mImgUrl)
+                                .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                .networkPolicy(NetworkPolicy.NO_CACHE)
+                                .into(imageView);
+                    }
+                });
+                mImg2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String mImgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL2();
+                        Picasso.get().load(mImgUrl)
+                                .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                .networkPolicy(NetworkPolicy.NO_CACHE)
+                                .into(imageView);
+                    }
+                });
+                mImg3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String mImgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL3();
+                        Picasso.get().load(mImgUrl)
+                                .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                .networkPolicy(NetworkPolicy.NO_CACHE)
+                                .into(imageView);
+                    }
+                });
+                mImg4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String mImgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL4();
+                        Picasso.get().load(mImgUrl)
+                                .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                .networkPolicy(NetworkPolicy.NO_CACHE)
+                                .into(imageView);
+                    }
+                });
+                Button button = dialog.findViewById(R.id.button_back);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                Objects.requireNonNull(dialog.getWindow()).getAttributes().windowAnimations = R.style.DialogAnimation_2;
+
+                dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+
+                    @Override
+                    public boolean onKey(DialogInterface arg0, int keyCode,
+                                         KeyEvent event) {
+
+                        if (keyCode == KeyEvent.KEYCODE_BACK) {
+                            try {
+                                dialog.dismiss();
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return true;
+                    }
+                });
+
+                dialog.show();
             }
 
         });

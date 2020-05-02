@@ -56,7 +56,7 @@ public class ViewItemsActivity extends BaseActivity {
     private TinyDB tinyDB;
     private ApiInterface apiService;
     List<ItemPojo.Item> mList;
-    private String mVendorId = "", mActive = "";
+    private String mVendorId = "", mActive = "",mVendorName="",mVendorAddress="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,8 @@ public class ViewItemsActivity extends BaseActivity {
         tinyDB = new TinyDB(this);
         if (getIntent().getStringExtra("vendorid") != null) {
             mVendorId = getIntent().getStringExtra("vendorid");
+            mVendorName = getIntent().getStringExtra("vendorname");
+            mVendorAddress = getIntent().getStringExtra("vendoraddress");
         } else {
             mVendorId = tinyDB.getString(USER_ID);
         }
@@ -89,6 +91,9 @@ public class ViewItemsActivity extends BaseActivity {
                         try {
                             Intent intent = new Intent(ViewItemsActivity.this, AddItemActivity.class);
                             intent.putExtra("edititem", new Gson().toJson(response));
+                            intent.putExtra("vendorid", mVendorId);
+                            intent.putExtra("vendorname", mVendorName);
+                            intent.putExtra("vendoraddress", mVendorAddress);
                             startActivity(intent);
 
 
