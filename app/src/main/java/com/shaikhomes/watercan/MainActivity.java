@@ -143,7 +143,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
             }
         });
         mBtmnavigation = (BottomNavigationView) findViewById(R.id.bottom_nav);
-        mBtmnavigation.getMenu().getItem(0).setCheckable(false);
+        mBtmnavigation.getMenu().getItem(0).setCheckable(true);
         mBtmnavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mAddressList = new ArrayList<>();
         fab.setVisibility(View.GONE);

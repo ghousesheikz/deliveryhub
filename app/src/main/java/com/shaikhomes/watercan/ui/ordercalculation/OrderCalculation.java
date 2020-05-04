@@ -320,27 +320,27 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                     imgUrl3 = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL4();
                 }
                 Picasso.get().load(imgUrl3)
-                        .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                        .placeholder(R.drawable.ic_loading_img).error(R.drawable.ic_no_image)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
                         .into(imageView);
                 Picasso.get().load("http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL())
-                        .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                        .placeholder(R.drawable.ic_loading_img).error(R.drawable.ic_no_image)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
                         .into(mImg1);
                 Picasso.get().load("http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL2())
-                        .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                        .placeholder(R.drawable.ic_loading_img).error(R.drawable.ic_no_image)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
                         .into(mImg2);
                 Picasso.get().load("http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL3())
-                        .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                        .placeholder(R.drawable.ic_loading_img).error(R.drawable.ic_no_image)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
                         .into(mImg3);
                 Picasso.get().load("http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL4())
-                        .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                        .placeholder(R.drawable.ic_loading_img).error(R.drawable.ic_no_image)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .networkPolicy(NetworkPolicy.NO_CACHE)
                         .into(mImg4);
@@ -349,7 +349,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                     public void onClick(View v) {
                         String mImgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL();
                         Picasso.get().load(mImgUrl)
-                                .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                                .placeholder(R.drawable.ic_loading_img).error(R.drawable.ic_no_image)
                                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                                 .networkPolicy(NetworkPolicy.NO_CACHE)
                                 .into(imageView);
@@ -360,7 +360,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                     public void onClick(View v) {
                         String mImgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL2();
                         Picasso.get().load(mImgUrl)
-                                .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                                .placeholder(R.drawable.ic_loading_img).error(R.drawable.ic_no_image)
                                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                                 .networkPolicy(NetworkPolicy.NO_CACHE)
                                 .into(imageView);
@@ -371,7 +371,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                     public void onClick(View v) {
                         String mImgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL3();
                         Picasso.get().load(mImgUrl)
-                                .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                                .placeholder(R.drawable.ic_loading_img).error(R.drawable.ic_no_image)
                                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                                 .networkPolicy(NetworkPolicy.NO_CACHE)
                                 .into(imageView);
@@ -382,7 +382,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                     public void onClick(View v) {
                         String mImgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + response.getImageURL4();
                         Picasso.get().load(mImgUrl)
-                                .placeholder(R.drawable.sand_clock).error(R.drawable.ic_no_image)
+                                .placeholder(R.drawable.ic_loading_img).error(R.drawable.ic_no_image)
                                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                                 .networkPolicy(NetworkPolicy.NO_CACHE)
                                 .into(imageView);

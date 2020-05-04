@@ -422,7 +422,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                 //imageView.setImageBitmap(bitmap);
 
                 Picasso.get().load(contentUri)
-                        .placeholder(R.drawable.sand_clock).error(R.drawable.warning)
+                        .placeholder(R.drawable.ic_loading_img).error(R.drawable.warning)
                         //.resize(500, 500)
                         //.centerCrop()
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
