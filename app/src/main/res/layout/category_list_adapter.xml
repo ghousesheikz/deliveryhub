@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp">
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
 
     <RelativeLayout
         android:id="@+id/category_"
@@ -33,6 +33,7 @@
             android:fontFamily="@font/lato_regular"
             android:gravity="center"
             android:lines="2"
+            android:textSize="10sp"
             android:text="Category\nMenu"
             android:textColor="@color/black" />
 

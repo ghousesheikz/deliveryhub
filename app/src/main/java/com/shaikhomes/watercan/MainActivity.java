@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -122,7 +123,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
     private List<AddressPojo> mAddressList;
     SMSResponse getData;
     boolean doubleBackToExitPressedOnce = false;
-
+    BottomNavigationView mBtmnavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +142,9 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                         .setAction("Action", null).show();
             }
         });
+        mBtmnavigation = (BottomNavigationView) findViewById(R.id.bottom_nav);
+        mBtmnavigation.getMenu().getItem(0).setCheckable(false);
+        mBtmnavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mAddressList = new ArrayList<>();
         fab.setVisibility(View.GONE);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -842,6 +846,28 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
             // TODO: do something with the feed
         }
     }
+
+    public BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.item0:
+                    item.setCheckable(true);
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_home);
+                    return true;
+                case R.id.item3:
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_order_cal);
+                    return true;
+                case R.id.item4:
+                    Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_myorders);
+
+                    return true;
+            }
+            return false;
+        }
+    };
 
    /* @Override
     public void onBackPressed() {

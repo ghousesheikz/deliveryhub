@@ -80,4 +80,9 @@
     <string name="item_description">Item Description</string>
     <string name="vendors_list">Vendors List</string>
     <string name="dashboard">Dashboard</string>
+    <string name="menu_cart">My Cart</string>
+    <string name="menu_profile">My Profile</string>
+    <string name="menu_fav">Favourites</string>
+    <string name="menu_dashboard">Home</string>
+    <string name="menu_orders">My Orders</string>
 </resources>

@@ -84,7 +84,7 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
         viewpager.setAdapter(sliderAdapter);
 
         GridLayoutManager
-                mGridLayoutManager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.HORIZONTAL, false);
+                mGridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.HORIZONTAL, false);
         // mGridLayoutManager.setSpanSizeLookup(onSpanSizeLookup);
         mRecyclerview.setHasFixedSize(true);
         mRecyclerview.setItemViewCacheSize(20);
