@@ -35,6 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.shaikhomes.watercan.utility.AppConstants.CAT_ID;
 import static com.shaikhomes.watercan.utility.UtilityConstants.ORDER_CAN_LIST;
 
 /**
@@ -50,18 +51,19 @@ public class OrderCan extends Fragment {
     private JSONObject jsonObject;
     private JSONArray jsonArray;
     private TinyDB tinyDB;
-    private String mVendoprId="";
+    private String mVendoprId = "";
 
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "CAT_ID";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private ApiInterface apiService;
+    private String mCatId = "";
 
     public OrderCan() {
         // Required empty public constructor
@@ -71,10 +73,7 @@ public class OrderCan extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static OrderCan newInstance(String param1, String param2) {
         OrderCan fragment = new OrderCan();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -83,6 +82,7 @@ public class OrderCan extends Fragment {
         super.onCreate(savedInstanceState);
         tinyDB = new TinyDB(getActivity());
         apiService = ApiClient.getClient(getActivity()).create(ApiInterface.class);
+        mCatId = tinyDB.getString(CAT_ID);
 
     }
 
@@ -118,24 +118,24 @@ public class OrderCan extends Fragment {
                 mPojo.setVendorName(response.getVendorName());
                 mPojo.setMinQty(response.getMinqty());
                 mPojo.setCategoryId(response.getCategoryId());
-                if(TextUtils.isEmpty(response.getItemDescription())){
+                if (TextUtils.isEmpty(response.getItemDescription())) {
                     mPojo.setDescription("");
-                }else{
+                } else {
                     mPojo.setDescription(response.getItemDescription());
                 }
-                if(TextUtils.isEmpty(response.getImage1())){
+                if (TextUtils.isEmpty(response.getImage1())) {
                     mPojo.setImageURL2("");
-                }else{
+                } else {
                     mPojo.setImageURL2(response.getImage1());
                 }
-                if(TextUtils.isEmpty(response.getImage2())){
+                if (TextUtils.isEmpty(response.getImage2())) {
                     mPojo.setImageURL3("");
-                }else{
+                } else {
                     mPojo.setImageURL3(response.getImage2());
                 }
-                if(TextUtils.isEmpty(response.getImage3())){
+                if (TextUtils.isEmpty(response.getImage3())) {
                     mPojo.setImageURL4("");
-                }else{
+                } else {
                     mPojo.setImageURL4(response.getImage3());
                 }
 
@@ -178,7 +178,7 @@ public class OrderCan extends Fragment {
                     }
                     if (mFilterList.size() > 0) {
                         mAdapter.updateAdapter(mFilterList);
-                    }else{
+                    } else {
                         mAdapter.updateAdapter(mFilterList);
                     }
                 }
@@ -186,7 +186,12 @@ public class OrderCan extends Fragment {
         });
         mCatRecyclerview.setAdapter(mCatAdapter);
         mCatAdapter.notifyDataSetChanged();
-        getCategoryDetails("");
+        //getCategoryDetails("");
+        if (mCatId.equalsIgnoreCase("-1")) {
+            getAllItemData();
+        } else {
+            getItemData();
+        }
         // Inflate the layout for this fragment
         return view;
     }
@@ -194,10 +199,42 @@ public class OrderCan extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getItemData();
+
     }
 
     private void getItemData() {
+        try {
+            Call<ItemPojo> call = apiService.GetItemListByCategory(mCatId, "");
+            call.enqueue(new Callback<ItemPojo>() {
+                @Override
+                public void onResponse(Call<ItemPojo> call, Response<ItemPojo> response) {
+                    ItemPojo mItemData = response.body();
+                    if (mItemData.getStatus().equalsIgnoreCase("200")) {
+                        if (mItemData.getItemList() != null) {
+                            if (mItemData.getItemList().size() > 0) {
+                                if (mList.size() > 0) {
+                                    mList.clear();
+                                }
+                                mList = mItemData.getItemList();
+                                mAdapter.updateAdapter(mItemData.getItemList());
+                            }
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ItemPojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void getAllItemData() {
         try {
             Call<ItemPojo> call = apiService.GetItemList("", "True");
             call.enqueue(new Callback<ItemPojo>() {

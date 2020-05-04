@@ -22,4 +22,7 @@
     <color name="full_transparent">#005b5b5b</color>
     <color name="red">#DA2C63</color>
     <color name="green">#59CF0F</color>
+    <color name="cyan">#64FFDA</color>
+    <color name="darkviolet">#7C4DFF</color>
+    <color name="pale_blue">#8FB0E7</color>
 </resources>

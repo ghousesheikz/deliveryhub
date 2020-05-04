@@ -79,4 +79,5 @@
     <string name="category_name">Category Name</string>
     <string name="item_description">Item Description</string>
     <string name="vendors_list">Vendors List</string>
+    <string name="dashboard">Dashboard</string>
 </resources>

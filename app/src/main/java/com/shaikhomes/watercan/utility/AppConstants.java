@@ -4,6 +4,7 @@ public class AppConstants {
     public final static String USER_MOBILE = "user_mobile";
     public final static String IS_ADMIN = "is_admin";
     public final static String USER_ID = "user_id";
+    public final static String CAT_ID = "category_id";
     public final static String USER_NAME = "user_name";
     public final static String OTP_ENABLED = "otp_enabled";
     public final static String LOGIN_ENABLED = "login_enabled";

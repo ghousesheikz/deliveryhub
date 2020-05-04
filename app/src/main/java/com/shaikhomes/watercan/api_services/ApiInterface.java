@@ -31,6 +31,9 @@ public interface ApiInterface {
     @GET("api/ItemMaster?")
     Call<ItemPojo> GetItemList(@Query("vendorid") String vendorid, @Query("active") String active);
 
+    @GET("api/ItemFilter?")
+    Call<ItemPojo> GetItemListByCategory(@Query("categoryid") String categoryid, @Query("active") String active);
+
     @POST("api/OrderMaster?")
     Call<PostResponsePojo> PostOrder(@Body OrderDelivery.OrderList item);
 

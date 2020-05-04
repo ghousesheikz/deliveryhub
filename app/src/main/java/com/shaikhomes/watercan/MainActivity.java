@@ -123,12 +123,14 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
     SMSResponse getData;
     boolean doubleBackToExitPressedOnce = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         tinyDB = new TinyDB(this);
         FloatingActionButton fab = findViewById(R.id.fab_search);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -372,7 +374,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                         args.putString("ARG_PARAM2", "arguments");
                         tinyDB.remove(DELIVERY_TYPE);
                         tinyDB.putString(DELIVERY_TYPE, "instant");
-                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_insta_services, args);
+                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_userdashboard, args);
                     } else {
                         tinyDB.remove(DELIVERY_TYPE);
                         tinyDB.putString(DELIVERY_TYPE, "instant");
@@ -393,7 +395,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                         args1.putString("ARG_PARAM2", "arguments");
                         tinyDB.remove(DELIVERY_TYPE);
                         tinyDB.putString(DELIVERY_TYPE, "schedule");
-                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_insta_services, args1);
+                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_userdashboard, args1);
                     } else {
                         tinyDB.remove(DELIVERY_TYPE);
                         tinyDB.putString(DELIVERY_TYPE, "schedule");
