@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/category_img"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_margin="5dp"
             android:adjustViewBounds="true"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/category_img"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="0dp"
             android:fontFamily="@font/lato_regular"
             android:gravity="center"
             android:lines="2"
