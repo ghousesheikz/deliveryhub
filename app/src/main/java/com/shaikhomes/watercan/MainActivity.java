@@ -858,9 +858,11 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                     Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_home);
                     return true;
                 case R.id.item3:
+                    behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_order_cal);
                     return true;
                 case R.id.item4:
+                    behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_myorders);
 
                     return true;
