@@ -120,7 +120,7 @@
                     android:layout_weight="0.4"
                     android:padding="8dp"
                     android:gravity="end"
-                    android:text="₹100/-"
+                    android:text="₹0/-"
                     android:textSize="17sp" />
             </LinearLayout>
 
@@ -201,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
                     android:padding="8dp"
-                    android:text="₹100/-"
+                    android:text="₹0/-"
                     android:gravity="end"
                     android:textColor="@color/black"
                     android:textSize="16sp"
@@ -352,7 +352,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="110/-"
+                android:text="₹0/-"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
