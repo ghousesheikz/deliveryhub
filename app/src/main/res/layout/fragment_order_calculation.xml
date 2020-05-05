@@ -262,7 +262,7 @@
                     android:id="@+id/txt_address_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Home"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="17sp"
                     android:textStyle="bold" />
@@ -271,7 +271,7 @@
                     android:id="@+id/txt_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="20/504,YSM Street, Madras Road,Kadapa,516001"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="17sp"
                     android:textStyle="normal" />

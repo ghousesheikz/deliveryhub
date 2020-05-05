@@ -13,5 +13,6 @@ public class AppConstants {
     public final static String ADDRESS_LIST = "address_list";
     public final static String ORDER_DATA = "order_data";
     public final static String VENDOR_ID = "vendor_id";
+    public final static String VENDOR_INFO = "vendor_info";
 
 }

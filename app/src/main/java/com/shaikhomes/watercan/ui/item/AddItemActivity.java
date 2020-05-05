@@ -338,8 +338,6 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         mPostItem.setVendorId(tinyDB.getString(USER_ID));
                         mPostItem.setVendorName(tinyDB.getString(USER_NAME));
                         mPostItem.setCategoryId(spinner_array_category.get(mCatSpinner.getSelectedItemPosition()).getId());
-
-
                         Call<PostResponsePojo> call = apiService.PostItem(mPostItem);
                         call.enqueue(new Callback<PostResponsePojo>() {
                             @Override
@@ -470,6 +468,9 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         mItemUnits.setText("");
         mMinQty.setText("");
         mUploadImage.setImageResource(R.drawable.ic_photo_camera);
+        mUploadImage2.setImageResource(R.drawable.ic_photo_camera);
+        mUploadImage3.setImageResource(R.drawable.ic_photo_camera);
+        mUploadImage4.setImageResource(R.drawable.ic_photo_camera);
     }
 
     private void dialogforChoice() {
