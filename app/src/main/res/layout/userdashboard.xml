@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="#33D3D3D3"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#33D3D3D3">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -83,7 +83,6 @@
             android:orientation="horizontal">
 
 
-
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
                 android:layout_height="100dp"
@@ -94,6 +93,11 @@
                 app:cardBackgroundColor="@color/darkviolet"
                 app:cardCornerRadius="10dp">
 
+                <ImageView
+                    android:id="@+id/adv_img1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -106,7 +110,13 @@
                 app:cardBackgroundColor="@color/button_green"
                 app:cardCornerRadius="10dp">
 
+                <ImageView
+                    android:id="@+id/adv_img2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
                 android:layout_height="100dp"
@@ -117,7 +127,13 @@
                 app:cardBackgroundColor="@color/cyan"
                 app:cardCornerRadius="10dp">
 
+                <ImageView
+                    android:id="@+id/adv_img3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
                 android:layout_height="100dp"
@@ -128,6 +144,11 @@
                 app:cardBackgroundColor="@color/pale_blue"
                 app:cardCornerRadius="10dp">
 
+                <ImageView
+                    android:id="@+id/adv_img4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </HorizontalScrollView>

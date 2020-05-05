@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,8 +15,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.asksira.loopingviewpager.LoopingViewPager;
+import com.bumptech.glide.Glide;
 import com.shaikhomes.watercan.DashboardAdapter;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.api_services.ApiClient;
@@ -45,7 +48,11 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
     private RecyclerView mRecyclerview;
     private LoopingViewPager viewpager;
     private SliderAdapter sliderAdapter;
-
+    ImageView mAdv_img1, mAdv_img2, mAdv_img3, mAdv_img4;
+    String mImgUrl1= "http://images.shaikhomes.com/subadvimages/adv_slider1.jpg";
+    String mImgUrl2= "http://images.shaikhomes.com/subadvimages/adv_slider2.jpg";
+    String mImgUrl3= "http://images.shaikhomes.com/subadvimages/adv_slider3.jpg";
+    String mImgUrl4= "http://images.shaikhomes.com/subadvimages/adv_slider4.jpg";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +82,10 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.userdashboard, container, false);
         mRecyclerview = view.findViewById(R.id.dashboard_menu);
+        mAdv_img1 = view.findViewById(R.id.adv_img1);
+        mAdv_img2 = view.findViewById(R.id.adv_img2);
+        mAdv_img3 = view.findViewById(R.id.adv_img3);
+        mAdv_img4 = view.findViewById(R.id.adv_img4);
         viewpager = view.findViewById(R.id.viewpager);
         sliderAdapter = new SliderAdapter(getActivity(), mImageList, new SliderAdapter.ClickTopSlider() {
             @Override
@@ -92,6 +103,31 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
         mRecyclerview.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new DashboardAdapter(mImageList, mCatList, this);
         mRecyclerview.setAdapter(mAdapter);
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(getActivity());
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        int[] COLORS = new int[]{
+                getActivity().getResources().getColor(R.color.colorPrimaryDark),
+                getActivity().getResources().getColor(R.color.red)
+        };
+        circularProgressDrawable.setColorSchemeColors(COLORS);
+        circularProgressDrawable.start();
+        Glide.with(getActivity()).load(mImgUrl1)
+                .placeholder(circularProgressDrawable)
+                .error(R.drawable.ic_no_image)
+                .fitCenter().into(mAdv_img1);
+        Glide.with(getActivity()).load(mImgUrl2)
+                .placeholder(circularProgressDrawable)
+                .error(R.drawable.ic_no_image)
+                .fitCenter().into(mAdv_img2);
+        Glide.with(getActivity()).load(mImgUrl3)
+                .placeholder(circularProgressDrawable)
+                .error(R.drawable.ic_no_image)
+                .fitCenter().into(mAdv_img3);
+        Glide.with(getActivity()).load(mImgUrl4)
+                .placeholder(circularProgressDrawable)
+                .error(R.drawable.ic_no_image)
+                .fitCenter().into(mAdv_img4);
         return view;
     }
 
