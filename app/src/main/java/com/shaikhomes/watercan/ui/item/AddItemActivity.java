@@ -248,7 +248,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         dialog.dismiss();
                         Intent intent = new Intent();
                         intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);//
+                        intent.setAction(Intent.ACTION_PICK);//
                         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE2);
                     }
                 }).create().show();
@@ -261,7 +261,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         dialog.dismiss();
                         Intent intent = new Intent();
                         intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);//
+                        intent.setAction(Intent.ACTION_PICK);//
                         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE3);
                     }
                 }).create().show();
@@ -274,7 +274,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         dialog.dismiss();
                         Intent intent = new Intent();
                         intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);//
+                        intent.setAction(Intent.ACTION_PICK);//
                         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE4);
                     }
                 }).create().show();
@@ -521,7 +521,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                 dialog.dismiss();
                 Intent intent = new Intent();
                 intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);//
+                intent.setAction(Intent.ACTION_PICK);//
                 startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
             }
         }).create().show();
