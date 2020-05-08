@@ -583,7 +583,8 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         if (requestCode == SELECT_FILE && resultCode == RESULT_OK) {
             if (data != null) {
                 contentUri = null;
-                File f = new File(getPath(this, data.getData()));
+                Uri selectedImageUri = data.getData();
+                File f = new File(getImagePath(selectedImageUri));
                 contentUri = Uri.fromFile(f);
                 Bitmap encoded_new = null;
                 try {
@@ -609,7 +610,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         } else if (requestCode == SELECT_FILE2 && resultCode == RESULT_OK) {
             if (data != null) {
                 contentUri = null;
-                File f = new File(getPath(this, data.getData()));
+                File f = new File(getImagePath( data.getData()));
                 contentUri = Uri.fromFile(f);
                 Bitmap encoded_new = null;
                 try {
@@ -635,7 +636,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         } else if (requestCode == SELECT_FILE3 && resultCode == RESULT_OK) {
             if (data != null) {
                 contentUri = null;
-                File f = new File(getPath(this, data.getData()));
+                File f = new File(getImagePath( data.getData()));
                 contentUri = Uri.fromFile(f);
                 Bitmap encoded_new = null;
                 try {
@@ -661,7 +662,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         } else if (requestCode == SELECT_FILE4 && resultCode == RESULT_OK) {
             if (data != null) {
                 contentUri = null;
-                File f = new File(getPath(this, data.getData()));
+                File f = new File(getImagePath(data.getData()));
                 contentUri = Uri.fromFile(f);
                 Bitmap encoded_new = null;
                 try {
@@ -685,6 +686,30 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                 }
             }
         }
+    }
+
+
+
+    public String getImagePath(Uri uri) {
+        // just some safety built in
+        if( uri == null ) {
+            // TODO perform some logging or show user feedback
+            return null;
+        }
+        // try to retrieve the image from the media store first
+        // this will only work for images selected from gallery
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if( cursor != null ){
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(column_index);
+            cursor.close();
+            return path;
+        }
+        // this is our fallback here
+        return uri.getPath();
     }
 
     public static String getPath(final Context context, final Uri uri) {
