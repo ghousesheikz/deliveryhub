@@ -291,7 +291,9 @@ public class ModifyOffers extends BaseActivity implements View.OnClickListener {
             if (TextUtils.isEmpty(mEncodedImage)) {
                 Toasty.error(ModifyOffers.this, "Please click image", Toasty.LENGTH_SHORT).show();
             } else {
+                dialog.dismiss();
                 mData.setType(type);
+                mData.setImage(mEncodedImage);
                 UpdateOfferStatus(mData);
             }
         });
