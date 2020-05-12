@@ -374,7 +374,7 @@ public class ModifyOffers extends BaseActivity implements View.OnClickListener {
                         getAdvList();
                         Toasty.success(ModifyOffers.this, "Image Updated Successfully", Toast.LENGTH_SHORT, true).show();
                     } else {
-                        Toasty.success(ModifyOffers.this, pojo.getMessage(), Toast.LENGTH_SHORT, true).show();
+                        Toasty.error(ModifyOffers.this, pojo.getMessage(), Toast.LENGTH_SHORT, true).show();
 
                     }
             }
