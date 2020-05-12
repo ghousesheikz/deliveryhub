@@ -19,18 +19,22 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.asksira.loopingviewpager.LoopingViewPager;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.shaikhomes.watercan.DashboardAdapter;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.api_services.ApiClient;
 import com.shaikhomes.watercan.api_services.ApiInterface;
 import com.shaikhomes.watercan.interfaces.DashboardOnClick;
 import com.shaikhomes.watercan.pojo.CategoryPojo;
+import com.shaikhomes.watercan.pojo.DeliveryhubOffersPojo;
+import com.shaikhomes.watercan.ui.admin.ModifyOffers;
 import com.shaikhomes.watercan.utility.SliderAdapter;
 import com.shaikhomes.watercan.utility.TinyDB;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,14 +53,18 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
     private LoopingViewPager viewpager;
     private SliderAdapter sliderAdapter;
     ImageView mAdv_img1, mAdv_img2, mAdv_img3, mAdv_img4;
-    String mImgUrl1= "http://images.shaikhomes.com/subadvimages/adv_slider1.jpg";
-    String mImgUrl2= "http://images.shaikhomes.com/subadvimages/adv_slider2.jpg";
-    String mImgUrl3= "http://images.shaikhomes.com/subadvimages/adv_slider3.jpg";
-    String mImgUrl4= "http://images.shaikhomes.com/subadvimages/adv_slider4.jpg";
+    String mImgUrl1 = "http://images.shaikhomes.com/subadvimages/adv_slider1.jpg";
+    String mImgUrl2 = "http://images.shaikhomes.com/subadvimages/adv_slider2.jpg";
+    String mImgUrl3 = "http://images.shaikhomes.com/subadvimages/adv_slider3.jpg";
+    String mImgUrl4 = "http://images.shaikhomes.com/subadvimages/adv_slider4.jpg";
+    List<DeliveryhubOffersPojo.OffersList> mOfferList;
+    List<DeliveryhubOffersPojo.OffersList> mAdvList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mOfferList = new ArrayList<>();
+        mAdvList = new ArrayList<>();
         tinyDB = new TinyDB(getActivity());
         apiService = ApiClient.getClient(getActivity()).create(ApiInterface.class);
         mImageList = new ArrayList<>();
@@ -68,6 +76,7 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
         mImageList.add("http://images.shaikhomes.com/shoppingimages/slider_5.jpg");
         mImageList.add("http://images.shaikhomes.com/shoppingimages/slider_6.jpg");
         getCategoryDetails();
+
     }
 
     private final GridLayoutManager.SpanSizeLookup onSpanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
@@ -87,12 +96,7 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
         mAdv_img3 = view.findViewById(R.id.adv_img3);
         mAdv_img4 = view.findViewById(R.id.adv_img4);
         viewpager = view.findViewById(R.id.viewpager);
-        sliderAdapter = new SliderAdapter(getActivity(), mImageList, new SliderAdapter.ClickTopSlider() {
-            @Override
-            public void onClick(int position, int catID) {
-            }
-        });
-        viewpager.setAdapter(sliderAdapter);
+
 
         GridLayoutManager
                 mGridLayoutManager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.HORIZONTAL, false);
@@ -112,22 +116,8 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
         };
         circularProgressDrawable.setColorSchemeColors(COLORS);
         circularProgressDrawable.start();
-        Glide.with(getActivity()).load(mImgUrl1)
-                .placeholder(circularProgressDrawable)
-                .error(R.drawable.ic_no_image)
-                .fitCenter().into(mAdv_img1);
-        Glide.with(getActivity()).load(mImgUrl2)
-                .placeholder(circularProgressDrawable)
-                .error(R.drawable.ic_no_image)
-                .fitCenter().into(mAdv_img2);
-        Glide.with(getActivity()).load(mImgUrl3)
-                .placeholder(circularProgressDrawable)
-                .error(R.drawable.ic_no_image)
-                .fitCenter().into(mAdv_img3);
-        Glide.with(getActivity()).load(mImgUrl4)
-                .placeholder(circularProgressDrawable)
-                .error(R.drawable.ic_no_image)
-                .fitCenter().into(mAdv_img4);
+        getAdvList();
+        getOffersData();
         return view;
     }
 
@@ -180,5 +170,107 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
 
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_insta_services);
 
+    }
+
+
+    private void getAdvList() {
+        try {
+            Call<DeliveryhubOffersPojo> call = apiService.GetAppOffers("adv");
+            call.enqueue(new Callback<DeliveryhubOffersPojo>() {
+                @Override
+                public void onResponse(Call<DeliveryhubOffersPojo> call, Response<DeliveryhubOffersPojo> response) {
+                    DeliveryhubOffersPojo mPojo = response.body();
+                    if (mPojo.getStatus().equalsIgnoreCase("200")) {
+                        for (int i = 0; i < mPojo.getOffersList().size(); i++) {
+                            mAdvList.add(mPojo.getOffersList().get(i));
+                        }
+                        sliderAdapter = new SliderAdapter(getActivity(), mImageList, new SliderAdapter.ClickTopSlider() {
+                            @Override
+                            public void onClick(int position, int catID) {
+                            }
+                        });
+                        viewpager.setAdapter(sliderAdapter);
+
+                    } else {
+                        Toasty.error(getActivity(), mPojo.getMessage(), Toasty.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DeliveryhubOffersPojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void getOffersData() {
+        try {
+            Call<DeliveryhubOffersPojo> call = apiService.GetAppOffers("offer");
+            call.enqueue(new Callback<DeliveryhubOffersPojo>() {
+                @Override
+                public void onResponse(Call<DeliveryhubOffersPojo> call, Response<DeliveryhubOffersPojo> response) {
+                    DeliveryhubOffersPojo mPojo = response.body();
+                    if (mPojo.getStatus().equalsIgnoreCase("200")) {
+                        for (int i = 0; i < mPojo.getOffersList().size(); i++) {
+                            mOfferList.add(mPojo.getOffersList().get(i));
+                        }
+                        if (mOfferList.size() > 0) {
+                            fillImageData();
+                        }
+                    } else {
+                        Toasty.error(getActivity(), mPojo.getMessage(), Toasty.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DeliveryhubOffersPojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void fillImageData() {
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(getActivity());
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        int[] COLORS = new int[]{
+                getResources().getColor(R.color.colorPrimaryDark),
+                getResources().getColor(R.color.red)
+        };
+        circularProgressDrawable.setColorSchemeColors(COLORS);
+        circularProgressDrawable.start();
+
+        Glide.with(getActivity()).load("http://delapi.shaikhomes.com/Offers/" + mOfferList.get(0).getImage())
+                .placeholder(circularProgressDrawable)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .error(R.drawable.ic_no_image)
+                .fitCenter().into(mAdv_img1);
+        Glide.with(getActivity()).load("http://delapi.shaikhomes.com/Offers/" + mOfferList.get(1).getImage())
+                .placeholder(circularProgressDrawable)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .error(R.drawable.ic_no_image)
+                .fitCenter().into(mAdv_img2);
+        Glide.with(getActivity()).load("http://delapi.shaikhomes.com/Offers/" + mOfferList.get(2).getImage())
+                .placeholder(circularProgressDrawable)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .error(R.drawable.ic_no_image)
+                .fitCenter().into(mAdv_img3);
+        Glide.with(getActivity()).load("http://delapi.shaikhomes.com/Offers/" + mOfferList.get(3).getImage())
+                .placeholder(circularProgressDrawable)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .error(R.drawable.ic_no_image)
+                .fitCenter().into(mAdv_img4);
     }
 }

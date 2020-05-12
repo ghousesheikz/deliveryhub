@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.asksira.loopingviewpager.LoopingPagerAdapter;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.pojo.TopBar;
 
@@ -56,6 +57,8 @@ public class SliderAdapter extends LoopingPagerAdapter<String> {
         circularProgressDrawable.start();
         Glide.with(convertView.getContext()).load(itemList.get(listPosition))
                 .placeholder(circularProgressDrawable)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .error(R.drawable.ic_no_image)
                 .fitCenter().into(imageView);
 

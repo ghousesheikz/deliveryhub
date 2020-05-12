@@ -33,6 +33,7 @@ import com.shaikhomes.watercan.MainActivity;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.SignUpActivity;
 import com.shaikhomes.watercan.ui.addcategories.AddCategories;
+import com.shaikhomes.watercan.ui.admin.ModifyOffers;
 import com.shaikhomes.watercan.ui.customercare.CustomerCareActivity;
 import com.shaikhomes.watercan.ui.item.AddItemActivity;
 import com.shaikhomes.watercan.ui.item.ViewItemsActivity;
@@ -50,11 +51,11 @@ import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
 
 public class VendorDashboard extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     TinyDB tinyDB;
-    RelativeLayout mAddItem, mAddEmployee, mViewItems, mMyOrders, mAddCat,mVendorsList;
+    RelativeLayout mAddItem, mAddEmployee, mViewItems, mMyOrders, mAddCat, mVendorsList, mModifyOffers;
     private View navView;
     private TextView mUserName, mUserNumber;
     boolean doubleBackToExitPressedOnce = false;
-    LinearLayout mAdminLL;
+    LinearLayout mAdminLL, mAdmin2LL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +93,11 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
         mAddItem = findViewById(R.id.add_tems_ll);
         mMyOrders = findViewById(R.id.my_orders_ll);
         mAdminLL = findViewById(R.id.admin1_ll);
+        mAdmin2LL = findViewById(R.id.admin2_ll);
         mAddCat = findViewById(R.id.add_cat_ll);
         mVendorsList = findViewById(R.id.vendors_list);
+        mModifyOffers = findViewById(R.id.modify_offer_ll);
+        mModifyOffers.setOnClickListener(this);
         mVendorsList.setOnClickListener(this);
         mMyOrders.setOnClickListener(this);
         mAddItem.setOnClickListener(this);
@@ -101,8 +105,10 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
         mAddCat.setOnClickListener(this);
         if (getIntent().getStringExtra("admin").equalsIgnoreCase("1")) {
             mAdminLL.setVisibility(View.VISIBLE);
+            mAdmin2LL.setVisibility(View.VISIBLE);
         } else {
             mAdminLL.setVisibility(View.GONE);
+            mAdmin2LL.setVisibility(View.GONE);
         }
     }
 
@@ -166,6 +172,9 @@ public class VendorDashboard extends AppCompatActivity implements View.OnClickLi
             startActivity(intent);
         } else if (v.getId() == R.id.vendors_list) {
             Intent intent = new Intent(VendorDashboard.this, VendorsList.class);
+            startActivity(intent);
+        } else if (v.getId() == R.id.modify_offer_ll) {
+            Intent intent = new Intent(VendorDashboard.this, ModifyOffers.class);
             startActivity(intent);
         }
     }

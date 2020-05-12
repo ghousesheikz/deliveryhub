@@ -25,6 +25,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
+        <activity android:name=".ui.admin.ModifyOffers"></activity>
         <activity
             android:name=".ui.vendordashboard.VendorsList"
             android:label="@string/vendors_list"
