@@ -35,6 +35,9 @@ public interface ApiInterface {
     @GET("api/ItemFilter?")
     Call<ItemPojo> GetItemListByCategory(@Query("categoryid") String categoryid, @Query("active") String active);
 
+    @GET("api/UpdateItem?")
+    Call<ItemPojo> GetItemListBySearch(@Query("itemname") String itemname, @Query("active") String active);
+
     @POST("api/OrderMaster?")
     Call<PostResponsePojo> PostOrder(@Body OrderDelivery.OrderList item);
 

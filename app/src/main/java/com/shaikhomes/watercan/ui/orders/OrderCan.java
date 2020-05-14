@@ -60,7 +60,7 @@ public class OrderCan extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private static String mParam1 = "";
     private String mParam2;
     private ApiInterface apiService;
     private String mCatId = "";
@@ -71,9 +71,9 @@ public class OrderCan extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static OrderCan newInstance(String param1, String param2) {
+    public static OrderCan newInstance(String Search) {
         OrderCan fragment = new OrderCan();
-
+        mParam1 = Search;
         return fragment;
     }
 
@@ -187,13 +187,47 @@ public class OrderCan extends Fragment {
         mCatRecyclerview.setAdapter(mCatAdapter);
         mCatAdapter.notifyDataSetChanged();
         //getCategoryDetails("");
-        if (mCatId.equalsIgnoreCase("-1")) {
+        if (!TextUtils.isEmpty(mParam1)) {
+            getSearchItemData();
+        } else if (mCatId.equalsIgnoreCase("-1")) {
             getAllItemData();
         } else {
             getItemData();
         }
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void getSearchItemData() {
+        try {
+            Call<ItemPojo> call = apiService.GetItemListBySearch(mParam1, "True");
+            call.enqueue(new Callback<ItemPojo>() {
+                @Override
+                public void onResponse(Call<ItemPojo> call, Response<ItemPojo> response) {
+                    ItemPojo mItemData = response.body();
+                    if (mItemData.getStatus().equalsIgnoreCase("200")) {
+                        if (mItemData.getItemList() != null) {
+                            if (mItemData.getItemList().size() > 0) {
+                                if (mList.size() > 0) {
+                                    mList.clear();
+                                }
+                                mList = mItemData.getItemList();
+                                mAdapter.updateAdapter(mItemData.getItemList());
+                            }
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ItemPojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override

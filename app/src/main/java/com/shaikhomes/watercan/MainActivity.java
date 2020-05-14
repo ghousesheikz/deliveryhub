@@ -2,6 +2,8 @@ package com.shaikhomes.watercan;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -47,12 +50,14 @@ import com.shaikhomes.watercan.ui.BottomSheetView;
 import com.shaikhomes.watercan.ui.address.AddressAdapter;
 import com.shaikhomes.watercan.ui.logout.LogoutFragment;
 import com.shaikhomes.watercan.ui.ordercalculation.OrderCalculation;
+import com.shaikhomes.watercan.ui.orders.OrderCan;
 import com.shaikhomes.watercan.ui.venodrorderdetails.UpdateOrderDetailsActivity;
 import com.shaikhomes.watercan.utility.TinyDB;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
@@ -252,12 +257,55 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
     }
 
 
-    /* @Override
-     public boolean onCreateOptionsMenu(Menu menu) {
-         // Inflate the menu; this adds items to the action bar if it is present.
-         getMenuInflater().inflate(R.menu.main, menu);
-         return true;
-     }*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.action_search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
+        }
+        SearchView finalSearchView = searchView;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                if (!finalSearchView.isIconified()) {
+                    finalSearchView.setIconified(true);
+                }
+                searchItem.collapseActionView();
+                if (!TextUtils.isEmpty(query)) {
+                    if (!TextUtils.isEmpty(tinyDB.getString(USER_ADDRESS))) {
+                        if (!TextUtils.isEmpty(tinyDB.getString(DELIVERY_TYPE))) {
+                            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            OrderCan.newInstance(query);
+                            Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_insta_services);
+                        } else {
+                            Toasty.info(MainActivity.this,"Please select address",Toasty.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toasty.info(MainActivity.this,"Please select delivery type",Toasty.LENGTH_SHORT).show();
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
     public static final String LOGOUT_TAG = "LOGOUT_TAG";
     /*@Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

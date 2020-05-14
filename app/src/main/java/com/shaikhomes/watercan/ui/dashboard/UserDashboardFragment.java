@@ -1,14 +1,21 @@
 package com.shaikhomes.watercan.ui.dashboard;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -20,7 +27,9 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import com.asksira.loopingviewpager.LoopingViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.shaikhomes.watercan.DashboardAdapter;
+import com.shaikhomes.watercan.MainActivity;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.api_services.ApiClient;
 import com.shaikhomes.watercan.api_services.ApiInterface;
@@ -28,6 +37,7 @@ import com.shaikhomes.watercan.interfaces.DashboardOnClick;
 import com.shaikhomes.watercan.pojo.CategoryPojo;
 import com.shaikhomes.watercan.pojo.DeliveryhubOffersPojo;
 import com.shaikhomes.watercan.ui.admin.ModifyOffers;
+import com.shaikhomes.watercan.ui.orders.OrderCan;
 import com.shaikhomes.watercan.utility.SliderAdapter;
 import com.shaikhomes.watercan.utility.TinyDB;
 
@@ -63,6 +73,7 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         mOfferList = new ArrayList<>();
         mAdvList = new ArrayList<>();
         tinyDB = new TinyDB(getActivity());
@@ -171,6 +182,8 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_insta_services);
 
     }
+
+
 
 
     private void getAdvList() {
