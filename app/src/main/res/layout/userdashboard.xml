@@ -1,165 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#33D3D3D3">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:attrs="http://schemas.android.com/tools"
-        android:id="@+id/card_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="150dp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:background="@drawable/curve_one"
-            android:scaleType="centerCrop" />
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/parent_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="7dp">
-
-            <com.asksira.loopingviewpager.LoopingViewPager
-                android:id="@+id/viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:autoScroll="true"
-                app:isInfinite="false"
-                app:scrollInterval="2000"
-                app:viewpagerAspectRatio="2.0"
-                app:wrap_content="true" />
-
-        </androidx.cardview.widget.CardView>
-
-        <com.rd.PageIndicatorView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/parent_viewpager"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
-            android:elevation="7.1dp"
-            android:foregroundGravity="center"
-            android:padding="5dp"
-            app:piv_animationType="worm"
-            app:piv_dynamicCount="true"
-            app:piv_interactiveAnimation="true"
-            app:piv_selectedColor="@color/colorPrimaryDark"
-            app:piv_unselectedColor="@color/full_transparent"
-            app:piv_viewPager="@id/viewpager"
-            attrs:piv_padding="6dp"
-            attrs:piv_radius="2dp" />
-
-    </RelativeLayout>
-
-    <HorizontalScrollView
-        android:id="@+id/show_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/card_ll"
-        android:scrollbarSize="0dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="200dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="5dp"
-                app:cardBackgroundColor="@color/darkviolet"
-                app:cardCornerRadius="10dp">
-
-                <ImageView
-                    android:id="@+id/adv_img1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="200dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="5dp"
-                app:cardBackgroundColor="@color/button_green"
-                app:cardCornerRadius="10dp">
-
-                <ImageView
-                    android:id="@+id/adv_img2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="200dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="5dp"
-                app:cardBackgroundColor="@color/cyan"
-                app:cardCornerRadius="10dp">
-
-                <ImageView
-                    android:id="@+id/adv_img3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="200dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="5dp"
-                app:cardBackgroundColor="@color/pale_blue"
-                app:cardCornerRadius="10dp">
-
-                <ImageView
-                    android:id="@+id/adv_img4"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY" />
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-    </HorizontalScrollView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dashboard_menu"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/show_ll"
-        android:foregroundGravity="center"
-        android:padding="@dimen/dimen_8dp" />
+        android:orientation="vertical">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:attrs="http://schemas.android.com/tools"
+            android:id="@+id/card_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="@drawable/curve_one"
+                android:scaleType="centerCrop" />
 
 
-</RelativeLayout>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/parent_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="7dp">
+
+                <com.asksira.loopingviewpager.LoopingViewPager
+                    android:id="@+id/viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:autoScroll="true"
+                    app:isInfinite="false"
+                    app:scrollInterval="2000"
+                    app:viewpagerAspectRatio="2.0"
+                    app:wrap_content="true" />
+
+            </androidx.cardview.widget.CardView>
+
+            <com.rd.PageIndicatorView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/parent_viewpager"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="8dp"
+                android:elevation="7.1dp"
+                android:foregroundGravity="center"
+                android:padding="5dp"
+                app:piv_animationType="worm"
+                app:piv_dynamicCount="true"
+                app:piv_interactiveAnimation="true"
+                app:piv_selectedColor="@color/colorPrimaryDark"
+                app:piv_unselectedColor="@color/full_transparent"
+                app:piv_viewPager="@id/viewpager"
+                attrs:piv_padding="6dp"
+                attrs:piv_radius="2dp" />
+
+        </RelativeLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/show_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_ll"
+            android:scrollbarSize="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardBackgroundColor="@color/darkviolet"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:id="@+id/adv_img1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardBackgroundColor="@color/button_green"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:id="@+id/adv_img2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardBackgroundColor="@color/cyan"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:id="@+id/adv_img3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardBackgroundColor="@color/pale_blue"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:id="@+id/adv_img4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dashboard_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/show_ll"
+            android:foregroundGravity="center"
+            android:padding="@dimen/dimen_8dp" />
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

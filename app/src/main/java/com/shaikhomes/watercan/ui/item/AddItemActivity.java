@@ -87,9 +87,11 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     private String mEditItem = "";
     private ItemPojo.Item mEditPojo;
     private List<CategoryPojo.CategoryDetail> mList;
-    private Spinner mCatSpinner;
+    private Spinner mCatSpinner, mUnitsSpinner;
     private ArrayList<Spinner_global_model> spinner_array_category;
+    private ArrayList<Spinner_global_model> spinner_array_units;
     private ArrayAdapter<Spinner_global_model> adapter_spinner_category;
+    private ArrayAdapter<Spinner_global_model> adapter_spinner_units;
     private AppCompatButton mBtnActive, mBtnDeactive;
     private String mVendorId = "", mVendorName = "", mVendorAddress = "";
 
@@ -103,6 +105,15 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mList = new ArrayList<>();
         spinner_array_category = new ArrayList<>();
+        spinner_array_units = new ArrayList<>();
+        spinner_array_units.add(new Spinner_global_model("-1", "Select Units"));
+        spinner_array_units.add(new Spinner_global_model("0", "Kgs"));
+        spinner_array_units.add(new Spinner_global_model("1", "Ltrs"));
+        spinner_array_units.add(new Spinner_global_model("2", "Pcs"));
+        spinner_array_units.add(new Spinner_global_model("3", "gms"));
+        spinner_array_units.add(new Spinner_global_model("4", "ml"));
+        spinner_array_units.add(new Spinner_global_model("3", "crates"));
+
         spinner_array_category.add(new Spinner_global_model("-1", "Select Category"));
         mUploadImage = findViewById(R.id.upload_image);
         mUploadImage.setOnClickListener(this);
@@ -130,6 +141,11 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         adapter_spinner_category.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCatSpinner.setAdapter(adapter_spinner_category);
 
+        mUnitsSpinner = findViewById(R.id.spn_itemunits);
+        adapter_spinner_units = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, spinner_array_units);
+        adapter_spinner_units.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mUnitsSpinner.setAdapter(adapter_spinner_units);
+
         if (getIntent().getStringExtra("edititem") != null) {
             mEditItem = getIntent().getStringExtra("edititem");
             mVendorId = getIntent().getStringExtra("vendorid");
@@ -139,6 +155,11 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
             mItemName.setText(mEditPojo.getItemName());
             mItemPrice.setText(mEditPojo.getItemPrice());
             mItemUnits.setText(mEditPojo.getItemSize());
+            for (int i = 0; i < spinner_array_units.size(); i++) {
+                if (spinner_array_units.get(i).getName().equalsIgnoreCase(mEditPojo.getItemSize())) {
+                    mUnitsSpinner.setSelection(i);
+                }
+            }
             mMinQty.setText(mEditPojo.getMinqty());
             mItemDesc.setText(mEditPojo.getItemDescription());
             mItemCatId = mEditPojo.getCategoryId();
@@ -308,7 +329,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                     Toasty.error(AddItemActivity.this, "Please enter item name", Toasty.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mItemPrice.getText().toString())) {
                     Toasty.error(AddItemActivity.this, "Please enter item price", Toasty.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(mItemUnits.getText().toString())) {
+                } else if (spinner_array_units.get(mUnitsSpinner.getSelectedItemPosition()).getId().equalsIgnoreCase("-1")) {
                     Toasty.error(AddItemActivity.this, "Please enter item units", Toasty.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mMinQty.getText().toString())) {
                     Toasty.error(AddItemActivity.this, "Please enter item min quantity", Toasty.LENGTH_SHORT).show();
@@ -331,7 +352,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         mPostItem.setItemName(mItemName.getText().toString().trim());
                         mPostItem.setItemPrice(mItemPrice.getText().toString().trim());
                         mPostItem.setItemQuantity("1");
-                        mPostItem.setItemSize(mItemUnits.getText().toString().trim());
+                        mPostItem.setItemSize(spinner_array_units.get(mUnitsSpinner.getSelectedItemPosition()).getName());
                         mPostItem.setMinqty(mMinQty.getText().toString().trim());
                         mPostItem.setVendorAddress("");
                         mPostItem.setItemDescription(mItemDesc.getText().toString().trim());
@@ -376,7 +397,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         mPostItem.setItemName(mItemName.getText().toString().trim());
                         mPostItem.setItemPrice(mItemPrice.getText().toString().trim());
                         mPostItem.setItemQuantity("1");
-                        mPostItem.setItemSize(mItemUnits.getText().toString().trim());
+                        mPostItem.setItemSize(spinner_array_units.get(mUnitsSpinner.getSelectedItemPosition()).getName());
                         mPostItem.setMinqty(mMinQty.getText().toString().trim());
                         if (TextUtils.isEmpty(mVendorId)) {
                             mPostItem.setVendorAddress("");
@@ -610,7 +631,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         } else if (requestCode == SELECT_FILE2 && resultCode == RESULT_OK) {
             if (data != null) {
                 contentUri = null;
-                File f = new File(getImagePath( data.getData()));
+                File f = new File(getImagePath(data.getData()));
                 contentUri = Uri.fromFile(f);
                 Bitmap encoded_new = null;
                 try {
@@ -636,7 +657,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         } else if (requestCode == SELECT_FILE3 && resultCode == RESULT_OK) {
             if (data != null) {
                 contentUri = null;
-                File f = new File(getImagePath( data.getData()));
+                File f = new File(getImagePath(data.getData()));
                 contentUri = Uri.fromFile(f);
                 Bitmap encoded_new = null;
                 try {
@@ -689,18 +710,17 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     }
 
 
-
     public String getImagePath(Uri uri) {
         // just some safety built in
-        if( uri == null ) {
+        if (uri == null) {
             // TODO perform some logging or show user feedback
             return null;
         }
         // try to retrieve the image from the media store first
         // this will only work for images selected from gallery
-        String[] projection = { MediaStore.Images.Media.DATA };
+        String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        if( cursor != null ){
+        if (cursor != null) {
             int column_index = cursor
                     .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();

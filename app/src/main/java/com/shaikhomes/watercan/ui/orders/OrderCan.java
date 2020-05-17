@@ -187,10 +187,10 @@ public class OrderCan extends Fragment {
         mCatRecyclerview.setAdapter(mCatAdapter);
         mCatAdapter.notifyDataSetChanged();
         //getCategoryDetails("");
-        if (!TextUtils.isEmpty(mParam1)) {
-            getSearchItemData();
-        } else if (mCatId.equalsIgnoreCase("-1")) {
+        if (mCatId.equalsIgnoreCase("-1")) {
             getAllItemData();
+        } else if (!TextUtils.isEmpty(mParam1)) {
+            getSearchItemData();
         } else {
             getItemData();
         }

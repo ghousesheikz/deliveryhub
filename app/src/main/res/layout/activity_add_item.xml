@@ -81,7 +81,18 @@
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkgrey"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"
+                    android:visibility="gone" />
+
+                <Spinner
+                    android:id="@+id/spn_itemunits"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/edit_text_background" />
 
                 <EditText
                     android:id="@+id/edt_minqty"
@@ -146,9 +157,9 @@
                         android:visibility="gone" />
 
                     <HorizontalScrollView
-                        android:scrollbarSize="0dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:scrollbarSize="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"

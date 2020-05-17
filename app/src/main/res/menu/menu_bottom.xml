@@ -5,12 +5,6 @@
         android:icon="@drawable/ic_home_btm"
         android:title="@string/menu_dashboard" />
 
-    <item
-        android:id="@+id/item1"
-        android:visible="false"
-        android:icon="@drawable/ic_shortlist_btm"
-        android:title="@string/menu_fav" />
-
 
     <item
         android:id="@+id/item3"
@@ -20,5 +14,8 @@
         android:id="@+id/item4"
         android:icon="@drawable/ic_my_orders_menu"
         android:title="@string/menu_orders" />
-
+    <item
+        android:id="@+id/item5"
+        android:icon="@drawable/ic_stores_icon"
+        android:title="@string/stores" />
 </menu>
