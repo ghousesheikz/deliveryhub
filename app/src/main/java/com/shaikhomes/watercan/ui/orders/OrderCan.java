@@ -82,7 +82,7 @@ public class OrderCan extends Fragment {
         super.onCreate(savedInstanceState);
         tinyDB = new TinyDB(getActivity());
         apiService = ApiClient.getClient(getActivity()).create(ApiInterface.class);
-        mCatId = tinyDB.getString(CAT_ID);
+        //  mCatId = tinyDB.getString(CAT_ID);
 
     }
 
@@ -187,20 +187,23 @@ public class OrderCan extends Fragment {
         mCatRecyclerview.setAdapter(mCatAdapter);
         mCatAdapter.notifyDataSetChanged();
         //getCategoryDetails("");
-        if (mCatId.equalsIgnoreCase("-1")) {
-            getAllItemData();
-        } else if (!TextUtils.isEmpty(mParam1)) {
-            getSearchItemData();
-        } else {
-            getItemData();
+        if (tinyDB.getString(CAT_ID).split("__")[0].equalsIgnoreCase("SEA")) {
+            getSearchItemData(tinyDB.getString(CAT_ID).split("__")[1]);
+        }
+        if (tinyDB.getString(CAT_ID).split("__")[0].equalsIgnoreCase("CAT")) {
+            if (tinyDB.getString(CAT_ID).split("__")[1].equalsIgnoreCase("-1")) {
+                getAllItemData();
+            } else {
+                getItemData(tinyDB.getString(CAT_ID).split("__")[1]);
+            }
         }
         // Inflate the layout for this fragment
         return view;
     }
 
-    private void getSearchItemData() {
+    private void getSearchItemData(String query) {
         try {
-            Call<ItemPojo> call = apiService.GetItemListBySearch(mParam1, "True");
+            Call<ItemPojo> call = apiService.GetItemListBySearch(query, "True");
             call.enqueue(new Callback<ItemPojo>() {
                 @Override
                 public void onResponse(Call<ItemPojo> call, Response<ItemPojo> response) {
@@ -236,9 +239,9 @@ public class OrderCan extends Fragment {
 
     }
 
-    private void getItemData() {
+    private void getItemData(String catid) {
         try {
-            Call<ItemPojo> call = apiService.GetItemListByCategory(mCatId, "");
+            Call<ItemPojo> call = apiService.GetItemListByCategory(catid, "");
             call.enqueue(new Callback<ItemPojo>() {
                 @Override
                 public void onResponse(Call<ItemPojo> call, Response<ItemPojo> response) {

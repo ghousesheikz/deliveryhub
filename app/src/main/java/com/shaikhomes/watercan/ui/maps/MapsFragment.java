@@ -152,12 +152,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onPause() {
         super.onPause();
+
         try {
             //stop location updates when Activity is no longer active
             if (mGoogleApiClient != null) {
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             }
-
         } catch (IllegalStateException e) {
             e.printStackTrace();
         } catch (Exception e) {

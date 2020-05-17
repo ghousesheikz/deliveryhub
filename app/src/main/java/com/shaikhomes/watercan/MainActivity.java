@@ -95,6 +95,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.shaikhomes.watercan.utility.AppConstants.ADDRESS_LIST;
+import static com.shaikhomes.watercan.utility.AppConstants.CAT_ID;
 import static com.shaikhomes.watercan.utility.AppConstants.DELIVERY_TYPE;
 import static com.shaikhomes.watercan.utility.AppConstants.LOGIN_ENABLED;
 import static com.shaikhomes.watercan.utility.AppConstants.ORDER_DATA;
@@ -286,13 +287,14 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                     if (!TextUtils.isEmpty(tinyDB.getString(USER_ADDRESS))) {
                         if (!TextUtils.isEmpty(tinyDB.getString(DELIVERY_TYPE))) {
                             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                            OrderCan.newInstance(query);
+                            tinyDB.remove(CAT_ID);
+                            tinyDB.putString(CAT_ID, "SEA__" + query);
                             Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_insta_services);
                         } else {
-                            Toasty.info(MainActivity.this,"Please select address",Toasty.LENGTH_SHORT).show();
+                            Toasty.info(MainActivity.this, "Please select address", Toasty.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toasty.info(MainActivity.this,"Please select delivery type",Toasty.LENGTH_SHORT).show();
+                        Toasty.info(MainActivity.this, "Please select delivery type", Toasty.LENGTH_SHORT).show();
                     }
                 }
                 return false;

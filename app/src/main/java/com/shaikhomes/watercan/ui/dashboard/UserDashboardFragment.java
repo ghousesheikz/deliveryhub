@@ -177,13 +177,11 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
     @Override
     public void onItemClick(CategoryPojo.CategoryDetail categoryDetail, int position) {
         tinyDB.remove(CAT_ID);
-        tinyDB.putString(CAT_ID, categoryDetail.getId());
+        tinyDB.putString(CAT_ID, "CAT__" + categoryDetail.getId());
 
         Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_insta_services);
 
     }
-
-
 
 
     private void getAdvList() {

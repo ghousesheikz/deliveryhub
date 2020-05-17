@@ -271,7 +271,9 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
 
         String mAddress = tinyDB.getString(USER_ADDRESS);
         AddressPojo mAddPojo = new Gson().fromJson(mAddress, AddressPojo.class);
-        mTxtAddressType.setText(mAddPojo.getAddressType());
+        if (mAddPojo!= null) {
+            mTxtAddressType.setText(mAddPojo.getAddressType());
+        }
         if (mAddPojo != null) {
             if (!mAddPojo.getLandmark().equalsIgnoreCase("NO")) {
                 mTxtAddress.setText(mAddPojo.getFlatNumber() + ", " + mAddPojo.getApartmentName() + ", " + mAddPojo.getLandmark() + ", " + mAddPojo.getAreaName() + ", " + mAddPojo.getCityName());
