@@ -55,36 +55,42 @@
                     android:src="@drawable/ic_close_white" />
             </RelativeLayout>
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/inp_ll"
-                android:layout_below="@id/header_ll"
                 android:background="@drawable/texture_background"
-                android:orientation="vertical"
-                android:paddingTop="15dp">
+                android:layout_above="@id/inp_ll"
+                android:layout_below="@id/header_ll">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Note : You can enter only one query in this chat.\n Please entyer your query in one message"
-                    android:textColor="@color/darkgrey" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/chat_msg_list"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:paddingTop="15dp">
 
-                    />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Note : You can enter only one query in this chat.\n Please entyer your query in one message"
+                        android:textColor="@color/darkgrey" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/chat_msg_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+
+                        />
+                </LinearLayout>
+            </ScrollView>
 
             <RelativeLayout
                 android:id="@+id/inp_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_marginBottom="3dp"
                 android:orientation="horizontal"
                 android:padding="5dp"
                 android:weightSum="1">
@@ -99,7 +105,9 @@
                     android:maxLength="2000"
                     android:maxLines="4"
                     android:padding="@dimen/dimen_8dp"
-                    android:paddingLeft="5dp" />
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btn_send"
@@ -109,6 +117,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:backgroundTint="@color/colorPrimaryDark"
                     android:src="@android:drawable/ic_menu_send"
                     app:fabSize="mini" />
             </RelativeLayout>
