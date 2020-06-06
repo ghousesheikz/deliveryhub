@@ -129,10 +129,9 @@ public class AdminQueries extends AppCompatActivity {
         final int chatsize = mChatList.size();
         final Dialog dialog = new Dialog(AdminQueries.this, R.style.Theme_AppCompat_DayNight_Dialog);
         dialog.setCancelable(true);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.queries_dialog);
         Window window = dialog.getWindow();
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
         EditText mChatMsg = dialog.findViewById(R.id.edt_msg);

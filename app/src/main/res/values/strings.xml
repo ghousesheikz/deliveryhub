@@ -88,5 +88,5 @@
     <string name="search_hint">Search Item</string>
     <string name="stores">Stores</string>
     <string name="my_queries">My Queries</string>
-    <string name="chat_with_us">Chat with us</string>
+    <string name="chat_with_us">Ask Queries</string>
 </resources>

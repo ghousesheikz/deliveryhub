@@ -132,18 +132,20 @@ public class UserQueries extends Fragment {
         final int chatsize = mChatList.size();
         final Dialog dialog = new Dialog(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog);
         dialog.setCancelable(true);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.queries_dialog);
         Window window = dialog.getWindow();
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
         EditText mChatMsg = dialog.findViewById(R.id.edt_msg);
         FloatingActionButton mFabSend = dialog.findViewById(R.id.btn_send);
         ImageView mCloseBtn = dialog.findViewById(R.id.close_dialog);
+        ImageView mCallBtn = dialog.findViewById(R.id.call_dialog);
         mCloseBtn.setOnClickListener(v -> {
             dialog.dismiss();
-            getQueryData();
+        });
+        mCallBtn.setOnClickListener(v->{
+
         });
         RecyclerView mRecyclerview = dialog.findViewById(R.id.chat_msg_list);
         ChatAdapter mAdapter = new ChatAdapter(getActivity(), mChatList);
