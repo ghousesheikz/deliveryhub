@@ -18,8 +18,8 @@ public class ApiClient extends Application {
     static Context Appcontext;
     static ApiInterface service;
 
-  //  public static final String BASE_URL ="https://deliveryhub.shaikhomes.com/";
-   public static final String BASE_URL ="https://delapi.shaikhomes.com/";
+    public static final String BASE_URL = "https://deliveryhub.shaikhomes.com/";
+    //  public static final String BASE_URL ="https://delapi.shaikhomes.com/";
     private static Retrofit retrofit = null;
 
     @Override
@@ -31,15 +31,14 @@ public class ApiClient extends Application {
     public static Retrofit getClient(Context context) {
         if (retrofit == null) {
             OkHttpClient client = new OkHttpClient.Builder()
-
                     .connectTimeout(90, TimeUnit.SECONDS)
                     .readTimeout(90, TimeUnit.SECONDS)
                     .writeTimeout(90, TimeUnit.SECONDS)
                     .build();
             retrofit = new Retrofit.Builder().client(client).baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().excludeFieldsWithoutExposeAnnotation() .create()))
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
                     .build();
-          //  Log.e("String url", BASE_URL);
+            //  Log.e("String url", BASE_URL);
         }
         return retrofit;
     }

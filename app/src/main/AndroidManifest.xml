@@ -25,7 +25,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.admin.ModifyOffers"></activity>
+        <activity
+            android:name=".AdminDashboard"
+            android:label="@string/app_name"
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.adminqueries.AdminQueries" />
+        <activity android:name=".ui.userquery.UserQueries" />
+        <activity android:name=".ui.admin.ModifyOffers" />
         <activity
             android:name=".ui.vendordashboard.VendorsList"
             android:label="@string/vendors_list"
@@ -133,8 +140,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-
     </application>
 
 </manifest>

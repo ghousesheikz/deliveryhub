@@ -116,34 +116,34 @@ public class AddCategories extends BaseActivity implements View.OnClickListener 
                 break;
             case R.id.btn_submit:
 
-                if (TextUtils.isEmpty(mEncodedImage) ) {
+                if (TextUtils.isEmpty(mEncodedImage)) {
                     Toasty.error(AddCategories.this, "Please click Image", Toasty.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mItemName.getText().toString())) {
                     Toasty.error(AddCategories.this, "Please enter category name", Toasty.LENGTH_SHORT).show();
                 } else {
 
-                        CategoryPojo.CategoryDetail mPostItem = new CategoryPojo.CategoryDetail();
-                        mPostItem.setCategoryImage(mEncodedImage);
-                        mPostItem.setCategoryName(mItemName.getText().toString());
+                    CategoryPojo.CategoryDetail mPostItem = new CategoryPojo.CategoryDetail();
+                    mPostItem.setCategoryImage(mEncodedImage);
+                    mPostItem.setCategoryName(mItemName.getText().toString());
 
-                        Call<PostResponsePojo> call = apiService.PostCategories(mPostItem);
-                        call.enqueue(new Callback<PostResponsePojo>() {
-                            @Override
-                            public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
+                    Call<PostResponsePojo> call = apiService.PostCategories(mPostItem);
+                    call.enqueue(new Callback<PostResponsePojo>() {
+                        @Override
+                        public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
 
-                                PostResponsePojo pojo = response.body();
-                                if (pojo != null)
-                                    if (pojo.getStatus().equalsIgnoreCase("200")) {
+                            PostResponsePojo pojo = response.body();
+                            if (pojo != null)
+                                if (pojo.getStatus().equalsIgnoreCase("200")) {
 
-                                        Toasty.success(AddCategories.this, "Item Added Successfully", Toast.LENGTH_SHORT, true).show();
-                                    }
-                            }
+                                    Toasty.success(AddCategories.this, "Item Added Successfully", Toast.LENGTH_SHORT, true).show();
+                                }
+                        }
 
-                            @Override
-                            public void onFailure(Call<PostResponsePojo> call, Throwable t) {
-                            }
-                        });
-                    }
+                        @Override
+                        public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+                        }
+                    });
+                }
 
 
                 break;
@@ -222,6 +222,7 @@ public class AddCategories extends BaseActivity implements View.OnClickListener 
         byte[] b = baos.toByteArray();
         return Base64.encodeToString(b, Base64.DEFAULT);
     }
+
     public static String getPath(final Context context, final Uri uri) {
 
         // check here to KITKAT or new version
@@ -393,4 +394,9 @@ public class AddCategories extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

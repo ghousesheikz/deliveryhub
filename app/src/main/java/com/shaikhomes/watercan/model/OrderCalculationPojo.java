@@ -1,6 +1,7 @@
 package com.shaikhomes.watercan.model;
 
 public class OrderCalculationPojo {
+    public String itemid;
     public String imageURL;
     public String imageURL2;
     public String imageURL3;
@@ -144,5 +145,13 @@ public class OrderCalculationPojo {
 
     public void setDescription(String description) {
         Description = description;
+    }
+
+    public String getItemid() {
+        return itemid;
+    }
+
+    public void setItemid(String itemid) {
+        this.itemid = itemid;
     }
 }

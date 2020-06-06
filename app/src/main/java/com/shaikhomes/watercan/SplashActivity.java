@@ -80,7 +80,7 @@ public class SplashActivity extends BaseActivity {
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Intent intent = new Intent(SplashActivity.this, VendorDashboard.class);
+                                                Intent intent = new Intent(SplashActivity.this, AdminDashboard.class);
                                                 intent.putExtra("admin","1");
                                                 startActivity(intent);
                                                 finish();

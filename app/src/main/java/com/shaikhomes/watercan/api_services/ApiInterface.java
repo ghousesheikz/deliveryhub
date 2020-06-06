@@ -10,6 +10,7 @@ import com.shaikhomes.watercan.pojo.PostResponsePojo;
 import com.shaikhomes.watercan.pojo.UpdateOrderPojo;
 import com.shaikhomes.watercan.pojo.UpdateWalletPojo;
 import com.shaikhomes.watercan.pojo.UserRegistrationPojo;
+import com.shaikhomes.watercan.ui.ordercalculation.ItemQueriesPojo;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -79,6 +80,13 @@ public interface ApiInterface {
 
     @POST("api/AppOffers?")
     Call<PostResponsePojo> UpdateOffers(@Body DeliveryhubOffersPojo.OffersList updateOrderPojo);
+
+    @POST("api/ItemQueries?")
+    Call<PostResponsePojo> PostItemQuery(@Body ItemQueriesPojo.QueryList postquery);
+
+    @GET("api/ItemQueries?")
+    Call<ItemQueriesPojo> getQueries(@Query("vendorid") String vendorid, @Query("userid") String userid, @Query("querydate") String querydate,@Query("flag") String flag);
+
 
   /*  @POST("api/LeadsRegistration")
     Call<PostResponsePojo> PostLeads(@Body AddLeadsPojo writeoffPost);

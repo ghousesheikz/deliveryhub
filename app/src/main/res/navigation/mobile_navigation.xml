@@ -72,4 +72,10 @@
         android:label="@string/logout"
         tools:layout="@layout/logout_dialog" />
 
+    <fragment
+        android:id="@+id/nav_queries"
+        android:name="com.shaikhomes.watercan.ui.userquery.UserQueries"
+        android:label="@string/my_queries"
+        tools:layout="@layout/activity_user_queries" />
+
 </navigation>

@@ -8,12 +8,12 @@
 
     <item
         android:id="@+id/item3"
-        android:icon="@drawable/ic_activity_btm"
+        android:icon="@drawable/ic_trolley_cart"
         android:title="@string/menu_cart" />
     <item
         android:id="@+id/item4"
-        android:icon="@drawable/ic_my_orders_menu"
-        android:title="@string/menu_orders" />
+        android:icon="@drawable/ic_queries_chat"
+        android:title="@string/my_queries" />
     <item
         android:id="@+id/item5"
         android:icon="@drawable/ic_stores_icon"

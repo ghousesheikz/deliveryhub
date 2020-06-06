@@ -112,6 +112,7 @@ public class OrderCan extends Fragment {
                 OrderCalculationPojo mPojo = new OrderCalculationPojo();
                 mPojo.setImageURL(response.getItemImage());
                 mPojo.setLiters(response.getItemSize());
+                mPojo.setItemid(response.getItemId());
                 mPojo.setPrice(response.getItemPrice());
                 mPojo.setName(response.getItemName());
                 mPojo.setVendorId(response.getVendorId());
@@ -145,6 +146,7 @@ public class OrderCan extends Fragment {
                     mPojo.setNoOfCans(Integer.parseInt(response.getMinqty()));
                 }
                 mPojo.setTotalAmount(Integer.parseInt(response.getItemPrice()));
+              //  mPojo.setItemid(response.getItemId());
                 int amt = Integer.parseInt(response.getMinqty()) * Integer.parseInt(response.getItemPrice());
                 mPojo.setUnitAmount(amt);
                 try {

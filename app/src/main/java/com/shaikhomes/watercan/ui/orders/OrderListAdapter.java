@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.model.OrderCalculationPojo;
 import com.shaikhomes.watercan.utility.MySpannable;
@@ -173,10 +174,10 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
         }
         holder.mItemName.setText(mCanList.get(position).getName());
 
-        if(!TextUtils.isEmpty(mCanList.get(position).getDescription())) {
+        if (!TextUtils.isEmpty(mCanList.get(position).getDescription())) {
             holder.mItemDesc.setText(mCanList.get(position).getDescription());
             makeTextViewResizable(holder.mItemDesc, 2, "View More", true);
-        }else{
+        } else {
             holder.mItemDesc.setText("Not Available");
         }
         holder.mTxtDistributor.setText(mCanList.get(position).getVendorName());
@@ -253,11 +254,17 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                 itemClickListener.onImageClick(mCanList.get(position), position, "4", holder.mCanImage4);
             }
         });
+        holder.mQueriesFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onFabClick(mCanList.get(position), position);
+            }
+        });
     }
 
     public interface OnItemClickListener {
         void onItemClick(List<OrderCalculationPojo> response, int position);
-
+        void onFabClick(OrderCalculationPojo response, int position);
         void onImageClick(OrderCalculationPojo response, int position, String imageno, ImageView imageView);
     }
 
@@ -277,6 +284,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView mCanCount, mCanAmt, mTxtDistributor, mItemName, mItemDesc;
         ImageView mPlusCnt, mMinusCnt, mCanImage, mCanImage2, mCanImage3, mCanImage4;
+        FloatingActionButton mQueriesFab;
 
         public MyViewHolder(View v) {
             super(v);
@@ -291,6 +299,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
             mTxtDistributor = v.findViewById(R.id.distributor_name);
             mItemName = v.findViewById(R.id.item_name);
             mItemDesc = v.findViewById(R.id.item_desc);
+            mQueriesFab = v.findViewById(R.id.fab_queries);
 
         }
 

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -21,9 +22,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -56,6 +60,7 @@ import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PayuResponse;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
 import com.shaikhomes.watercan.pojo.SMSResponse;
+import com.shaikhomes.watercan.ui.admin.ModifyOffers;
 import com.shaikhomes.watercan.ui.item.AddItemActivity;
 import com.shaikhomes.watercan.ui.orders.OrderCanAdapter;
 import com.shaikhomes.watercan.ui.orders.OrderListAdapter;
@@ -75,6 +80,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -97,6 +103,7 @@ import static com.shaikhomes.watercan.utility.AppConstants.DELIVERY_TYPE;
 import static com.shaikhomes.watercan.utility.AppConstants.LOGIN_ENABLED;
 import static com.shaikhomes.watercan.utility.AppConstants.ORDER_DATA;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_ADDRESS;
+import static com.shaikhomes.watercan.utility.AppConstants.USER_ID;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_MOBILE;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
 import static com.shaikhomes.watercan.utility.UtilityConstants.ORDER_CAN_LIST;
@@ -208,6 +215,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                         mOrderPojo.setImageURL2(jsonObject.getString("imageURL2"));
                         mOrderPojo.setImageURL3(jsonObject.getString("imageURL3"));
                         mOrderPojo.setImageURL4(jsonObject.getString("imageURL4"));
+                        mOrderPojo.setItemid(jsonObject.getString("itemid"));
                         mOrdersList.add(mOrderPojo);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -271,7 +279,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
 
         String mAddress = tinyDB.getString(USER_ADDRESS);
         AddressPojo mAddPojo = new Gson().fromJson(mAddress, AddressPojo.class);
-        if (mAddPojo!= null) {
+        if (mAddPojo != null) {
             mTxtAddressType.setText(mAddPojo.getAddressType());
         }
         if (mAddPojo != null) {
@@ -298,6 +306,11 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                 }
                 mTxtWaterPrice.setText("₹ " + totAmt + " ");
                 getTotalAmt();
+            }
+
+            @Override
+            public void onFabClick(OrderCalculationPojo response, int position) {
+                chatDialog(response, position);
             }
 
             @Override
@@ -428,6 +441,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         return view;
     }
+
 
     private void getTotalAmt() {
         mTotalPrice = 0;
@@ -968,5 +982,71 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
             // TODO: check this.exception
             // TODO: do something with the feed
         }
+    }
+
+    private void chatDialog(OrderCalculationPojo response, int position) {
+        List<String> mChatList = new ArrayList<>();
+        final Dialog dialog = new Dialog(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog);
+        dialog.setCancelable(true);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.queries_dialog);
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+        EditText mChatMsg = dialog.findViewById(R.id.edt_msg);
+        FloatingActionButton mFabSend = dialog.findViewById(R.id.btn_send);
+        ImageView mCloseBtn = dialog.findViewById(R.id.close_dialog);
+        mCloseBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        RecyclerView mRecyclerview = dialog.findViewById(R.id.chat_msg_list);
+        ChatAdapter mAdapter = new ChatAdapter(getActivity(), mChatList);
+        mRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerview.setAdapter(mAdapter);
+        mFabSend.setOnClickListener(v -> {
+            if (!TextUtils.isEmpty(mChatMsg.getText().toString().trim())) {
+                if (mChatList.size() == 0) {
+                    mFabSend.setEnabled(false);
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Calendar cal = Calendar.getInstance();
+                    mChatList.add(0, mChatMsg.getText().toString().trim());
+                    mAdapter.updateAdapter(mChatList);
+
+                    ItemQueriesPojo.QueryList mPojo = new ItemQueriesPojo.QueryList();
+                    mPojo.setItemName(response.getName());
+                    mPojo.setItemId(response.getItemid());
+                    mPojo.setUserId(tinyDB.getString(USER_ID));
+                    mPojo.setVendorId(response.getVendorId());
+                    mPojo.setUserName(tinyDB.getString(USER_NAME));
+                    mPojo.setQueryDate(dateFormat.format(cal.getTime()));
+                    mPojo.setQueryImage(response.getImageURL());
+                    mPojo.setQuestion1(mChatMsg.getText().toString().trim());
+                    Call<PostResponsePojo> call = apiService.PostItemQuery(mPojo);
+                    call.enqueue(new Callback<PostResponsePojo>() {
+                        @Override
+                        public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
+                            PostResponsePojo pojo = response.body();
+                            if (pojo != null)
+                                if (pojo.getStatus().equalsIgnoreCase("200")) {
+                                    mChatMsg.setText("");
+                                    Toasty.success(getActivity(), "Query sent Successfully", Toast.LENGTH_SHORT, true).show();
+                                } else {
+                                    Toasty.error(getActivity(), pojo.getMessage(), Toast.LENGTH_SHORT, true).show();
+
+                                }
+                        }
+
+                        @Override
+                        public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+                        }
+                    });
+
+                } else {
+                    Toasty.error(getActivity(), "Please enter message", Toasty.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 }
