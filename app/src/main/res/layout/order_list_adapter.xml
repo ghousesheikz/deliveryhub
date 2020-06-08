@@ -265,7 +265,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_margin="5dp"
+        android:autofillHints="ASK QUERIES"
         android:backgroundTint="@color/white"
-        android:src="@drawable/ic_queries_chat"
+        android:src="@drawable/ic_ask_queries"
         app:fabSize="mini" />
 </RelativeLayout>

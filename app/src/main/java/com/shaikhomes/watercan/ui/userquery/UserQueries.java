@@ -143,6 +143,7 @@ public class UserQueries extends Fragment {
         ImageView mCallBtn = dialog.findViewById(R.id.call_dialog);
         mCloseBtn.setOnClickListener(v -> {
             dialog.dismiss();
+            getQueryData();
         });
         mCallBtn.setOnClickListener(v->{
 
@@ -160,11 +161,10 @@ public class UserQueries extends Fragment {
         mFabSend.setOnClickListener(v -> {
             if (!TextUtils.isEmpty(mChatMsg.getText().toString().trim())) {
                 if (mChatList.size() == chatsize) {
-                    mFabSend.setEnabled(false);
+
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Calendar cal = Calendar.getInstance();
-                    mChatList.add(mChatMsg.getText().toString().trim());
-                    mAdapter.updateAdapter(mChatList);
+
                     ItemQueriesPojo.QueryList mPojo = new ItemQueriesPojo.QueryList();
                     mPojo.setItemId(response.getItemId());
                     mPojo.setItemName(response.getItemName());
@@ -177,11 +177,17 @@ public class UserQueries extends Fragment {
                     boolean mSendUpdate = false;
                     if (TextUtils.isEmpty(response.getQuestion2()) && !TextUtils.isEmpty(response.getAnswer1())) {
                         mSendUpdate = true;
+                        mFabSend.setEnabled(false);
+                        mChatList.add(mChatMsg.getText().toString().trim());
+                        mAdapter.updateAdapter(mChatList);
                         mPojo.setQuestion1(response.getQuestion1());
                         mPojo.setAnswer1(response.getAnswer1());
                         mPojo.setQuestion2(mChatMsg.getText().toString().trim());
                     } else if (TextUtils.isEmpty(response.getQuestion3()) && !TextUtils.isEmpty(response.getAnswer2())) {
                         mSendUpdate = true;
+                        mFabSend.setEnabled(false);
+                        mChatList.add(mChatMsg.getText().toString().trim());
+                        mAdapter.updateAdapter(mChatList);
                         mPojo.setQuestion1(response.getQuestion1());
                         mPojo.setAnswer1(response.getAnswer1());
                         mPojo.setQuestion2(response.getQuestion2());
@@ -189,6 +195,9 @@ public class UserQueries extends Fragment {
                         mPojo.setQuestion3(mChatMsg.getText().toString().trim());
                     } else if (TextUtils.isEmpty(response.getQuestion4()) && !TextUtils.isEmpty(response.getAnswer3())) {
                         mSendUpdate = true;
+                        mFabSend.setEnabled(false);
+                        mChatList.add(mChatMsg.getText().toString().trim());
+                        mAdapter.updateAdapter(mChatList);
                         mPojo.setQuestion1(response.getQuestion1());
                         mPojo.setAnswer1(response.getAnswer1());
                         mPojo.setQuestion2(response.getQuestion2());

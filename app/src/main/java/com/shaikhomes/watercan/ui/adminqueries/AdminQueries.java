@@ -145,24 +145,21 @@ public class AdminQueries extends AppCompatActivity {
         ChatAdapter mAdapter = new ChatAdapter(AdminQueries.this, mChatList);
         mRecyclerview.setLayoutManager(new LinearLayoutManager(AdminQueries.this));
         mRecyclerview.setAdapter(mAdapter);
-        if (!TextUtils.isEmpty(response.getQuestion4())) {
-            mFabSend.setEnabled(false);
-        }
+
         if (!TextUtils.isEmpty(response.getAnswer4())) {
             mFabSend.setEnabled(false);
         }
         mFabSend.setOnClickListener(v -> {
             if (!TextUtils.isEmpty(mChatMsg.getText().toString().trim())) {
                 if (mChatList.size() == chatsize) {
-                    mFabSend.setEnabled(false);
+
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Calendar cal = Calendar.getInstance();
-                    mChatList.add(mChatMsg.getText().toString().trim());
-                    mAdapter.updateAdapter(mChatList);
+
                     ItemQueriesPojo.QueryList mPojo = new ItemQueriesPojo.QueryList();
                     mPojo.setItemId(response.getItemId());
                     mPojo.setItemName(response.getItemName());
-                    mPojo.setUserId(tinyDB.getString(USER_ID));
+                    mPojo.setUserId(response.getUserId());
                     mPojo.setVendorId(response.getVendorId());
                     mPojo.setUserName(tinyDB.getString(USER_NAME));
                     mPojo.setQueryDate(dateFormat.format(cal.getTime()));
@@ -171,25 +168,37 @@ public class AdminQueries extends AppCompatActivity {
                     boolean mSendUpdate = false;
                     if (!TextUtils.isEmpty(response.getQuestion1()) && TextUtils.isEmpty(response.getAnswer1())) {
                         mSendUpdate = true;
+                        mFabSend.setEnabled(false);
+                        mChatList.add(mChatMsg.getText().toString().trim());
+                        mAdapter.updateAdapter(mChatList);
                         mPojo.setQuestion1(response.getQuestion1());
                         mPojo.setAnswer1(mChatMsg.getText().toString().trim());
 
                     } else if (!TextUtils.isEmpty(response.getQuestion2()) && TextUtils.isEmpty(response.getAnswer2())) {
                         mSendUpdate = true;
+                        mFabSend.setEnabled(false);
+                        mChatList.add(mChatMsg.getText().toString().trim());
+                        mAdapter.updateAdapter(mChatList);
                         mPojo.setQuestion1(response.getQuestion1());
                         mPojo.setAnswer1(response.getAnswer1());
                         mPojo.setQuestion2(response.getQuestion2());
                         mPojo.setAnswer2(mChatMsg.getText().toString().trim());
                     } else if (!TextUtils.isEmpty(response.getQuestion3()) && TextUtils.isEmpty(response.getAnswer3())) {
                         mSendUpdate = true;
+                        mFabSend.setEnabled(false);
+                        mChatList.add(mChatMsg.getText().toString().trim());
+                        mAdapter.updateAdapter(mChatList);
                         mPojo.setQuestion1(response.getQuestion1());
                         mPojo.setAnswer1(response.getAnswer1());
                         mPojo.setQuestion2(response.getQuestion2());
                         mPojo.setAnswer2(response.getAnswer2());
                         mPojo.setQuestion3(response.getQuestion3());
                         mPojo.setAnswer3(mChatMsg.getText().toString().trim());
-                    } else if (TextUtils.isEmpty(response.getQuestion4()) && !TextUtils.isEmpty(response.getAnswer4())) {
+                    } else if (!TextUtils.isEmpty(response.getQuestion4()) && TextUtils.isEmpty(response.getAnswer4())) {
                         mSendUpdate = true;
+                        mFabSend.setEnabled(false);
+                        mChatList.add(mChatMsg.getText().toString().trim());
+                        mAdapter.updateAdapter(mChatList);
                         mPojo.setQuestion1(response.getQuestion1());
                         mPojo.setAnswer1(response.getAnswer1());
                         mPojo.setQuestion2(response.getQuestion2());
