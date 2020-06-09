@@ -24,6 +24,10 @@ public interface ApiInterface {
     @GET("api/UserRegistration?")
     Call<UserRegistrationPojo> GetUserbyNumber(@Query("isadmin") String isadmin, @Query("number") String number);
 
+    @GET("api/Values?")
+    Call<UserRegistrationPojo> GetUserbyuserid(@Query("userid") String userid);
+
+
     @POST("api/UserRegistration?")
     Call<PostResponsePojo> PostUserDetails(@Body UserRegistrationPojo.UserData writeoffPost);
 

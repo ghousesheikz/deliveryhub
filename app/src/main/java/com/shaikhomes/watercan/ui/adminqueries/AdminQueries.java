@@ -1,11 +1,19 @@
 package com.shaikhomes.watercan.ui.adminqueries;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,17 +22,29 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.shaikhomes.watercan.LoginActivity;
+import com.shaikhomes.watercan.OTPAuthentication;
 import com.shaikhomes.watercan.R;
+import com.shaikhomes.watercan.SignUpActivity;
 import com.shaikhomes.watercan.api_services.ApiClient;
 import com.shaikhomes.watercan.api_services.ApiInterface;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
+import com.shaikhomes.watercan.pojo.UserRegistrationPojo;
+import com.shaikhomes.watercan.ui.customercare.CustomerCareActivity;
 import com.shaikhomes.watercan.ui.ordercalculation.ChatAdapter;
 import com.shaikhomes.watercan.ui.ordercalculation.ItemQueriesPojo;
 import com.shaikhomes.watercan.ui.userquery.QueriesAdapter;
+import com.shaikhomes.watercan.utility.RoundedTransformation;
 import com.shaikhomes.watercan.utility.TinyDB;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,8 +57,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.text.Html.fromHtml;
+import static com.shaikhomes.watercan.utility.AppConstants.ADDRESS_LIST;
+import static com.shaikhomes.watercan.utility.AppConstants.IS_ADMIN;
+import static com.shaikhomes.watercan.utility.AppConstants.OTP_ENABLED;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_ID;
+import static com.shaikhomes.watercan.utility.AppConstants.USER_MOBILE;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
+import static com.shaikhomes.watercan.utility.AppConstants.VENDOR_ID;
 
 public class AdminQueries extends AppCompatActivity {
     private RecyclerView mRecyclerview;
@@ -68,11 +94,13 @@ public class AdminQueries extends AppCompatActivity {
         mRecyclerview.setAdapter(mAdapter);
         getQueryData();
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
+
     private void getQueryData() {
         try {
 
@@ -97,6 +125,10 @@ public class AdminQueries extends AppCompatActivity {
             Log.i("ERROR", e.getMessage());
             e.printStackTrace();
         }
+    }
+    @NonNull
+    private String getColoredSpanned(String text, String color) {
+        return "<font color=" + color + ">" + text + "</font>";
     }
 
 
@@ -134,6 +166,29 @@ public class AdminQueries extends AppCompatActivity {
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.show();
+        RelativeLayout mAdminLL = dialog.findViewById(R.id.admin_layout);
+        mAdminLL.setVisibility(View.VISIBLE);
+        ImageView mImage = dialog.findViewById(R.id.item_image);
+        TextView mItemName = dialog.findViewById(R.id.itemName);
+        TextView mVendorName = dialog.findViewById(R.id.VendorName);
+        ImageView mCallVendor = dialog.findViewById(R.id.call_vendor);
+        getVendorDeails(response.getVendorId(), mVendorName, mCallVendor);
+        mItemName.setText( fromHtml(getColoredSpanned("ItemName - ", "#F73D81")
+                + response.getItemName()
+        ));
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(AdminQueries.this);
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        int[] COLORS = new int[]{
+                R.color.colorPrimary
+        };
+        circularProgressDrawable.setColorSchemeColors(COLORS);
+        circularProgressDrawable.start();
+        String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + response.getQueryImage();
+        Picasso.get().load(imgUrl).resize(100, 100)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .centerCrop().transform(new RoundedTransformation()).into(mImage);
         EditText mChatMsg = dialog.findViewById(R.id.edt_msg);
         FloatingActionButton mFabSend = dialog.findViewById(R.id.btn_send);
         ImageView mCloseBtn = dialog.findViewById(R.id.close_dialog);
@@ -238,5 +293,61 @@ public class AdminQueries extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void getVendorDeails(String vendorId, TextView mVendorName, ImageView mCallVendor) {
+        try {
+            Call<UserRegistrationPojo> call = apiService.GetUserbyuserid(vendorId);
+            call.enqueue(new Callback<UserRegistrationPojo>() {
+                @Override
+                public void onResponse(Call<UserRegistrationPojo> call, Response<UserRegistrationPojo> response) {
+                    UserRegistrationPojo mUserData = response.body();
+                    if (mUserData.getStatus().equalsIgnoreCase("200")) {
+
+
+                        mVendorName.setText(fromHtml(getColoredSpanned("VendorName - ", "#F73D81")
+                                + mUserData.getData().get(0).getUsername()
+                        ));
+                        mCallVendor.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String Number = mUserData.getData().get(0).getUsermobileNumber();
+                                if (ContextCompat.checkSelfPermission(AdminQueries.this, Manifest.permission.CALL_PHONE)
+                                        == PackageManager.PERMISSION_GRANTED) {
+                                    Intent intent = new Intent(Intent.ACTION_CALL);
+                                    Number = "+91" + Number;
+                                    intent.setData(Uri.parse("tel:" + Number));
+                                    if (ActivityCompat.checkSelfPermission(AdminQueries.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                        // TODO: Consider calling
+                                        //    ActivityCompat#requestPermissions
+                                        // here to request the missing permissions, and then overriding
+                                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                        //                                          int[] grantResults)
+                                        // to handle the case where the user grants the permission. See the documentation
+                                        // for ActivityCompat#requestPermissions for more details.
+                                        return;
+                                    }
+                                    startActivity(intent);
+
+                                } else {
+                                    Toasty.info(AdminQueries.this, "Please give permission for calling", Toasty.LENGTH_SHORT).show();
+                                    ActivityCompat.requestPermissions(AdminQueries.this,
+                                            new String[]{Manifest.permission.CALL_PHONE},
+                                            1);
+                                }
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserRegistrationPojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
