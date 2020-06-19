@@ -205,7 +205,7 @@ public class OrderCan extends Fragment {
 
     private void getSearchItemData(String query) {
         try {
-            Call<ItemPojo> call = apiService.GetItemListBySearch(query, "True");
+            Call<ItemPojo> call = apiService.GetItemListBySearch(query, "True",tinyDB.getDouble("LAT",0.0),tinyDB.getDouble("LANG",0.0));
             call.enqueue(new Callback<ItemPojo>() {
                 @Override
                 public void onResponse(Call<ItemPojo> call, Response<ItemPojo> response) {
@@ -243,7 +243,7 @@ public class OrderCan extends Fragment {
 
     private void getItemData(String catid) {
         try {
-            Call<ItemPojo> call = apiService.GetItemListByCategory(catid, "");
+            Call<ItemPojo> call = apiService.GetItemListByCategory(catid, "",tinyDB.getDouble("LAT",0.0),tinyDB.getDouble("LANG",0.0));
             call.enqueue(new Callback<ItemPojo>() {
                 @Override
                 public void onResponse(Call<ItemPojo> call, Response<ItemPojo> response) {
@@ -275,7 +275,7 @@ public class OrderCan extends Fragment {
 
     private void getAllItemData() {
         try {
-            Call<ItemPojo> call = apiService.GetItemList("", "True");
+            Call<ItemPojo> call = apiService.GetItemList("", "True",tinyDB.getDouble("LAT",0.0),tinyDB.getDouble("LANG",0.0));
             call.enqueue(new Callback<ItemPojo>() {
                 @Override
                 public void onResponse(Call<ItemPojo> call, Response<ItemPojo> response) {

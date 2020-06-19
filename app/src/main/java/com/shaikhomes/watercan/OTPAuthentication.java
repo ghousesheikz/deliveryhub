@@ -54,7 +54,7 @@ public class OTPAuthentication extends AppCompatActivity {
             }
         });
         mOtp = generateOTP();
-      //  Toasty.info(OTPAuthentication.this,mOtp,Toasty.LENGTH_SHORT).show();
+        Toasty.info(OTPAuthentication.this,mOtp,Toasty.LENGTH_SHORT).show();
         //        sendSms("91"+tinyDB.getString(USER_MOBILE),"Thank you for registering with DELIVERY HUB.Please Enter OTP : " + mOtp + "  for Login.");
         sendSms("91"+tinyDB.getString(USER_MOBILE),"Thank you for registering with DELIVERY HUB. Please Enter OTP : " + mOtp + "for Login.");
        // Toast.makeText(OTPAuthentication.this, mOtp, Toast.LENGTH_SHORT).show();

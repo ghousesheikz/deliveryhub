@@ -44,6 +44,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.ui.BottomSheetView;
+import com.shaikhomes.watercan.utility.TinyDB;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -59,7 +60,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     Marker mCurrLocationMarker;
     GoogleMap mGoogleMap;
     BottomSheetView bottomSheetView;
-
+    TinyDB tinyDB;
 
     @Nullable
     @Override
@@ -131,6 +132,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
             @Override
             public void onMapClick(LatLng latLng) {
                 bottomSheetView.BottomSheetDesignLocation(latLng);
+
                 mMap.clear();
                 mMap.addMarker(new MarkerOptions()
                         .position(latLng)

@@ -382,11 +382,19 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
             e.printStackTrace();
         }
         if (addresses.get(0).getLocality() != null)
-            if (addresses.get(0).getLocality().toLowerCase().equalsIgnoreCase("kadapa") || addresses.get(0).getLocality().toLowerCase().equalsIgnoreCase("hyderabad")) {
+           // if (addresses.get(0).getLocality().toLowerCase().equalsIgnoreCase("kadapa") || addresses.get(0).getLocality().toLowerCase().equalsIgnoreCase("hyderabad")) {
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            } else {
+                try {
+                    if (latLng != null) {
+                        tinyDB.putDouble("LAT", latitude);
+                        tinyDB.putDouble("LANG", longitude);
+                    }
+                } catch (Exception e) {
+
+                }
+           /* } else {
                 behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            }
+            }*/
 
         String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
         String city = addresses.get(0).getLocality();

@@ -132,7 +132,7 @@ public class ViewItemsActivity extends BaseActivity {
 
     private void getItemData() {
         try {
-            Call<ItemPojo> call = apiService.GetItemList(mVendorId, "");
+            Call<ItemPojo> call = apiService.GetItemList(mVendorId, "",tinyDB.getDouble("LAT",0.0),tinyDB.getDouble("LANG",0.0));
             call.enqueue(new Callback<ItemPojo>() {
                 @Override
                 public void onResponse(Call<ItemPojo> call, Response<ItemPojo> response) {

@@ -35,13 +35,13 @@ public interface ApiInterface {
     Call<PostResponsePojo> PostItem(@Body ItemPojo.Item item);
 
     @GET("api/ItemMaster?")
-    Call<ItemPojo> GetItemList(@Query("vendorid") String vendorid, @Query("active") String active);
+    Call<ItemPojo> GetItemList(@Query("vendorid") String vendorid, @Query("active") String active,@Query("lat") double lat, @Query("lang") double lang);
 
     @GET("api/ItemFilter?")
-    Call<ItemPojo> GetItemListByCategory(@Query("categoryid") String categoryid, @Query("active") String active);
+    Call<ItemPojo> GetItemListByCategory(@Query("categoryid") String categoryid, @Query("active") String active,@Query("lat") double lat, @Query("lang") double lang);
 
     @GET("api/UpdateItem?")
-    Call<ItemPojo> GetItemListBySearch(@Query("itemname") String itemname, @Query("active") String active);
+    Call<ItemPojo> GetItemListBySearch(@Query("itemname") String itemname, @Query("active") String active,@Query("lat") double lat, @Query("lang") double lang);
 
     @POST("api/OrderMaster?")
     Call<PostResponsePojo> PostOrder(@Body OrderDelivery.OrderList item);
