@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,9 +43,13 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.gson.Gson;
 import com.shaikhomes.watercan.R;
+import com.shaikhomes.watercan.pojo.AddressPojo;
 import com.shaikhomes.watercan.ui.BottomSheetView;
 import com.shaikhomes.watercan.utility.TinyDB;
+
+import static com.shaikhomes.watercan.utility.AppConstants.USER_ADDRESS;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -61,6 +66,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     GoogleMap mGoogleMap;
     BottomSheetView bottomSheetView;
     TinyDB tinyDB;
+    TextView mAddresstxt;
 
     @Nullable
     @Override
@@ -70,6 +76,22 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
         mapFragment.getMapAsync(this);
         bottomSheetView = (BottomSheetView) view.getContext();
+        tinyDB = new TinyDB(getActivity());
+        mAddresstxt = view.findViewById(R.id.address_selected);
+        String mAddress = tinyDB.getString(USER_ADDRESS);
+        AddressPojo mAddPojo = new Gson().fromJson(mAddress, AddressPojo.class);
+        if (mAddPojo != null) {
+            mAddresstxt.setVisibility(View.VISIBLE);
+            mAddresstxt.setPadding(5, 5, 5, 5);
+            if (!mAddPojo.getLandmark().equalsIgnoreCase("NO")) {
+                mAddresstxt.setText(mAddPojo.getFlatNumber() + ", " + mAddPojo.getApartmentName() + ", " + mAddPojo.getLandmark() + ", " + mAddPojo.getAreaName() + ", " + mAddPojo.getCityName());
+            } else {
+                mAddresstxt.setText(mAddPojo.getFlatNumber() + ", " + mAddPojo.getApartmentName() + ", " + mAddPojo.getAreaName() + ", " + mAddPojo.getCityName());
+
+            }
+        } else {
+            mAddresstxt.setVisibility(View.GONE);
+        }
         return view;
     }
 

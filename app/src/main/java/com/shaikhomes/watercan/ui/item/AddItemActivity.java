@@ -46,6 +46,7 @@ import com.shaikhomes.watercan.pojo.OrderDelivery;
 import com.shaikhomes.watercan.pojo.PostResponsePojo;
 import com.shaikhomes.watercan.pojo.Spinner_global_model;
 import com.shaikhomes.watercan.utility.RoundedTransformation;
+import com.shaikhomes.watercan.utility.TinyDB;
 import com.shaikhomes.watercan.utility.ZoomableImageView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -94,13 +95,15 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     private ArrayAdapter<Spinner_global_model> adapter_spinner_units;
     private AppCompatButton mBtnActive, mBtnDeactive;
     private String mVendorId = "", mVendorName = "", mVendorAddress = "";
-
+    private EditText mEdtRange, mEdtLat, mEdtLang;
+    TinyDB tinyDB;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
+        tinyDB = new TinyDB(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mList = new ArrayList<>();
@@ -140,6 +143,13 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         adapter_spinner_category = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, spinner_array_category);
         adapter_spinner_category.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCatSpinner.setAdapter(adapter_spinner_category);
+
+        mEdtLang = findViewById(R.id.edt_lang);
+        mEdtRange = findViewById(R.id.edt_range);
+        mEdtLat = findViewById(R.id.edt_lat);
+
+        mEdtLat.setText(tinyDB.getDouble("LAT", 0.0) + "");
+        mEdtLang.setText(tinyDB.getDouble("LANG", 0.0) + "");
 
         mUnitsSpinner = findViewById(R.id.spn_itemunits);
         adapter_spinner_units = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, spinner_array_units);
@@ -316,7 +326,10 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                 mBtnDeactive.setTextColor(this.getColor(R.color.white));
                 break;
             case R.id.btn_submit:
-
+                int range = 0;
+                if (TextUtils.isEmpty(mEdtRange.getText().toString().trim())) {
+                    range = Integer.parseInt(mEdtRange.getText().toString().trim());
+                }
                 if (TextUtils.isEmpty(mEncodedImage) && TextUtils.isEmpty(mEditItem)) {
                     Toasty.error(AddItemActivity.this, "Please click Image", Toasty.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mEncodedImage2) && TextUtils.isEmpty(mEditItem)) {
@@ -327,6 +340,8 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                     Toasty.error(AddItemActivity.this, "Please click Image", Toasty.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mItemName.getText().toString())) {
                     Toasty.error(AddItemActivity.this, "Please enter item name", Toasty.LENGTH_SHORT).show();
+                } else if (range == 0) {
+                    Toasty.error(AddItemActivity.this, "Please enter range", Toasty.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mItemPrice.getText().toString())) {
                     Toasty.error(AddItemActivity.this, "Please enter item price", Toasty.LENGTH_SHORT).show();
                 } else if (spinner_array_units.get(mUnitsSpinner.getSelectedItemPosition()).getId().equalsIgnoreCase("-1")) {
