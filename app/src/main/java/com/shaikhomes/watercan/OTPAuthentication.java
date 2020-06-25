@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -54,9 +55,10 @@ public class OTPAuthentication extends AppCompatActivity {
             }
         });
         mOtp = generateOTP();
-        Toasty.info(OTPAuthentication.this,mOtp,Toasty.LENGTH_SHORT).show();
+       // Toasty.info(OTPAuthentication.this,mOtp,Toasty.LENGTH_SHORT).show();
+        sendTxtSMS("91"+tinyDB.getString(USER_MOBILE),"Thank you for registering with DELIVERY HUB. Please Enter OTP : " + mOtp + "for Login.");
         //        sendSms("91"+tinyDB.getString(USER_MOBILE),"Thank you for registering with DELIVERY HUB.Please Enter OTP : " + mOtp + "  for Login.");
-        sendSms("91"+tinyDB.getString(USER_MOBILE),"Thank you for registering with DELIVERY HUB. Please Enter OTP : " + mOtp + "for Login.");
+       // latest sendSms("91"+tinyDB.getString(USER_MOBILE),"Thank you for registering with DELIVERY HUB. Please Enter OTP : " + mOtp + "for Login.");
        // Toast.makeText(OTPAuthentication.this, mOtp, Toast.LENGTH_SHORT).show();
         passCodeView = findViewById(R.id.pass_code_view);
         passCodeView.setOnTextChangeListener(text -> {
@@ -85,7 +87,20 @@ public class OTPAuthentication extends AppCompatActivity {
         });
 
     }
+    public void sendTxtSMS(String phoneNo, String msg) {
+        try {
+            String messageToSend = msg;
+            String number = phoneNo;
 
+            SmsManager.getDefault().sendTextMessage(number, null, messageToSend, null, null);
+            Toast.makeText(getApplicationContext(), "Message Sent",
+                    Toast.LENGTH_LONG).show();
+
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
+        }
+    }
     private String generateOTP() {
         Random random = new Random();
         String id = String.format("%04d", random.nextInt(10000));

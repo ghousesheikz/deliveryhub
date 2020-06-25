@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         mRegisterUser = findViewById(R.id.btn_register_user);
         mEdtMobNumber = findViewById(R.id.edt_login_mob);
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.SEND_SMS},
                 MY_PERMISSIONS_REQUEST_LOCATION);
 
         mRegisterUser.setOnClickListener(new View.OnClickListener() {

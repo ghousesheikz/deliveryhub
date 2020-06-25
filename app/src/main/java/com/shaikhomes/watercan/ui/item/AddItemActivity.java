@@ -1,5 +1,6 @@
 package com.shaikhomes.watercan.ui.item;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -18,6 +19,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,7 +38,14 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.shaikhomes.watercan.BaseActivity;
 import com.shaikhomes.watercan.R;
 import com.shaikhomes.watercan.SignUpActivity;
@@ -72,7 +81,9 @@ import static com.shaikhomes.watercan.utility.AppConstants.USER_ID;
 import static com.shaikhomes.watercan.utility.AppConstants.USER_NAME;
 
 
-public class AddItemActivity extends BaseActivity implements View.OnClickListener {
+public class AddItemActivity extends BaseActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     public static final int SELECT_FILE = 10;
     public static final int SELECT_FILE2 = 20;
@@ -97,6 +108,10 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
     private String mVendorId = "", mVendorName = "", mVendorAddress = "";
     private EditText mEdtRange, mEdtLat, mEdtLang;
     TinyDB tinyDB;
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+    Location mLastLocation;
+    KProgressHUD hud=null;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -148,8 +163,8 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         mEdtRange = findViewById(R.id.edt_range);
         mEdtLat = findViewById(R.id.edt_lat);
 
-        mEdtLat.setText(tinyDB.getDouble("LAT", 0.0) + "");
-        mEdtLang.setText(tinyDB.getDouble("LANG", 0.0) + "");
+       /* mEdtLat.setText(tinyDB.getDouble("LAT", 0.0) + "");
+        mEdtLang.setText(tinyDB.getDouble("LANG", 0.0) + "")*/;
 
         mUnitsSpinner = findViewById(R.id.spn_itemunits);
         adapter_spinner_units = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, spinner_array_units);
@@ -165,6 +180,9 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
             mItemName.setText(mEditPojo.getItemName());
             mItemPrice.setText(mEditPojo.getItemPrice());
             mItemUnits.setText(mEditPojo.getItemSize());
+            mEdtLat.setText(mEditPojo.getItemLat() + "");
+            mEdtLang.setText(mEditPojo.getItemLong() + "");
+            mEdtRange.setText(mEditPojo.getRangeKms() + "");
             for (int i = 0; i < spinner_array_units.size(); i++) {
                 if (spinner_array_units.get(i).getName().equalsIgnoreCase(mEditPojo.getItemSize())) {
                     mUnitsSpinner.setSelection(i);
@@ -248,6 +266,108 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(AddItemActivity.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                //Location Permission already granted
+                buildGoogleApiClient();
+                // mMap.setMyLocationEnabled(true);
+            } else {
+                //Request Location Permission
+                checkLocationPermission();
+            }
+        } else {
+            buildGoogleApiClient();
+            // mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(AddItemActivity.this)
+                .addConnectionCallbacks(AddItemActivity.this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
+    }
+
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
+    private void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(AddItemActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(AddItemActivity.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(AddItemActivity.this)
+                        .setTitle("Location Permission Needed")
+                        .setMessage("This app needs the Location permission, please accept to use location functionality")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(AddItemActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(AddItemActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(AddItemActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        if (mGoogleApiClient == null) {
+                            buildGoogleApiClient();
+                        }
+                        // mGoogleMap.setMyLocationEnabled(true);
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(AddItemActivity.this, "permission denied", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
     private File createImageFile_1() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
@@ -327,7 +447,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.btn_submit:
                 int range = 0;
-                if (TextUtils.isEmpty(mEdtRange.getText().toString().trim())) {
+                if (!TextUtils.isEmpty(mEdtRange.getText().toString().trim())) {
                     range = Integer.parseInt(mEdtRange.getText().toString().trim());
                 }
                 if (TextUtils.isEmpty(mEncodedImage) && TextUtils.isEmpty(mEditItem)) {
@@ -356,6 +476,7 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                     Toasty.error(AddItemActivity.this, "Please select item description", Toasty.LENGTH_SHORT).show();
                 } else {
                     if (TextUtils.isEmpty(mEditItem)) {
+
                         ItemPojo.Item mPostItem = new ItemPojo.Item();
                         mPostItem.setItemActive(mActive);
                         mPostItem.setItemCompany("");
@@ -374,24 +495,50 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                         mPostItem.setVendorId(tinyDB.getString(USER_ID));
                         mPostItem.setVendorName(tinyDB.getString(USER_NAME));
                         mPostItem.setCategoryId(spinner_array_category.get(mCatSpinner.getSelectedItemPosition()).getId());
+
+                        mPostItem.setItemLat(Double.parseDouble(mEdtLat.getText().toString().trim()));
+                        mPostItem.setItemLong(Double.parseDouble(mEdtLang.getText().toString().trim()));
+                        mPostItem.setRangeKms(Double.parseDouble(mEdtRange.getText().toString().trim()));
+                        hud = KProgressHUD.create(AddItemActivity.this)
+                                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                                .setLabel("Please wait")
+                                .setBackgroundColor(ContextCompat.getColor(AddItemActivity.this, R.color.opaque_black))
+                                .setCancellable(true)
+                                .setAnimationSpeed(2);
+                        if (hud != null)
+                            if (!hud.isShowing()) {
+                                hud.show();
+                            }
                         Call<PostResponsePojo> call = apiService.PostItem(mPostItem);
                         call.enqueue(new Callback<PostResponsePojo>() {
                             @Override
                             public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
-
+                                if (hud != null)
+                                    if (hud.isShowing()) {
+                                        hud.dismiss();
+                                    }
                                 PostResponsePojo pojo = response.body();
                                 if (pojo != null)
                                     if (pojo.getStatus().equalsIgnoreCase("200")) {
                                         clearData();
                                         Toasty.success(AddItemActivity.this, "Item Added Successfully", Toast.LENGTH_SHORT, true).show();
+                                    }else{
+                                        Toasty.error(AddItemActivity.this, pojo.getMessage(), Toast.LENGTH_SHORT, true).show();
                                     }
                             }
 
                             @Override
                             public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+                                if (hud != null)
+                                    if (hud.isShowing()) {
+                                        hud.dismiss();
+                                    }
+                                Toasty.error(AddItemActivity.this, t.getMessage(), Toast.LENGTH_SHORT, true).show();
+
                             }
                         });
                     } else {
+
                         ItemPojo.Item mPostItem = new ItemPojo.Item();
                         mPostItem.setItemActive("True");
                         mPostItem.setItemCompany("");
@@ -424,12 +571,28 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                             mPostItem.setVendorName(mVendorName);
                         }
                         mPostItem.setItemDescription(mItemDesc.getText().toString().trim());
+                        mPostItem.setItemLat(Double.parseDouble(mEdtLat.getText().toString().trim()));
+                        mPostItem.setItemLong(Double.parseDouble(mEdtLang.getText().toString().trim()));
+                        mPostItem.setRangeKms(Double.parseDouble(mEdtRange.getText().toString().trim()));
                         mPostItem.setCategoryId(spinner_array_category.get(mCatSpinner.getSelectedItemPosition()).getId());
+                        hud = KProgressHUD.create(AddItemActivity.this)
+                                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                                .setLabel("Please wait")
+                                .setBackgroundColor(ContextCompat.getColor(AddItemActivity.this, R.color.opaque_black))
+                                .setCancellable(true)
+                                .setAnimationSpeed(2);
+                        if (hud != null)
+                            if (!hud.isShowing()) {
+                                hud.show();
+                            }
                         Call<PostResponsePojo> call = apiService.UpdateItemDetails(mPostItem);
                         call.enqueue(new Callback<PostResponsePojo>() {
                             @Override
                             public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
-
+                                if (hud != null)
+                                    if (hud.isShowing()) {
+                                        hud.dismiss();
+                                    }
                                 PostResponsePojo pojo = response.body();
                                 if (pojo != null)
                                     if (pojo.getStatus().equalsIgnoreCase("200")) {
@@ -437,11 +600,20 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
                                         Toasty.success(AddItemActivity.this, "Item Updated Successfully", Toast.LENGTH_SHORT, true).show();
                                         onBackPressed();
                                         finish();
+                                    }else{
+                                        Toasty.error(AddItemActivity.this, pojo.getMessage(), Toast.LENGTH_SHORT, true).show();
                                     }
                             }
 
                             @Override
                             public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+
+                                if (hud != null)
+                                    if (hud.isShowing()) {
+                                        hud.dismiss();
+                                    }
+                                Toasty.error(AddItemActivity.this, t.getMessage(), Toast.LENGTH_SHORT, true).show();
+
                             }
                         });
                     }
@@ -916,5 +1088,38 @@ public class AddItemActivity extends BaseActivity implements View.OnClickListene
             Log.i("ERROR", e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        if (ContextCompat.checkSelfPermission(AddItemActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        double latitude = latLng.latitude;
+        double longitude = latLng.longitude;
+        mEdtLat.setText(latitude + "");
+        mEdtLang.setText(longitude + "");
     }
 }

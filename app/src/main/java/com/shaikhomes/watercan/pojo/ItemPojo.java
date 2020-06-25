@@ -95,6 +95,15 @@ public class ItemPojo {
         @SerializedName("Image3")
         @Expose
         private String Image3;
+        @SerializedName("itemLat")
+        @Expose
+        private double itemLat;
+        @SerializedName("itemLong")
+        @Expose
+        private double itemLong;
+        @SerializedName("rangeKms")
+        @Expose
+        private double rangeKms;
 
 
         public String getItemId() {
@@ -239,6 +248,30 @@ public class ItemPojo {
 
         public void setImage3(String image3) {
             Image3 = image3;
+        }
+
+        public double getItemLat() {
+            return itemLat;
+        }
+
+        public void setItemLat(double itemLat) {
+            this.itemLat = itemLat;
+        }
+
+        public double getItemLong() {
+            return itemLong;
+        }
+
+        public void setItemLong(double itemLong) {
+            this.itemLong = itemLong;
+        }
+
+        public double getRangeKms() {
+            return rangeKms;
+        }
+
+        public void setRangeKms(double rangeKms) {
+            this.rangeKms = rangeKms;
         }
     }
 }

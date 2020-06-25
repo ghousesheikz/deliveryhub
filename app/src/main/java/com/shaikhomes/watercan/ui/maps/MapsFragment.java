@@ -8,6 +8,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,6 +51,10 @@ import com.shaikhomes.watercan.pojo.AddressPojo;
 import com.shaikhomes.watercan.ui.BottomSheetView;
 import com.shaikhomes.watercan.utility.TinyDB;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import static com.shaikhomes.watercan.utility.AppConstants.USER_ADDRESS;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
@@ -67,6 +73,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     BottomSheetView bottomSheetView;
     TinyDB tinyDB;
     TextView mAddresstxt;
+    List<Address> addresses = null;
 
     @Nullable
     @Override
@@ -78,20 +85,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         bottomSheetView = (BottomSheetView) view.getContext();
         tinyDB = new TinyDB(getActivity());
         mAddresstxt = view.findViewById(R.id.address_selected);
-        String mAddress = tinyDB.getString(USER_ADDRESS);
-        AddressPojo mAddPojo = new Gson().fromJson(mAddress, AddressPojo.class);
-        if (mAddPojo != null) {
-            mAddresstxt.setVisibility(View.VISIBLE);
-            mAddresstxt.setPadding(5, 5, 5, 5);
+        mAddresstxt.setVisibility(View.VISIBLE);
+        mAddresstxt.setPadding(5, 5, 5, 5);
+
+       /* if (mAddPojo != null) {
+
             if (!mAddPojo.getLandmark().equalsIgnoreCase("NO")) {
-                mAddresstxt.setText(mAddPojo.getFlatNumber() + ", " + mAddPojo.getApartmentName() + ", " + mAddPojo.getLandmark() + ", " + mAddPojo.getAreaName() + ", " + mAddPojo.getCityName());
+                mAddresstxt.setText("Address : "+mAddPojo.getFlatNumber() + ", " + mAddPojo.getApartmentName() + ", " + mAddPojo.getLandmark() + ", " + mAddPojo.getAreaName() + ", " + mAddPojo.getCityName());
             } else {
-                mAddresstxt.setText(mAddPojo.getFlatNumber() + ", " + mAddPojo.getApartmentName() + ", " + mAddPojo.getAreaName() + ", " + mAddPojo.getCityName());
+                mAddresstxt.setText("Address : "+mAddPojo.getFlatNumber() + ", " + mAddPojo.getApartmentName() + ", " + mAddPojo.getAreaName() + ", " + mAddPojo.getCityName());
 
             }
         } else {
             mAddresstxt.setVisibility(View.GONE);
-        }
+        }*/
         return view;
     }
 
@@ -241,8 +248,25 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
 
         bottomSheetView.BottomSheetDesignLocation(latLng);
+        Geocoder geocoder;
 
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        if(addresses.size()>0)
+        if (addresses.get(0).getLocality() != null) {
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            mAddresstxt.setText("Location : " + address + ", " + city + ", " + state + ", " + country + ", " + postalCode);
+        }
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
