@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_icon"
@@ -12,19 +14,49 @@
             android:id="@+id/nav_myorders"
             android:icon="@drawable/ic_my_orders"
             android:title="@string/my_orders" />
+
+        <item
+            android:id="@+id/nav_mycoupons"
+            android:icon="@drawable/ic_coupons"
+            android:title="@string/my_coupons" />
         <item
             android:id="@+id/nav_amount_due"
             android:icon="@drawable/ic_amount_due"
             android:title="@string/amount_due" />
+        <item
+            android:id="@+id/nav_whishlist"
+            android:icon="@drawable/ic_whishlist"
+            android:title="@string/my_whishlist" />
 
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_notification"
+            android:title="@string/my_notifications" />
         <item
             android:id="@+id/nav_canreturn"
             android:icon="@drawable/ic_order_return"
             android:title="@string/can_return" />
+    </group>
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_moreservices"
             android:icon="@drawable/ic_services"
             android:title="@string/more_services" />
+        <item
+            android:id="@+id/nav_offerszone"
+            android:icon="@drawable/ic_offerszone"
+            android:title="@string/offer_zone" />
+        <item
+            android:id="@+id/nav_giftcard"
+            android:icon="@drawable/ic_gift_card"
+            android:title="@string/gift_card" />
+
+        <item
+            android:id="@+id/nav_queries"
+            android:icon="@drawable/ic_queries_chat"
+            android:title="@string/my_queries" />
         <item
             android:id="@+id/nav_callcustomercare"
             android:icon="@drawable/ic_cust_care"

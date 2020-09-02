@@ -11,9 +11,14 @@
         android:icon="@drawable/ic_trolley_cart"
         android:title="@string/menu_cart" />
     <item
+        android:id="@+id/nav_hidden_option"
+        android:icon="@drawable/ic_trolley_cart"
+        android:title="" />
+
+    <item
         android:id="@+id/item4"
-        android:icon="@drawable/ic_queries_chat"
-        android:title="@string/my_queries" />
+        android:icon="@drawable/ic_truck"
+        android:title="@string/mobility" />
     <item
         android:id="@+id/item5"
         android:icon="@drawable/ic_stores_icon"

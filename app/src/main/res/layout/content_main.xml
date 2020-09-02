@@ -13,7 +13,7 @@
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_nav">
+        android:layout_above="@id/btm_ll">
 
         <fragment
             android:id="@+id/nav_host_fragment"
@@ -29,16 +29,36 @@
         <include layout="@layout/bottomsheet" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btm_ll"
         android:layout_width="match_parent"
+        android:background="#00ff001C"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:background="@color/white"
-        app:itemIconTint="@drawable/bottom_selector"
-        app:itemTextColor="@drawable/bottom_selector"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu_bottom" />
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            app:elevation="0dp"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/menu_bottom" />
+        <ImageView
+            android:id="@+id/iv_delhub"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="15dp"
+            android:src="@drawable/ic_letter_h"
+            android:background="@drawable/splash_design"
+            app:layout_constraintStart_toStartOf="parent"
+            android:contentDescription="@string/bottom_sheet_behavior"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </RelativeLayout>

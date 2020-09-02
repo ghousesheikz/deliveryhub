@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.shaikhomes.watercan.ui.maps.MapsFragment"
+        android:name="com.shaikhomes.deliveryhub.ui.maps.MapsFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
 
@@ -17,65 +17,83 @@
 
     <fragment
         android:id="@+id/nav_myorders"
-        android:name="com.shaikhomes.watercan.ui.myorders.MyOrdersFragment"
+        android:name="com.shaikhomes.deliveryhub.ui.myorders.MyOrdersFragment"
         android:label="@string/my_orders"
         tools:layout="@layout/fragment_my_orders" />
 
     <fragment
         android:id="@+id/nav_amount_due"
-        android:name="com.shaikhomes.watercan.ui.amountdue.AmountDueFragment"
+        android:name="com.shaikhomes.deliveryhub.ui.amountdue.AmountDueFragment"
         android:label="@string/amount_due"
         tools:layout="@layout/fragment_amount_due" />
     <fragment
         android:id="@+id/nav_canreturn"
-        android:name="com.shaikhomes.watercan.ui.canreturn.CanReturnFragment"
+        android:name="com.shaikhomes.deliveryhub.ui.canreturn.CanReturnFragment"
         android:label="@string/can_return"
         tools:layout="@layout/fragment_can_return" />
     <fragment
         android:id="@+id/nav_moreservices"
-        android:name="com.shaikhomes.watercan.ui.moreservices.MoreServicesFragment"
+        android:name="com.shaikhomes.deliveryhub.ui.moreservices.MoreServicesFragment"
         android:label="@string/more_services"
         tools:layout="@layout/fragment_more_services" />
     <fragment
         android:id="@+id/nav_callcustomercare"
-        android:name="com.shaikhomes.watercan.ui.customercare.CustomerCareFragment"
+        android:name="com.shaikhomes.deliveryhub.ui.customercare.CustomerCareFragment"
         android:label="@string/call_customer_care"
         tools:layout="@layout/fragment_customer_care" />
 
     <fragment
         android:id="@+id/nav_insta_services"
-        android:name="com.shaikhomes.watercan.ui.orders.OrderCan"
+        android:name="com.shaikhomes.deliveryhub.ui.orders.OrderCan"
         android:label="@string/products"
         tools:layout="@layout/fragment_order_can" />
 
     <fragment
         android:id="@+id/nav_userdashboard"
-        android:name="com.shaikhomes.watercan.ui.dashboard.UserDashboardFragment"
+        android:name="com.shaikhomes.deliveryhub.ui.dashboard.UserDashboardFragment"
         android:label="@string/dashboard"
         tools:layout="@layout/userdashboard" />
 
     <fragment
         android:id="@+id/nav_order_cal"
-        android:name="com.shaikhomes.watercan.ui.ordercalculation.OrderCalculation"
+        android:name="com.shaikhomes.deliveryhub.ui.ordercalculation.OrderCalculation"
         android:label="@string/my_cart"
         tools:layout="@layout/fragment_order_calculation" />
 
     <fragment
         android:id="@+id/nav_search_places"
-        android:name="com.shaikhomes.watercan.ui.searchplaces.SearchPlaces"
+        android:name="com.shaikhomes.deliveryhub.ui.searchplaces.SearchPlaces"
         android:label="@string/search_places"
         tools:layout="@layout/fragment_search_places" />
 
     <fragment
         android:id="@+id/nav_logout"
-        android:name="com.shaikhomes.watercan.ui.logout.LogoutFragment"
+        android:name="com.shaikhomes.deliveryhub.ui.logout.LogoutFragment"
         android:label="@string/logout"
         tools:layout="@layout/logout_dialog" />
 
     <fragment
         android:id="@+id/nav_queries"
-        android:name="com.shaikhomes.watercan.ui.userquery.UserQueries"
+        android:name="com.shaikhomes.deliveryhub.ui.userquery.UserQueries"
         android:label="@string/my_queries"
         tools:layout="@layout/activity_user_queries" />
+
+    <fragment
+        android:id="@+id/nav_stores"
+        android:name="com.shaikhomes.deliveryhub.ui.stores.StoreVendorsList"
+        android:label="@string/stores"
+        tools:layout="@layout/fragment_store_vendors_list" />
+
+    <fragment
+        android:id="@+id/nav_mobility"
+        android:name="com.shaikhomes.deliveryhub.ui.mobility.MobilityOrders"
+        android:label="@string/mobility"
+        tools:layout="@layout/fragment_store_vendors_list" />
+
+    <fragment
+        android:id="@+id/nav_stores_items"
+        android:name="com.shaikhomes.deliveryhub.ui.stores.StoreItemsList"
+        android:label="@string/stores_items"
+        tools:layout="@layout/fragment_store_items_list" />
 
 </navigation>

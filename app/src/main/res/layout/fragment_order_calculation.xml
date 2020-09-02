@@ -359,7 +359,7 @@
         </LinearLayout>
 
 
-        <androidx.appcompat.widget.AppCompatButton
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/proceed_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

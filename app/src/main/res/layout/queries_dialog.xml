@@ -68,6 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="Note : You can enter only one query in this chat.\n Please entyer your query in one message"
                 android:textColor="@color/darkgrey" />
 

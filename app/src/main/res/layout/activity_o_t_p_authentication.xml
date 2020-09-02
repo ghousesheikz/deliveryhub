@@ -43,7 +43,7 @@
         android:textSize="20sp" />
 
 
-    <com.shaikhomes.watercan.custom_views.PassCodeView
+    <com.shaikhomes.deliveryhub.custom_views.PassCodeView
         android:id="@+id/pass_code_view"
         android:layout_width="match_parent"
         android:layout_height="350dp"

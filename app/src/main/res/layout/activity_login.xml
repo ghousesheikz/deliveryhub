@@ -148,13 +148,13 @@
                     android:id="@+id/edt_login_mob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
                     android:background="@color/white"
                     android:hint="@string/mobile_number"
                     android:inputType="number"
                     android:maxLength="10"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:layout_marginRight="15dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/darkgrey"
                     android:textSize="17sp" />
@@ -167,9 +167,23 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
+                android:visibility="gone"
                 android:background="@drawable/button_background"
                 android:text="login"
                 android:textColor="@color/white" />
+
+            <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+                android:id="@+id/btn_id"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:text="login"
+                android:textColor="@color/white"
+                android:layout_margin="20dp"
+                android:background="@drawable/button_background"
+                app:spinning_bar_color="#FFF"
+                app:spinning_bar_padding="6dp"
+                app:spinning_bar_width="4dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -185,8 +199,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_weight="0.5"
-                    android:gravity="right"
                     android:fontFamily="@font/lato_regular"
+                    android:gravity="right"
                     android:padding="5dp"
                     android:paddingRight="8dp"
                     android:text="@string/signup"

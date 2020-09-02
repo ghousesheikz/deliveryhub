@@ -89,4 +89,11 @@
     <string name="stores">Stores</string>
     <string name="my_queries">My Queries</string>
     <string name="chat_with_us">Ask Queries</string>
+    <string name="stores_items">Store Items</string>
+    <string name="mobility">Mobility</string>
+    <string name="my_coupons">My Coupons</string>
+    <string name="offer_zone">Offer zone</string>
+    <string name="my_whishlist">My Whishlist</string>
+    <string name="my_notifications">My Notifications</string>
+    <string name="gift_card">Gift Card</string>
 </resources>

@@ -34,7 +34,7 @@
                 android:src="@drawable/fading_background" />
 
 
-            <com.shaikhomes.watercan.custom_views.CircleImageView
+            <com.shaikhomes.deliveryhub.custom_views.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"

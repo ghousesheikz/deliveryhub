@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.searchplaces.SearchPlaces">
 
-    <com.shaikhomes.watercan.views.CustomAutoCompleteTextView
+    <com.shaikhomes.deliveryhub.views.CustomAutoCompleteTextView
         android:id="@+id/atv_places"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
