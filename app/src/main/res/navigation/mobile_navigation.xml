@@ -96,4 +96,10 @@
         android:label="@string/stores_items"
         tools:layout="@layout/fragment_store_items_list" />
 
+    <fragment
+        android:id="@+id/nav_stores_items_ordercal"
+        android:name="com.shaikhomes.deliveryhub.ui.stores.StoresOrderCalculation"
+        android:label="@string/stores_items"
+        tools:layout="@layout/fragment_stores_order_calculation" />
+
 </navigation>

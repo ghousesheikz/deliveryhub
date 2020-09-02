@@ -78,7 +78,7 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.My
                     .into(holder.mCanImage);
         }
         holder.mCompName.setText(mJoblist.get(position).getItemName().trim());
-        holder.mPrice.setText(rupee + " " + mJoblist.get(position).getItemPrice() + " ");
+       // holder.mPrice.setText(rupee + " " + mJoblist.get(position).getItemPrice() + " ");
         holder.mItemDsc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +100,7 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.My
                 }
             }
         });
-        holder.mOrderCanLL.setOnClickListener(new View.OnClickListener() {
+       /* holder.mOrderCanLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 itemClickListener.onItemClick(mJoblist.get(position), position);
@@ -111,7 +111,7 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.My
             public void onClick(View v) {
                 itemClickListener.onItemClick(mJoblist.get(position), position);
             }
-        });
+        });*/
 
         mCount = mJoblist.get(position).getItemCount();
         holder.mPlusCnt.setOnClickListener(new View.OnClickListener() {
@@ -123,38 +123,35 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.My
                 amt = mCount * amt;
                 mJoblist.get(position).setTotalAmt(amt);
                 mJoblist.get(position).setItemCount(mCount);
-                holder.mPrice.setText("₹ " + amt + " ");
+              //  holder.mPrice.setText("₹ " + amt + " ");
                 holder.mCanCount.setText(String.valueOf(mCount));
-                itemClickListener.onItemClick(mJoblist.get(position), position);
+                itemClickListener.onItemClick(mJoblist, position);
             }
         });
-
+        int amt = Integer.parseInt(mJoblist.get(position).getItemPrice());
+        holder.mPrice.setText("₹ " + df.format(amt));
         holder.mMinusCnt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCount = mJoblist.get(position).getItemCount();
                 mCount = mCount - 1;
-                if (mCount < Integer.parseInt(mJoblist.get(position).getMinqty())) {
-                    mCount = Integer.parseInt(mJoblist.get(position).getMinqty());
-                }
                 if (mCount < 0) {
                     mCount = 0;
                     int amt = Integer.parseInt(mJoblist.get(position).getItemPrice());
                     amt = mCount * amt;
                     mJoblist.get(position).setTotalAmt(amt);
                     mJoblist.get(position).setItemCount(mCount);
-                    holder.mPrice.setText("₹ " + df.format(amt) + " ");
+
                     holder.mCanCount.setText(String.valueOf(mCount));
-                    mJoblist.get(position).setItemCount(mCount);
-                    itemClickListener.onItemClick(mJoblist.get(position), position);
+                    itemClickListener.onItemClick(mJoblist, position);
                 } else {
                     int amt = Integer.parseInt(mJoblist.get(position).getItemPrice());
                     amt = mCount * amt;
                     mJoblist.get(position).setTotalAmt(amt);
                     mJoblist.get(position).setItemCount(mCount);
-                    holder.mPrice.setText("₹ " + df.format(amt) + " ");
+                   // holder.mPrice.setText("₹ " + df.format(amt) + " ");
                     holder.mCanCount.setText(String.valueOf(mCount));
-                    itemClickListener.onItemClick(mJoblist.get(position), position);
+                    itemClickListener.onItemClick(mJoblist, position);
                 }
             }
         });
@@ -165,7 +162,7 @@ public class StoreItemsAdapter extends RecyclerView.Adapter<StoreItemsAdapter.My
     }
 
     public interface OnItemClickListener {
-        void onItemClick(StoreItemsPojo.StoreItemsList response, int position);
+        void onItemClick(List<StoreItemsPojo.StoreItemsList> response, int position);
     }
 
     @Override

@@ -94,6 +94,7 @@ public class StoreVendorsList extends Fragment {
             @Override
             public void onItemClick(StoreListPojo.ShopsList response, int position) {
                 tinyDB.putString("SVENDOR", response.getVendorUserId());
+                tinyDB.putInt("MINAMT", response.getMinOrderAmt().intValue());
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_stores_items);
             }
 

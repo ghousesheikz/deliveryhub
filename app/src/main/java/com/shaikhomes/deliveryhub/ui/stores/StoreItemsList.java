@@ -1,5 +1,6 @@
 package com.shaikhomes.deliveryhub.ui.stores;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,15 +11,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.TextView;
 
 import com.shaikhomes.deliveryhub.R;
 import com.shaikhomes.deliveryhub.api_services.ApiClient;
 import com.shaikhomes.deliveryhub.api_services.ApiInterface;
+import com.shaikhomes.deliveryhub.utility.MyScrollController;
 import com.shaikhomes.deliveryhub.utility.TinyDB;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,7 +84,11 @@ public class StoreItemsList extends Fragment {
     StoreItemsAdapter mItemAdapter;
     List<StoreCategoryPojo.StoreCategoryDetail> mCatList;
     List<StoreItemsPojo.StoreItemsList> mItemList;
-
+    TextView txt_totalprice;
+    int minamt = 0;
+    double totalAmt = 0;
+    boolean mProceedflag = false;
+    DecimalFormat df;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,10 +98,30 @@ public class StoreItemsList extends Fragment {
         apiService = ApiClient.getClient(getActivity()).create(ApiInterface.class);
         mCatList = new ArrayList<>();
         mItemList = new ArrayList<>();
+        df = new DecimalFormat("0.00");
+        minamt = tinyDB.getInt("MINAMT");
+        txt_totalprice = view.findViewById(R.id.txt_totalprice);
         mCategoryRecyclerView = view.findViewById(R.id.store_category_list);
-        mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mCategoryRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         mItemsRecyclerview = view.findViewById(R.id.store_items_list);
         mItemsRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mItemsRecyclerview.addOnScrollListener(new MyScrollController() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void show() {
+               /* txt_totalprice.setVisibility(View.VISIBLE);
+                txt_totalprice.animate().translationY(0).setStartDelay(200).setInterpolator(new DecelerateInterpolator(2)).start();
+          */
+            }
+
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void hide() {
+               /* txt_totalprice.animate().translationY(txt_totalprice.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
+                txt_totalprice.setVisibility(View.GONE);
+          */
+            }
+        });
         mCatAdapter = new StoreCategoryAdapter(getActivity(), mCatList, new StoreCategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(StoreCategoryPojo.StoreCategoryDetail response, int position) {
@@ -100,20 +131,60 @@ public class StoreItemsList extends Fragment {
         mCategoryRecyclerView.setAdapter(mCatAdapter);
         mItemAdapter = new StoreItemsAdapter(getActivity(), mItemList, new StoreItemsAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(StoreItemsPojo.StoreItemsList response, int position) {
-
+            public void onItemClick(List<StoreItemsPojo.StoreItemsList> response, int position) {
+                totalAmt = 0;
+                for (int i = 0; i < response.size(); i++) {
+                    if (response.get(i).getTotalAmt() > 0) {
+                        totalAmt = totalAmt + response.get(i).getTotalAmt();
+                        if (totalAmt >= minamt) {
+                            mProceedflag = true;
+                            txt_totalprice.setBackgroundResource(R.drawable.button_background);
+                            txt_totalprice.setText("Total Amount : ₹" + df.format(totalAmt));
+                        } else {
+                            mProceedflag = false;
+                            txt_totalprice.setBackgroundResource(R.drawable.button_background_grey);
+                            txt_totalprice.setText("Total Amount : ₹" + df.format(totalAmt));
+                        }
+                    }
+                }
             }
         });
         mItemsRecyclerview.setAdapter(mItemAdapter);
         getCategoryDetails(tinyDB.getString("SVENDOR"));
-        getItemsDetails(tinyDB.getString("SVENDOR"),"");
+        getItemsDetails(tinyDB.getString("SVENDOR"), "");
+        txt_totalprice.setOnClickListener(v -> {
+            if (mProceedflag) {
+                proceedOrder();
+
+            } else {
+                Toasty.error(getActivity(), "Minimum order amount is : " + df.format(minamt), Toasty.LENGTH_SHORT).show();
+            }
+        });
         // Inflate the layout for this fragment
         return view;
     }
 
+    private void proceedOrder() {
+        List<StoreOrderItemsPojo> mStoreItemsPojoList = new ArrayList<>();
+        StoreOrderItemsPojo mDataPojo;
+        if (mItemAdapter.getlist().size() > 0) {
+            for (int i = 0; i <= mItemAdapter.getlist().size(); i++) {
+                mDataPojo = new StoreOrderItemsPojo();
+                mDataPojo.setItemId(mItemAdapter.getlist().get(i).getItemId());
+                mDataPojo.setItemName(mItemAdapter.getlist().get(i).getItemName());
+                mDataPojo.setItemQuantity(mItemAdapter.getlist().get(i).getItemQuantity());
+                mDataPojo.setItemCategory(mItemAdapter.getlist().get(i).getCategoryId());
+                mDataPojo.setItemprice(mItemAdapter.getlist().get(i).getItemPrice());
+                mDataPojo.setTotalamount(mItemAdapter.getlist().get(i).getTotalAmt() + "");
+                mDataPojo.setOrderType("stores");
+                mStoreItemsPojoList.add(mDataPojo);
+            }
+        }
+    }
+
     private void getItemsDetails(String svendor, String category) {
         try {
-            Call<StoreItemsPojo> call = apiService.getStoresItems(category,svendor,"True");
+            Call<StoreItemsPojo> call = apiService.getStoresItems(category, svendor, "True");
             call.enqueue(new Callback<StoreItemsPojo>() {
                 @Override
                 public void onResponse(Call<StoreItemsPojo> call, Response<StoreItemsPojo> response) {
