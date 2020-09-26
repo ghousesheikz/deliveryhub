@@ -67,7 +67,7 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.MyVi
         };
         circularProgressDrawable.setColorSchemeColors(COLORS);
         circularProgressDrawable.start();
-        String imgUrl = "http://deliveryhub.shaikhomes.com/ImageStorage/" + mJoblist.get(position).getShopImg();
+        String imgUrl = "http://delapi.shaikhomes.com/ImageStorage/" + mJoblist.get(position).getShopImg();
         Picasso.get().load(imgUrl).placeholder(circularProgressDrawable)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)

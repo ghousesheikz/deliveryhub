@@ -13,39 +13,52 @@
         android:orientation="vertical"
         android:padding="@dimen/dimen_8dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="2">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TextView
-
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
                 android:layout_weight="1"
-                android:fontFamily="@font/lato_regular"
                 android:gravity="center"
-                android:padding="3dp"
-                android:text="OrderId : "
-                android:textColor="@color/red" />
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <TextView
-                android:id="@+id/txt_orderid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/lato_light"
-                android:gravity="center_vertical"
-                android:padding="3dp"
-                android:text=""
-                android:textColor="@color/black" />
-        </LinearLayout>
+                <TextView
 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lato_regular"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text="OrderId : "
+                    android:textColor="@color/red" />
+
+                <TextView
+                    android:id="@+id/txt_orderid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lato_light"
+                    android:gravity="center_vertical"
+                    android:padding="3dp"
+                    android:text=""
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/txt_viewitems"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:visibility="gone"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_item_list_items" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -347,6 +360,7 @@
                     android:text="Item Name"
                     android:textColor="@color/black" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

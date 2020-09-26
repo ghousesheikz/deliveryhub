@@ -108,6 +108,7 @@ import spencerstudios.com.ezdialoglib.EZDialogListener;
 import static com.shaikhomes.deliveryhub.BaseActivity.hashCal;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.DELIVERY_TYPE;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.ORDER_DATA;
+import static com.shaikhomes.deliveryhub.utility.AppConstants.ORDER_TYPE;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.USER_ADDRESS;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.USER_ID;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.USER_MOBILE;
@@ -503,6 +504,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                             mPostData.setDeliveredDate(null);
                             mPostData.setDeliveredBy("");
                             tinyDB.putString(ORDER_DATA, new Gson().toJson(mPostData));
+                            tinyDB.putString(ORDER_TYPE, "items");
                             mOrderProceedFab.stopAnimation();
                             launchPayUMoneyFlow(tinyDB.getString(USER_NAME), tinyDB.getString(USER_MOBILE), mOrdersList.get(0).getName() + "DeliveryHUB", String.valueOf(mTotalPrice));
                         } catch (Exception e) {
@@ -567,6 +569,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
                             mPostData.setDeliveredDate(null);
                             mPostData.setDeliveredBy("");
                             tinyDB.putString(ORDER_DATA, new Gson().toJson(mPostData));
+                            tinyDB.putString(ORDER_TYPE, "items");
                             Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
                             call.enqueue(new Callback<PostResponsePojo>() {
                                 @Override

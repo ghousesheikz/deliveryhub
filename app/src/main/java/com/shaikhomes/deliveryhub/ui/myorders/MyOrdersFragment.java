@@ -1,5 +1,7 @@
 package com.shaikhomes.deliveryhub.ui.myorders;
 
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,13 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.shaikhomes.deliveryhub.R;
 import com.shaikhomes.deliveryhub.api_services.ApiClient;
 import com.shaikhomes.deliveryhub.api_services.ApiInterface;
-import com.shaikhomes.deliveryhub.model.OrderCalculationPojo;
 import com.shaikhomes.deliveryhub.pojo.OrderDelivery;
 import com.shaikhomes.deliveryhub.ui.BottomSheetView;
+import com.shaikhomes.deliveryhub.ui.stores.StoreItemsPojo;
+import com.shaikhomes.deliveryhub.ui.stores.StoreOrderItemsPojo;
 import com.shaikhomes.deliveryhub.utility.TinyDB;
 
 import java.util.ArrayList;
@@ -94,14 +99,14 @@ public class MyOrdersFragment extends Fragment {
         bottomSheetView.BottomSheetDesignView("hide");
         mList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.my_order_list);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         mAdapter = new MyOrderListAdapter(getActivity(), mList, new MyOrderListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(List<OrderCalculationPojo> response, int position) {
-
+            public void onItemClick(OrderDelivery.OrderList response, int position) {
+                getOrderItemDetails(response.getOrderId());
             }
         });
         recyclerView.setAdapter(mAdapter);
@@ -109,6 +114,51 @@ public class MyOrdersFragment extends Fragment {
         getOrderDetails(tinyDB.getString(USER_MOBILE));
         return view;
 
+    }
+
+    private void getOrderItemDetails(String orderId) {
+        try {
+            Call<OrderItemsListPojo> call = apiService.getStoresOrderItems(orderId, "");
+            call.enqueue(new Callback<OrderItemsListPojo>() {
+                @Override
+                public void onResponse(Call<OrderItemsListPojo> call, Response<OrderItemsListPojo> response) {
+                    OrderItemsListPojo mItemData = response.body();
+                    if (mItemData.getStatus().equalsIgnoreCase("200")) {
+                        if (mItemData.getOrderItemsList() != null) {
+                            DialogItems(mItemData.getOrderItemsList());
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<OrderItemsListPojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void DialogItems(List<OrderItemsListPojo.OrderItemsList> storeItemsList) {
+        final Dialog dialog = new Dialog(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.orderitems_dialog);
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+        RecyclerView mRecyclerView = dialog.findViewById(R.id.orderitems_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        OrderItemsAdapter mAdapter = new OrderItemsAdapter(getActivity(), storeItemsList, new OrderItemsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(OrderItemsListPojo.OrderItemsList response, int position) {
+
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void getOrderDetails(String number) {

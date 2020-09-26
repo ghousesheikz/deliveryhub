@@ -9,10 +9,14 @@ import com.shaikhomes.deliveryhub.pojo.PostResponsePojo;
 import com.shaikhomes.deliveryhub.pojo.UpdateOrderPojo;
 import com.shaikhomes.deliveryhub.pojo.UpdateWalletPojo;
 import com.shaikhomes.deliveryhub.pojo.UserRegistrationPojo;
+import com.shaikhomes.deliveryhub.ui.myorders.OrderItemsListPojo;
 import com.shaikhomes.deliveryhub.ui.ordercalculation.ItemQueriesPojo;
 import com.shaikhomes.deliveryhub.ui.stores.StoreCategoryPojo;
 import com.shaikhomes.deliveryhub.ui.stores.StoreItemsPojo;
 import com.shaikhomes.deliveryhub.ui.stores.StoreListPojo;
+import com.shaikhomes.deliveryhub.ui.stores.StoreOrderItemsPojo;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -90,8 +94,11 @@ public interface ApiInterface {
     @POST("api/ItemQueries?")
     Call<PostResponsePojo> PostItemQuery(@Body ItemQueriesPojo.QueryList postquery);
 
+    @POST("api/OrderItems?")
+    Call<PostResponsePojo> PostOrderItems(@Body List<StoreOrderItemsPojo> postquery);
+
     @GET("api/ItemQueries?")
-    Call<ItemQueriesPojo> getQueries(@Query("vendorid") String vendorid, @Query("userid") String userid,@Query("flag") String flag, @Query("itemid") String itemid);
+    Call<ItemQueriesPojo> getQueries(@Query("vendorid") String vendorid, @Query("userid") String userid, @Query("flag") String flag, @Query("itemid") String itemid);
 
     @GET("api/StoreShops?")
     Call<StoreListPojo> getStoresList(@Query("vendorid") String vendorid, @Query("active") String active, @Query("lat") double lat, @Query("lang") double lang);
@@ -101,7 +108,10 @@ public interface ApiInterface {
 
 
     @GET("api/StoreItems?")
-    Call<StoreItemsPojo> getStoresItems(@Query("categoryid") String categoryid,@Query("vendorid") String vendorid, @Query("active") String active);
+    Call<StoreItemsPojo> getStoresItems(@Query("categoryid") String categoryid, @Query("vendorid") String vendorid, @Query("active") String active);
+
+    @GET("api/OrderItems?")
+    Call<OrderItemsListPojo> getStoresOrderItems(@Query("orderid") String orderid, @Query("orderdate") String orderdate);
 
 
   /*  @POST("api/LeadsRegistration")

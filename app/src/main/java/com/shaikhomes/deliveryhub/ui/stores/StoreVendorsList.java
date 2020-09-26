@@ -23,6 +23,7 @@ import com.shaikhomes.deliveryhub.utility.TinyDB;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -94,13 +95,19 @@ public class StoreVendorsList extends Fragment {
             @Override
             public void onItemClick(StoreListPojo.ShopsList response, int position) {
                 tinyDB.putString("SVENDOR", response.getVendorUserId());
+                tinyDB.putString("SVENDORNAME", response.getVendorName());
                 tinyDB.putInt("MINAMT", response.getMinOrderAmt().intValue());
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_stores_items);
             }
 
         });
         recyclerView.setAdapter(mAdapter);
-        getStoresList();
+        if (tinyDB.getDouble("LAT", 0.0) != 0) {
+            getStoresList();
+        } else {
+            Toasty.error(getActivity(), "Please switch ON the location", Toasty.LENGTH_SHORT).show();
+            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_home);
+        }
         return view;
     }
 

@@ -96,4 +96,9 @@
     <string name="my_whishlist">My Whishlist</string>
     <string name="my_notifications">My Notifications</string>
     <string name="gift_card">Gift Card</string>
+    <string name="my_store_cart">My Store Cart</string>
+    <string name="mrp_total">MRP Total</string>
+    <string name="discount">Discount</string>
+    <string name="payable_amount">Payable Amount</string>
+    <string name="payment_details">Payment Details</string>
 </resources>

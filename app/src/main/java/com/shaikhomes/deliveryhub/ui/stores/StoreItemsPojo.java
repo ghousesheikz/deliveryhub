@@ -102,10 +102,130 @@ public class StoreItemsPojo {
         @SerializedName("rangeKms")
         @Expose
         private Double rangeKms;
+        @SerializedName("SellingPrice")
+        @Expose
+        private String SellingPrice;
+        @SerializedName("Weight1")
+        @Expose
+        private String Weight1;
+        @SerializedName("MrpPrice1")
+        @Expose
+        private String MrpPrice1;
+        @SerializedName("SellingPrice1")
+        @Expose
+        private String SellingPrice1;
+        @SerializedName("Weight2")
+        @Expose
+        private String Weight2;
+        @SerializedName("MrpPrice2")
+        @Expose
+        private String MrpPrice2;
+        @SerializedName("SellingPrice2")
+        @Expose
+        private String SellingPrice2;
+        @SerializedName("Weight3")
+        @Expose
+        private String Weight3;
+        @SerializedName("MrpPrice3")
+        @Expose
+        private String MrpPrice3;
+        @SerializedName("SellingPrice3")
+        @Expose
+        private String SellingPrice3;
+
+        public String getWeight1() {
+            return Weight1;
+        }
+
+        public void setWeight1(String weight1) {
+            Weight1 = weight1;
+        }
+
+        public String getMrpPrice1() {
+            return MrpPrice1;
+        }
+
+        public void setMrpPrice1(String mrpPrice1) {
+            MrpPrice1 = mrpPrice1;
+        }
+
+        public String getSellingPrice1() {
+            return SellingPrice1;
+        }
+
+        public void setSellingPrice1(String sellingPrice1) {
+            SellingPrice1 = sellingPrice1;
+        }
+
+        public String getWeight2() {
+            return Weight2;
+        }
+
+        public void setWeight2(String weight2) {
+            Weight2 = weight2;
+        }
+
+        public String getMrpPrice2() {
+            return MrpPrice2;
+        }
+
+        public void setMrpPrice2(String mrpPrice2) {
+            MrpPrice2 = mrpPrice2;
+        }
+
+        public String getSellingPrice2() {
+            return SellingPrice2;
+        }
+
+        public void setSellingPrice2(String sellingPrice2) {
+            SellingPrice2 = sellingPrice2;
+        }
+
+        public String getWeight3() {
+            return Weight3;
+        }
+
+        public void setWeight3(String weight3) {
+            Weight3 = weight3;
+        }
+
+        public String getMrpPrice3() {
+            return MrpPrice3;
+        }
+
+        public void setMrpPrice3(String mrpPrice3) {
+            MrpPrice3 = mrpPrice3;
+        }
+
+        public String getSellingPrice3() {
+            return SellingPrice3;
+        }
+
+        public void setSellingPrice3(String sellingPrice3) {
+            SellingPrice3 = sellingPrice3;
+        }
+
+        public String getSellingPrice() {
+            return SellingPrice;
+        }
+
+        public void setSellingPrice(String sellingPrice) {
+            SellingPrice = sellingPrice;
+        }
 
         private int itemCount;
 
         private double totalAmt;
+
+        private double MRPtotalAmt;
+
+        public double getMRPtotalAmt() {
+            return MRPtotalAmt;
+        }
+
+        public void setMRPtotalAmt(double MRPtotalAmt) {
+            this.MRPtotalAmt = MRPtotalAmt;
+        }
 
         public double getTotalAmt() {
             return totalAmt;

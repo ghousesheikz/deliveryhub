@@ -33,6 +33,8 @@ public class StoreOrderItemsPojo {
 
     private String totalamount;
 
+    private String Mrptotalamount;
+
     private String ItemQuantity;
 
     private String Itemprice;
@@ -46,6 +48,44 @@ public class StoreOrderItemsPojo {
     private String VendorAddress;
 
     private String OrderItemId;
+
+    private String ItemImage;
+
+    private String ItemCount;
+
+    private String SellingPrice;
+
+    public String getMrptotalamount() {
+        return Mrptotalamount;
+    }
+
+    public void setMrptotalamount(String mrptotalamount) {
+        Mrptotalamount = mrptotalamount;
+    }
+
+    public String getSellingPrice() {
+        return SellingPrice;
+    }
+
+    public void setSellingPrice(String sellingPrice) {
+        SellingPrice = sellingPrice;
+    }
+
+    public String getItemCount() {
+        return ItemCount;
+    }
+
+    public void setItemCount(String itemCount) {
+        ItemCount = itemCount;
+    }
+
+    public String getItemImage() {
+        return ItemImage;
+    }
+
+    public void setItemImage(String itemImage) {
+        ItemImage = itemImage;
+    }
 
     public String getUserMobileNo() {
         return UserMobileNo;

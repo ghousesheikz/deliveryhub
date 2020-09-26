@@ -5,13 +5,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shaikhomes.deliveryhub.R;
-import com.shaikhomes.deliveryhub.model.OrderCalculationPojo;
 import com.shaikhomes.deliveryhub.pojo.OrderDelivery;
 
 import java.text.DecimalFormat;
@@ -76,10 +76,19 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
         holder.mPaymentMethod.setText(mCanList.get(position).getPaymentType());
         holder.mPaymentTxnId.setText(mCanList.get(position).getPaymentTxnId());
 
+        if (mCanList.get(position).getOrderType().toLowerCase().equalsIgnoreCase("stores")) {
+            holder.txt_viewitems.setVisibility(View.VISIBLE);
+        } else {
+            holder.txt_viewitems.setVisibility(View.GONE);
+        }
+
+        holder.txt_viewitems.setOnClickListener(v -> {
+            itemClickListener.onItemClick(mCanList.get(position), position);
+        });
     }
 
     public interface OnItemClickListener {
-        void onItemClick(List<OrderCalculationPojo> response, int position);
+        void onItemClick(OrderDelivery.OrderList response, int position);
     }
 
     @Override
@@ -99,6 +108,7 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
         TextView mOrderId, mItemName, mNoofCans, mTotalPrice, mUnitPrice,
                 mOrderType, mOrderDate, mPaymentStatus, mOrderStatus, mPaymentMethod, mPaymentTxnId;
         AppCompatButton mAccept, mDecline;
+        ImageView txt_viewitems;
 
         public MyViewHolder(View v) {
             super(v);
@@ -114,6 +124,7 @@ public class MyOrderListAdapter extends RecyclerView.Adapter<MyOrderListAdapter.
             mPaymentStatus = v.findViewById(R.id.txt_paymentstatus);
             mPaymentMethod = v.findViewById(R.id.txt_paymentmethod);
             mPaymentTxnId = v.findViewById(R.id.txt_paymenttxnid);
+            txt_viewitems = v.findViewById(R.id.txt_viewitems);
 
         }
 

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -46,6 +47,9 @@ import com.shaikhomes.deliveryhub.pojo.UpdateWalletPojo;
 import com.shaikhomes.deliveryhub.ui.BottomSheetView;
 import com.shaikhomes.deliveryhub.ui.address.AddressAdapter;
 import com.shaikhomes.deliveryhub.ui.ordercalculation.OrderCalculation;
+import com.shaikhomes.deliveryhub.ui.stores.OrderItemsListPojo;
+import com.shaikhomes.deliveryhub.ui.stores.StoreOrderItemsPojo;
+import com.shaikhomes.deliveryhub.ui.stores.StoresOrderCalculation;
 import com.shaikhomes.deliveryhub.utility.HttpRequestRestAPI;
 import com.shaikhomes.deliveryhub.utility.TinyDB;
 
@@ -85,6 +89,10 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import es.dmoral.toasty.Toasty;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -95,6 +103,9 @@ import static com.shaikhomes.deliveryhub.utility.AppConstants.ADDRESS_LIST;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.CAT_ID;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.DELIVERY_TYPE;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.ORDER_DATA;
+import static com.shaikhomes.deliveryhub.utility.AppConstants.ORDER_TYPE;
+import static com.shaikhomes.deliveryhub.utility.AppConstants.STORE_ITEMS_ORDER_DATA;
+import static com.shaikhomes.deliveryhub.utility.AppConstants.STORE_ORDER_DATA;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.USER_ADDRESS;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.USER_ID;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.USER_MOBILE;
@@ -232,6 +243,25 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                                     mPojo.setLandmark(jsonObject.getString("Landmark"));
                                     mPojo.setAreaName(jsonObject.getString("AreaName"));
                                     mPojo.setCityName(jsonObject.getString("CityName"));
+                                    try {
+                                        if (jsonObject.getString("Lat") != null) {
+                                            mPojo.setLat(jsonObject.getString("Lat"));
+                                        } else {
+                                            mPojo.setLat("0.0");
+                                        }
+                                        if (jsonObject.getString("Lang") != null) {
+                                            mPojo.setLang(jsonObject.getString("Lat"));
+                                        } else {
+                                            mPojo.setLang("0.0");
+                                        }
+                                    }catch (JSONException e){
+                                        mPojo.setLat("0.0");
+                                        mPojo.setLang("0.0");
+                                    }
+                                    catch (NullPointerException e){
+                                        mPojo.setLat("0.0");
+                                        mPojo.setLang("0.0");
+                                    }
                                     mAddressList.add(mPojo);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -530,6 +560,9 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                             mJsonArray.put(mJsonObject);
 
                         }
+                        if (mJsonArray == null) {
+                            mJsonArray = new JSONArray();
+                        }
                         tinyDB.remove(ADDRESS_LIST);
                         tinyDB.putString(ADDRESS_LIST, mJsonArray.toString());
                         saveAddress(mJsonArray.toString());
@@ -623,7 +656,8 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                         }
                         mPojo.setAreaName(mEdtAreaName.getText().toString());
                         mPojo.setCityName(mEdtCityName.getText().toString());
-
+                        mPojo.setLat(addresses.get(0).getLatitude()+"");
+                        mPojo.setLang(addresses.get(0).getLongitude()+"");
                         jsonObject = new JSONObject(new Gson().toJson(mPojo));
                         if (jsonArray == null) {
                             jsonArray = new JSONArray();
@@ -695,55 +729,85 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                 if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
                     //Success Transaction
                     try {
-                        mPostData = new Gson().fromJson(tinyDB.getString(ORDER_DATA), OrderDelivery.OrderList.class);
-                        mPostData.setPaidStatus("Success");
-                        mPostData.setPaymentTxnId(getData.getResult().getPayuMoneyId());
-                        Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
-                        OrderDelivery.OrderList finalMPostData = mPostData;
-                        call.enqueue(new Callback<PostResponsePojo>() {
-                            @Override
-                            public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
+                        if (tinyDB.getString(ORDER_TYPE).equalsIgnoreCase("items")) {
+                            mPostData = new Gson().fromJson(tinyDB.getString(ORDER_DATA), OrderDelivery.OrderList.class);
+                            mPostData.setPaidStatus("Success");
+                            mPostData.setPaymentTxnId(getData.getResult().getPayuMoneyId());
+                            Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
+                            OrderDelivery.OrderList finalMPostData = mPostData;
+                            call.enqueue(new Callback<PostResponsePojo>() {
+                                @Override
+                                public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
 
-                                PostResponsePojo pojo = response.body();
-                                if (pojo != null)
-                                    if (pojo.getStatus().equalsIgnoreCase("200")) {
-                                        //clearData();
+                                    PostResponsePojo pojo = response.body();
+                                    if (pojo != null)
+                                        if (pojo.getStatus().equalsIgnoreCase("200")) {
+                                            //clearData();
 
-                                        new EZDialog.Builder(MainActivity.this)
-                                                .setTitle("SUCCESS")
-                                                .setMessage("Order Created successfully")
-                                                .setPositiveBtnText("Ok")
-                                                .setCancelableOnTouchOutside(false)
-                                                .setHeaderColor(Color.parseColor("#11CAB8"))
+                                            new EZDialog.Builder(MainActivity.this)
+                                                    .setTitle("SUCCESS")
+                                                    .setMessage("Order Created successfully")
+                                                    .setPositiveBtnText("Ok")
+                                                    .setCancelableOnTouchOutside(false)
+                                                    .setHeaderColor(Color.parseColor("#11CAB8"))
 
-                                                .setTitleTextColor(Color.parseColor("#FFFFFF"))
-                                                .OnPositiveClicked(new EZDialogListener() {
-                                                    @Override
-                                                    public void OnClick() {
-                                                        try {
-                                                            UpdateWalletPojo.WalletDetail mPojo = new UpdateWalletPojo.WalletDetail();
-                                                            mPojo.setVendorId(finalMPostData.getVendorName());
-                                                            mPojo.setOnlineAmount(finalMPostData.getTotalamount());
-                                                            UpdateWalletStatus(mPojo, finalMPostData.getOTP());
-                                                            String mOtp = finalMPostData.getOTP();
-                                                            sendSmsDatagen("91" + tinyDB.getString(USER_MOBILE), "Thank you for ordering with DELIVERY HUB. Please share OTP : " + mOtp + " for confirmation.");
+                                                    .setTitleTextColor(Color.parseColor("#FFFFFF"))
+                                                    .OnPositiveClicked(new EZDialogListener() {
+                                                        @Override
+                                                        public void OnClick() {
+                                                            try {
+                                                                UpdateWalletPojo.WalletDetail mPojo = new UpdateWalletPojo.WalletDetail();
+                                                                mPojo.setVendorId(finalMPostData.getVendorName());
+                                                                mPojo.setOnlineAmount(finalMPostData.getTotalamount());
+                                                                UpdateWalletStatus(mPojo, finalMPostData.getOTP());
+                                                                String mOtp = finalMPostData.getOTP();
+                                                                sendSmsDatagen("91" + tinyDB.getString(USER_MOBILE), "Thank you for ordering with DELIVERY HUB. Please share OTP : " + mOtp + " for confirmation.");
 
-                                                        } catch (Exception e) {
-                                                            e.printStackTrace();
+                                                            } catch (Exception e) {
+                                                                e.printStackTrace();
+                                                            }
                                                         }
-                                                    }
-                                                })
-                                                .build();
+                                                    })
+                                                    .build();
 
-                                    }
-                            }
+                                        }
+                                }
 
-                            @Override
-                            public void onFailure(Call<PostResponsePojo> call, Throwable t) {
-                                // hud.dismiss();
-                            }
-                        });
+                                @Override
+                                public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+                                    // hud.dismiss();
+                                }
+                            });
+                        } else if (tinyDB.getString(ORDER_TYPE).equalsIgnoreCase("stores")) {
+                            OrderItemsListPojo mStoresitemlistpojo = new OrderItemsListPojo();
+                            mStoresitemlistpojo = new Gson().fromJson(tinyDB.getString(STORE_ITEMS_ORDER_DATA), OrderItemsListPojo.class);
+                            mPostData = new Gson().fromJson(tinyDB.getString(STORE_ORDER_DATA), OrderDelivery.OrderList.class);
+                            mPostData.setPaidStatus("Success");
+                            mPostData.setPaymentTxnId(getData.getResult().getPayuMoneyId());
+                            Call<PostResponsePojo> call = apiService.PostOrder(mPostData);
+                            OrderDelivery.OrderList finalMPostData = mPostData;
+                            OrderDelivery.OrderList finalMPostData1 = mPostData;
+                            OrderItemsListPojo finalMStoresitemlistpojo = mStoresitemlistpojo;
+                            call.enqueue(new Callback<PostResponsePojo>() {
+                                @Override
+                                public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
 
+                                    PostResponsePojo pojo = response.body();
+                                    if (pojo != null)
+                                        if (pojo.getStatus().equalsIgnoreCase("200")) {
+                                            //clearData();
+
+                                            postItemsData(finalMStoresitemlistpojo.getOrderItemsList(), finalMPostData1.getOTP(), finalMPostData1.getVendorName(), finalMPostData1.getTotalamount());
+
+                                        }
+                                }
+
+                                @Override
+                                public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+                                    // hud.dismiss();
+                                }
+                            });
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -848,6 +912,57 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
         }
     }
 
+    private void postItemsData(List<StoreOrderItemsPojo> orderItemsList, String otp, String vendorName, String totalAmt) {
+        OrderItemsListPojo mOrderList = new OrderItemsListPojo();
+        mOrderList.setOrderItemsList(orderItemsList);
+
+        String mData = new Gson().toJson(mOrderList.getOrderItemsList());
+        new RetrieveFeedORDERTask().execute(mData, otp, vendorName, totalAmt);
+       /* Call<PostResponsePojo> call = apiService.PostOrderItems(orderItemsList);
+        call.enqueue(new Callback<PostResponsePojo>() {
+            @Override
+            public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
+
+                PostResponsePojo pojo = response.body();
+                if (pojo != null)
+                    if (pojo.getStatus().equalsIgnoreCase("200")) {
+                        //clearData();
+                        new EZDialog.Builder(MainActivity.this)
+                                .setTitle("SUCCESS")
+                                .setMessage("Order Created successfully")
+                                .setPositiveBtnText("Ok")
+                                .setCancelableOnTouchOutside(false)
+                                .setHeaderColor(Color.parseColor("#11CAB8"))
+
+                                .setTitleTextColor(Color.parseColor("#FFFFFF"))
+                                .OnPositiveClicked(new EZDialogListener() {
+                                    @Override
+                                    public void OnClick() {
+                                        try {
+                                            UpdateWalletPojo.WalletDetail mPojo = new UpdateWalletPojo.WalletDetail();
+                                            mPojo.setVendorId(vendorName);
+                                            mPojo.setOnlineAmount(totalAmt);
+                                            UpdateWalletItemsStatus(mPojo, otp);
+
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                })
+                                .build();
+
+                    }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+
+                // hud.dismiss();
+            }
+        });
+*/
+    }
+
     private String generateOTP() {
         Random random = new Random();
         String id = String.format("%06d", random.nextInt(1000000));
@@ -874,6 +989,30 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
         });
     }
 
+    private void UpdateWalletItemsStatus(UpdateWalletPojo.WalletDetail mPojo, String mOtp) {
+        Call<PostResponsePojo> call = apiService.UpdateWalletDetails(mPojo);
+        call.enqueue(new Callback<PostResponsePojo>() {
+            @Override
+            public void onResponse(Call<PostResponsePojo> call, Response<PostResponsePojo> response) {
+                PostResponsePojo pojo = response.body();
+                if (pojo != null)
+                    if (pojo.getStatus().equalsIgnoreCase("200")) {
+                        tinyDB.remove(STORE_ORDER_DATA);
+                        Toasty.success(MainActivity.this, "Item Ordered Successfully", Toast.LENGTH_SHORT, true).show();
+                        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.nav_home);
+
+                        //  Toasty.info(OTPAuthentication.this,mOtp,Toasty.LENGTH_SHORT).show();
+                        sendSmsDatagen("91" + tinyDB.getString(USER_MOBILE), "Thank you for ordering with DELIVERY HUB. Please share OTP : " + mOtp + " for confirmation.");
+
+                    }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponsePojo> call, Throwable t) {
+            }
+        });
+    }
+
     public void sendSms(String number, String msg) {
         try {
             // Construct data
@@ -890,6 +1029,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
 
         }
     }
+
 
     class RetrieveFeedTask extends AsyncTask<String, Void, String> {
 
@@ -1028,6 +1168,115 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
             // TODO: check this.exception
             // TODO: do something with the feed
         }
+    }
+
+
+    class RetrieveFeedORDERTask extends AsyncTask<String, String, String> {
+        String mOtp = "", mVendorId = "", mTotalAMt = "";
+        private Exception exception;
+
+        protected String doInBackground(String... urls) {
+            try {
+                String data = urls[0];
+                mOtp = urls[1];
+                mVendorId = urls[2];
+                mTotalAMt = urls[3];
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                MediaType mediaType = MediaType.parse("application/json");
+                RequestBody body = RequestBody.create(mediaType, data);
+                Request request = new Request.Builder()
+                        .url("http://delapi.shaikhomes.com/api/OrderItems?")
+                        .method("POST", body)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+                okhttp3.Response response = client.newCall(request).execute();
+                String ret = "";
+                if (response.isSuccessful()) {
+                    String some = response.body().string();
+                    JSONObject jsonObject1 = null;
+                    try {
+                        jsonObject1 = new JSONObject(some);
+                        if (jsonObject1.getString("status").equalsIgnoreCase("200")) {
+                            ret = "1";
+                        } else {
+                            ret = "0";
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return ret;
+            } catch (Exception e) {
+                this.exception = e;
+
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String feed) {
+            if (feed.equalsIgnoreCase("1")) {
+                tinyDB.remove("OFFSTORES");
+                new EZDialog.Builder(MainActivity.this)
+                        .setTitle("SUCCESS")
+                        .setMessage("Order Created successfully")
+                        .setPositiveBtnText("Ok")
+                        .setCancelableOnTouchOutside(false)
+                        .setHeaderColor(Color.parseColor("#11CAB8"))
+
+                        .setTitleTextColor(Color.parseColor("#FFFFFF"))
+                        .OnPositiveClicked(new EZDialogListener() {
+                            @Override
+                            public void OnClick() {
+                                try {
+                                    UpdateWalletPojo.WalletDetail mPojo = new UpdateWalletPojo.WalletDetail();
+                                    mPojo.setVendorId(mVendorId);
+                                    mPojo.setOnlineAmount(mTotalAMt);
+                                    UpdateWalletItemsStatus(mPojo, mOtp);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .build();
+            }
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        statusCheck();
+        super.onResume();
+    }
+
+    public void statusCheck() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+
+        }
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, Please enable it.")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
    /* @Override
     public void onBackPressed() {

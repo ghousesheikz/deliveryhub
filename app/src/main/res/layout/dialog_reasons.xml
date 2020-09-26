@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
-    android:layout_height="400dp"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/white"
@@ -17,13 +17,30 @@
             android:id="@+id/dialog_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:padding="10dp"
-            android:text="Assign Employee"
-            android:textColor="@color/white"
-            android:textSize="22sp"
+            android:background="@color/white"
+            android:padding="5dp"
+            android:fontFamily="@font/lato_regular"
+            android:gravity="center"
+            android:text="Available Quantity for"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
             android:textStyle="bold" />
-
+        <TextView
+            android:id="@+id/item_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="5dp"
+            android:fontFamily="@font/lato_regular"
+            android:gravity="center"
+            android:text="Available Quantity for"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black" />
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">

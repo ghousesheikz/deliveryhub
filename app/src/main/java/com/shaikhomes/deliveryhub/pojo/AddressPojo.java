@@ -7,6 +7,8 @@ public class AddressPojo {
     public String Landmark;
     public String AreaName;
     public String CityName;
+    public String Lat;
+    public String Lang;
 
     public String getAddressType() {
         return AddressType;
@@ -54,5 +56,21 @@ public class AddressPojo {
 
     public void setCityName(String cityName) {
         CityName = cityName;
+    }
+
+    public String getLat() {
+        return Lat;
+    }
+
+    public void setLat(String lat) {
+        Lat = lat;
+    }
+
+    public String getLang() {
+        return Lang;
+    }
+
+    public void setLang(String lang) {
+        Lang = lang;
     }
 }
