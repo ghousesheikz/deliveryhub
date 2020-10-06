@@ -56,6 +56,7 @@ import com.shaikhomes.deliveryhub.pojo.AddressPojo;
 import com.shaikhomes.deliveryhub.pojo.OrderDelivery;
 import com.shaikhomes.deliveryhub.pojo.PostResponsePojo;
 import com.shaikhomes.deliveryhub.pojo.SMSResponse;
+import com.shaikhomes.deliveryhub.pojo.UserRegistrationPojo;
 import com.shaikhomes.deliveryhub.ui.orders.OrderListAdapter;
 import com.shaikhomes.deliveryhub.utility.AppEnvironment;
 import com.shaikhomes.deliveryhub.utility.BaseApplication;
@@ -598,7 +599,7 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
 
                                                                 //  Toasty.info(OTPAuthentication.this,mOtp,Toasty.LENGTH_SHORT).show();
                                                                 sendSmsDatagen("91" + tinyDB.getString(USER_MOBILE), "Thank you for ordering with DELIVERY HUB. Please share OTP : " + mOtp + " for confirmation.");
-
+                                                                sendSMStovendor(mOrdersList.get(0).getVendorId(),mOtp);
                                                             } catch (Exception e) {
                                                                 e.printStackTrace();
                                                             }
@@ -723,7 +724,30 @@ public class OrderCalculation extends Fragment implements View.OnClickListener {
 
         return flag;
     }
+    private void sendSMStovendor(String vendorId, String mOtp) {
+        try {
+            Call<UserRegistrationPojo> call = apiService.GetUserbyuserid(vendorId);
+            call.enqueue(new Callback<UserRegistrationPojo>() {
+                @Override
+                public void onResponse(Call<UserRegistrationPojo> call, Response<UserRegistrationPojo> response) {
+                    UserRegistrationPojo mUserData = response.body();
+                    if (mUserData.getStatus().equalsIgnoreCase("200")) {
+                        String mMsg = "Dear "+mUserData.getData().get(0).getUsername()+" you got order from " + tinyDB.getString(USER_NAME) + "-" + tinyDB.getString(USER_MOBILE) + " ordertype-COD with OTP : " + mOtp;
+                        sendSmsDatagen("91" + mUserData.getData().get(0).getUsermobileNumber(), mMsg);
 
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserRegistrationPojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     /**
      * This function prepares the data for payment and launches payumoney plug n play sdk

@@ -222,7 +222,7 @@ public class StoreItemsList extends Fragment {
 
             @Override
             public void onWeightClick(@Nullable List<? extends StoreItemsPojo.StoreItemsList> mItemChangeList, int position, @NotNull TextView weightText) {
-                dialogSelectWeights(mItemChangeList, position,weightText);
+                dialogSelectWeights(mItemChangeList, position, weightText);
             }
         });
         mItemsRecyclerview.setAdapter(mItemAdapter);
@@ -284,21 +284,34 @@ public class StoreItemsList extends Fragment {
         try {
             List<WeightPojo> mWeightList = new ArrayList<>();
             WeightPojo mPoso = null;
-            mPoso = new WeightPojo();
-            mPoso.setmWeight("1Kg");
-            mPoso.setmMrpPrice(150);
-            mPoso.setmSellingPrice(120);
-            mWeightList.add(mPoso);
-            mPoso = new WeightPojo();
-            mPoso.setmWeight("500gms");
-            mPoso.setmMrpPrice(75);
-            mPoso.setmSellingPrice(70);
-            mWeightList.add(mPoso);
-            mPoso = new WeightPojo();
-            mPoso.setmWeight("250gms");
-            mPoso.setmMrpPrice(40);
-            mPoso.setmSellingPrice(38);
-            mWeightList.add(mPoso);
+
+            if (!TextUtils.isEmpty(mItemChangeList.get(position).getWeight1())) {
+                mPoso = new WeightPojo();
+                mPoso.setmWeight(mItemChangeList.get(position).getWeight1());
+                mPoso.setmMrpPrice(Integer.parseInt(mItemChangeList.get(position).getMrpPrice1()));
+                mPoso.setmSellingPrice(Integer.parseInt(mItemChangeList.get(position).getSellingPrice1()));
+                mWeightList.add(mPoso);
+                if (!TextUtils.isEmpty(mItemChangeList.get(position).getWeight2())) {
+                    mPoso = new WeightPojo();
+                    mPoso.setmWeight(mItemChangeList.get(position).getWeight2());
+                    mPoso.setmMrpPrice(Integer.parseInt(mItemChangeList.get(position).getMrpPrice2()));
+                    mPoso.setmSellingPrice(Integer.parseInt(mItemChangeList.get(position).getSellingPrice2()));
+                    mWeightList.add(mPoso);
+                }
+                if (!TextUtils.isEmpty(mItemChangeList.get(position).getWeight3())) {
+                    mPoso = new WeightPojo();
+                    mPoso.setmWeight(mItemChangeList.get(position).getWeight3());
+                    mPoso.setmMrpPrice(Integer.parseInt(mItemChangeList.get(position).getMrpPrice3()));
+                    mPoso.setmSellingPrice(Integer.parseInt(mItemChangeList.get(position).getSellingPrice3()));
+                    mWeightList.add(mPoso);
+                }
+            } else {
+                mPoso = new WeightPojo();
+                mPoso.setmWeight(mItemChangeList.get(position).getItemSize());
+                mPoso.setmMrpPrice(Integer.parseInt(mItemChangeList.get(position).getItemPrice()));
+                mPoso.setmSellingPrice(Integer.parseInt(mItemChangeList.get(position).getSellingPrice()));
+                mWeightList.add(mPoso);
+            }
 
             DisplayMetrics displaymetrics = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -307,14 +320,15 @@ public class StoreItemsList extends Fragment {
             dialogcust.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             dialogcust.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialogcust.setContentView(R.layout.dialog_reasons);
-            dialogcust.setCancelable(false);
+            dialogcust.setCancelable(true);
+
             dialogcust.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialogcust.getWindow().setLayout(screenWidth, WindowManager.LayoutParams.MATCH_PARENT);
             dialogcust.getWindow().setGravity(Gravity.CENTER);
             dialogcust.show();
             LinearLayout mReasonLayout = dialogcust.findViewById(R.id.reason_ll);
             TextView dialog_header = dialogcust.findViewById(R.id.item_desc);
-            dialog_header.setText(mItemChangeList.get(position).getItemName()+"-"+mItemChangeList.get(position).getItemDescription());
+            dialog_header.setText(mItemChangeList.get(position).getItemName() + "-" + mItemChangeList.get(position).getItemDescription());
             mReasonLayout.removeAllViews();
             for (int j = 0; j < mWeightList.size(); j++) {
                 LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -324,26 +338,33 @@ public class StoreItemsList extends Fragment {
                 final TextView mSellingPrice = view.findViewById(R.id.selling_price);
                 final LinearLayout mWeightLL = view.findViewById(R.id.weight_ll);
                 mReasonTxt.setText(mWeightList.get(j).mWeight);
-                mMrpPrice.setText("₹ " +mWeightList.get(j).mMrpPrice);
+                mMrpPrice.setText("₹ " + mWeightList.get(j).mMrpPrice);
                 mMrpPrice.setPaintFlags(mMrpPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                mSellingPrice.setText("₹ " +mWeightList.get(j).mSellingPrice);
+                mSellingPrice.setText("₹ " + mWeightList.get(j).mSellingPrice);
                 mReasonLayout.addView(view);
                 final int finalJ = j;
-                mReasonTxt.setOnClickListener(v -> {
+                mWeightLL.setOnClickListener(v -> {
                     mWeightLL.setBackgroundColor(Color.parseColor("#35BF34"));
                     mReasonTxt.setTextColor(Color.parseColor("#FFFFFF"));
                     mMrpPrice.setTextColor(Color.parseColor("#FFFFFF"));
                     mSellingPrice.setTextColor(Color.parseColor("#FFFFFF"));
-                    mItemChangeList.get(position).setItemPrice(mWeightList.get(finalJ).getmMrpPrice()+"");
+                    mItemChangeList.get(position).setItemPrice(mWeightList.get(finalJ).getmMrpPrice() + "");
                     mItemChangeList.get(position).setSellingPrice(mWeightList.get(finalJ).getmSellingPrice() + "");
                     mItemChangeList.get(position).setItemSize(mWeightList.get(finalJ).getmWeight());
                     mItemChangeList.get(position).setItemCount(0);
                     mItemChangeList.get(position).setMRPtotalAmt(0);
                     mItemChangeList.get(position).setTotalAmt(0);
                     weightText.setText(mWeightList.get(finalJ).getmWeight());
+                    if(finalJ==0){
+                        mItemChangeList.get(position).setmSelect(1);
+                    }else if(finalJ==1){
+                        mItemChangeList.get(position).setmSelect(2);
+                    }else if(finalJ==2){
+                        mItemChangeList.get(position).setmSelect(3);
+                    }
                     dialogcust.dismiss();
-                    mTotalItemList = (List<StoreItemsPojo.StoreItemsList>) mItemChangeList;
-                    mItemAdapter.updateAdapter(mTotalItemList);
+                    //mTotalItemList = (List<StoreItemsPojo.StoreItemsList>) mItemChangeList;
+                    mItemAdapter.updateAdapter(mItemChangeList);
                     totalAmt = 0.0;
                     mrpTotalAmt = 0.0;
                     for (int i = 0; i < mTotalItemList.size(); i++) {
@@ -369,7 +390,8 @@ public class StoreItemsList extends Fragment {
 
                 });
             }
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             e.printStackTrace();
         }
 
@@ -659,7 +681,7 @@ public class StoreItemsList extends Fragment {
                         DecimalFormat df = new DecimalFormat("0.00");
                         mDataPojo = new StoreOrderItemsPojo();
                         mDataPojo.setItemId(mTotalItemList.get(i).getItemId());
-                        mDataPojo.setItemName(mTotalItemList.get(i).getItemName());
+                        mDataPojo.setItemName(mTotalItemList.get(i).getItemName()+"-"+mTotalItemList.get(i).getItemSize());
                         mDataPojo.setItemQuantity(mTotalItemList.get(i).getItemQuantity());
                         mDataPojo.setItemCategory(mTotalItemList.get(i).getCategoryId());
                         mDataPojo.setItemprice(mTotalItemList.get(i).getItemPrice());

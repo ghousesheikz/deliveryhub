@@ -1,9 +1,9 @@
 package com.shaikhomes.deliveryhub.utility;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
-
 
 
 import android.view.LayoutInflater;
@@ -18,8 +18,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.shaikhomes.deliveryhub.R;
 
 import java.util.List;
-
-
 
 
 public class SliderAdapter extends LoopingPagerAdapter<String> {
@@ -51,16 +49,22 @@ public class SliderAdapter extends LoopingPagerAdapter<String> {
         };
         circularProgressDrawable.setColorSchemeColors(COLORS);
         circularProgressDrawable.start();
-        Glide.with(convertView.getContext()).load("http://delapi.shaikhomes.com/Offers/" +itemList.get(listPosition))
+        Glide.with(convertView.getContext()).load("http://delapi.shaikhomes.com/Offers/" + itemList.get(listPosition))
                 .placeholder(circularProgressDrawable)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .error(R.drawable.ic_no_image)
                 .fitCenter().into(imageView);
 
-        //imageView.setOnClickListener(v -> clickTopSlider.onClick(listPosition, itemList.get(listPosition));
+        imageView.setOnClickListener(v -> {
+            if (listPosition == 0) {
+                clickTopSlider.onClick("18");
+            }
+        });
+
 
     }
+
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view.equals(object);
@@ -72,7 +76,7 @@ public class SliderAdapter extends LoopingPagerAdapter<String> {
     }
 
 
-    public interface ClickTopSlider{
-        void onClick(int position, int catID);
+    public interface ClickTopSlider {
+        void onClick(String position);
     }
 }

@@ -157,7 +157,7 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
 
 
     @Override
-    public void clickHeader(int c, int subCategoryID) {
+    public void clickHeader(String c) {
 
     }
 
@@ -189,7 +189,11 @@ public class UserDashboardFragment extends Fragment implements DashboardOnClick 
 
                         sliderAdapter = new SliderAdapter(getActivity(), mImageList, new SliderAdapter.ClickTopSlider() {
                             @Override
-                            public void onClick(int position, int catID) {
+                            public void onClick(String position) {
+                                tinyDB.putString("SVENDOR", position);
+                                tinyDB.putString("SVENDORNAME", "zxc 123");
+                                tinyDB.putInt("MINAMT", 100);
+                                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.nav_stores_items);
                             }
                         });
                         viewpager.setAdapter(sliderAdapter);

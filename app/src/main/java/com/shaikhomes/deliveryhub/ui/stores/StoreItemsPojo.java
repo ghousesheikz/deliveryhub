@@ -132,6 +132,17 @@ public class StoreItemsPojo {
         @SerializedName("SellingPrice3")
         @Expose
         private String SellingPrice3;
+        @SerializedName("mSelect")
+        @Expose
+        public int mSelect=0;
+
+        public int getmSelect() {
+            return mSelect;
+        }
+
+        public void setmSelect(int mSelect) {
+            this.mSelect = mSelect;
+        }
 
         public String getWeight1() {
             return Weight1;

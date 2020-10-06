@@ -44,6 +44,7 @@ import com.shaikhomes.deliveryhub.pojo.PayuResponse;
 import com.shaikhomes.deliveryhub.pojo.PostResponsePojo;
 import com.shaikhomes.deliveryhub.pojo.SMSResponse;
 import com.shaikhomes.deliveryhub.pojo.UpdateWalletPojo;
+import com.shaikhomes.deliveryhub.pojo.UserRegistrationPojo;
 import com.shaikhomes.deliveryhub.ui.BottomSheetView;
 import com.shaikhomes.deliveryhub.ui.address.AddressAdapter;
 import com.shaikhomes.deliveryhub.ui.ordercalculation.OrderCalculation;
@@ -760,9 +761,9 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                                                                 mPojo.setVendorId(finalMPostData.getVendorName());
                                                                 mPojo.setOnlineAmount(finalMPostData.getTotalamount());
                                                                 UpdateWalletStatus(mPojo, finalMPostData.getOTP());
-                                                                String mOtp = finalMPostData.getOTP();
+                                                               /* String mOtp = finalMPostData.getOTP();
                                                                 sendSmsDatagen("91" + tinyDB.getString(USER_MOBILE), "Thank you for ordering with DELIVERY HUB. Please share OTP : " + mOtp + " for confirmation.");
-
+*/
                                                             } catch (Exception e) {
                                                                 e.printStackTrace();
                                                             }
@@ -980,6 +981,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
                         tinyDB.remove(ORDER_DATA);
                         Toasty.success(MainActivity.this, "Item Ordered Successfully", Toast.LENGTH_SHORT, true).show();
                         sendSms("91" + tinyDB.getString(USER_MOBILE), "Thank you for ordering with DeliveryHUB OTP : " + mOtp + ". Please share OTP with the delivery person for verification.");
+                        sendSMStovendor(mPojo.getVendorId(),mOtp);
                     }
             }
 
@@ -1003,7 +1005,7 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
 
                         //  Toasty.info(OTPAuthentication.this,mOtp,Toasty.LENGTH_SHORT).show();
                         sendSmsDatagen("91" + tinyDB.getString(USER_MOBILE), "Thank you for ordering with DELIVERY HUB. Please share OTP : " + mOtp + " for confirmation.");
-
+                        sendSMStovendor(mPojo.getVendorId(),mOtp);
                     }
             }
 
@@ -1011,6 +1013,32 @@ public class MainActivity extends BaseActivity implements BottomSheetView, View.
             public void onFailure(Call<PostResponsePojo> call, Throwable t) {
             }
         });
+    }
+
+
+    private void sendSMStovendor(String vendorId, String mOtp) {
+        try {
+            Call<UserRegistrationPojo> call = apiService.GetUserbyuserid(vendorId);
+            call.enqueue(new Callback<UserRegistrationPojo>() {
+                @Override
+                public void onResponse(Call<UserRegistrationPojo> call, Response<UserRegistrationPojo> response) {
+                    UserRegistrationPojo mUserData = response.body();
+                    if (mUserData.getStatus().equalsIgnoreCase("200")) {
+                        String mMsg = "Dear "+mUserData.getData().get(0).getUsername()+" you got order from " + tinyDB.getString(USER_NAME) + "-" + tinyDB.getString(USER_MOBILE) + " ordertype-ONLINE with OTP : " + mOtp;
+                        sendSmsDatagen("91" + mUserData.getData().get(0).getUsermobileNumber(), mMsg);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserRegistrationPojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void sendSms(String number, String msg) {

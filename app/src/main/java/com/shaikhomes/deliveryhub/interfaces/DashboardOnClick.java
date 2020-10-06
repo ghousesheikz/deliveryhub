@@ -8,7 +8,7 @@ public interface DashboardOnClick {
     void clickVehicle(int c, int subCategoryID);
     void clickOthers(int c, int categoryID);
     void clickProduct(String productCode);*/
-    void clickHeader(int c, int subCategoryID);
+    void clickHeader(String c);
 
     void onItemClick(CategoryPojo.CategoryDetail categoryDetail, int position);
 }

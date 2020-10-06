@@ -1,11 +1,17 @@
 package com.shaikhomes.deliveryhub.ui.stores;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,6 +45,8 @@ import com.shaikhomes.deliveryhub.pojo.OrderDelivery;
 import com.shaikhomes.deliveryhub.pojo.PostResponsePojo;
 import com.shaikhomes.deliveryhub.pojo.SMSResponse;
 import com.shaikhomes.deliveryhub.pojo.UpdateWalletPojo;
+import com.shaikhomes.deliveryhub.pojo.UserRegistrationPojo;
+import com.shaikhomes.deliveryhub.ui.adminqueries.AdminQueries;
 import com.shaikhomes.deliveryhub.utility.AppEnvironment;
 import com.shaikhomes.deliveryhub.utility.BaseApplication;
 import com.shaikhomes.deliveryhub.utility.HttpRequestRestAPI;
@@ -73,6 +81,7 @@ import retrofit2.Response;
 import spencerstudios.com.ezdialoglib.EZDialog;
 import spencerstudios.com.ezdialoglib.EZDialogListener;
 
+import static android.text.Html.fromHtml;
 import static com.shaikhomes.deliveryhub.BaseActivity.hashCal;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.DELIVERY_TYPE;
 import static com.shaikhomes.deliveryhub.utility.AppConstants.ORDER_TYPE;
@@ -140,7 +149,8 @@ public class StoresOrderCalculation extends Fragment implements View.OnClickList
     private RadioButton mOnlinePay, mCashPay;
     DecimalFormat df;
     private CircularProgressButton mOrderProceedFab;
-    private double latitiude=0.0,longitude=0.0;
+    private double latitiude = 0.0, longitude = 0.0;
+    OrderItemsListPojo mPublicOrderList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -199,11 +209,11 @@ public class StoresOrderCalculation extends Fragment implements View.OnClickList
                 mTxtAddress.setText(mAddPojo.getFlatNumber() + ", " + mAddPojo.getApartmentName() + ", " + mAddPojo.getAreaName() + ", " + mAddPojo.getCityName());
 
             }
-            if(!TextUtils.isEmpty(mAddPojo.getLat())){
+            if (!TextUtils.isEmpty(mAddPojo.getLat())) {
                 latitiude = Double.parseDouble(mAddPojo.getLat());
             }
 
-            if(!TextUtils.isEmpty(mAddPojo.getLang())){
+            if (!TextUtils.isEmpty(mAddPojo.getLang())) {
                 longitude = Double.parseDouble(mAddPojo.getLang());
             }
         }
@@ -219,7 +229,7 @@ public class StoresOrderCalculation extends Fragment implements View.OnClickList
 
         mtxtTotalAmt.setText("₹ " + df.format(totalAMt) + " ");
         mMasterTotal.setText("₹ " + df.format(totalAMt) + " ");
-        double discount = MrptotalAmt-totalAMt;
+        double discount = MrptotalAmt - totalAMt;
         txt_discount.setText("₹ " + df.format(discount) + " ");
         mTxtMrpPrice.setText("₹ " + df.format(MrptotalAmt) + " ");
         return view;
@@ -290,7 +300,7 @@ public class StoresOrderCalculation extends Fragment implements View.OnClickList
 
                             mPostData.setVendorName(tinyDB.getString("SVENDOR"));
                             mPostData.setVendorAddress(tinyDB.getString("SVENDORNAME"));
-                            mPostData.setAddress(mTxtAddressType.getText().toString() + "_" + mTxtAddress.getText().toString()+ "_" +latitiude+ "_" +longitude);
+                            mPostData.setAddress(mTxtAddressType.getText().toString() + "_" + mTxtAddress.getText().toString() + "_" + latitiude + "_" + longitude);
                             mPostData.setTotalamount(String.valueOf(totalAMt));
                             mPostData.setPaidStatus("");
                             mPostData.setTypeoforder("instant");
@@ -343,7 +353,7 @@ public class StoresOrderCalculation extends Fragment implements View.OnClickList
                             mPostData.setUserName(tinyDB.getString(USER_NAME));
                             mPostData.setVendorName(tinyDB.getString("SVENDOR"));
                             mPostData.setVendorAddress(tinyDB.getString("SVENDORNAME"));
-                            mPostData.setAddress(mTxtAddressType.getText().toString() + "_" + mTxtAddress.getText().toString()+ "_" +latitiude+ "_" +longitude);
+                            mPostData.setAddress(mTxtAddressType.getText().toString() + "_" + mTxtAddress.getText().toString() + "_" + latitiude + "_" + longitude);
                             mPostData.setTotalamount(String.valueOf(totalAMt));
                             mPostData.setPaidStatus("");
                             mPostData.setTypeoforder("instant");
@@ -371,10 +381,10 @@ public class StoresOrderCalculation extends Fragment implements View.OnClickList
                                         if (pojo.getStatus().equalsIgnoreCase("200")) {
                                             //clearData();
 
-                                            OrderItemsListPojo mOrderList = new OrderItemsListPojo();
-                                            mOrderList.setOrderItemsList(mStoreItemsPojoList);
+                                            mPublicOrderList = new OrderItemsListPojo();
+                                            mPublicOrderList.setOrderItemsList(mStoreItemsPojoList);
 
-                                            String mData = new Gson().toJson(mOrderList.getOrderItemsList());
+                                            String mData = new Gson().toJson(mPublicOrderList.getOrderItemsList());
                                             new RetrieveFeedTask().execute(mData, mOtp, mPostData.getVendorName(), mPostData.getTotalamount());
                                             // PostOrderItems(mOrderList.getOrderItemsList(), mOtp);
 
@@ -492,6 +502,8 @@ public class StoresOrderCalculation extends Fragment implements View.OnClickList
 
                         //  Toasty.info(OTPAuthentication.this,mOtp,Toasty.LENGTH_SHORT).show();
                         sendSmsDatagen("91" + tinyDB.getString(USER_MOBILE), "Thank you for ordering with DELIVERY HUB. Please share OTP : " + mOtp + " for confirmation.");
+                        sendSMStovendor(mPojo.getVendorId(), mOtp);
+
 
                     }
             }
@@ -500,6 +512,31 @@ public class StoresOrderCalculation extends Fragment implements View.OnClickList
             public void onFailure(Call<PostResponsePojo> call, Throwable t) {
             }
         });
+    }
+
+    private void sendSMStovendor(String vendorId, String mOtp) {
+        try {
+            Call<UserRegistrationPojo> call = apiService.GetUserbyuserid(vendorId);
+            call.enqueue(new Callback<UserRegistrationPojo>() {
+                @Override
+                public void onResponse(Call<UserRegistrationPojo> call, Response<UserRegistrationPojo> response) {
+                    UserRegistrationPojo mUserData = response.body();
+                    if (mUserData.getStatus().equalsIgnoreCase("200")) {
+                        String mMsg = "Dear "+mUserData.getData().get(0).getUsername()+" you got order from " + tinyDB.getString(USER_NAME) + "-" + tinyDB.getString(USER_MOBILE) + " ordertype-COD with OTP : " + mOtp;
+                        sendSmsDatagen("91" + mUserData.getData().get(0).getUsermobileNumber(), mMsg);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserRegistrationPojo> call, Throwable t) {
+                    Log.i("ERROR", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Log.i("ERROR", e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void PostOrderItems(List<StoreOrderItemsPojo> mStoreItemsPojoList, String mOtp) {

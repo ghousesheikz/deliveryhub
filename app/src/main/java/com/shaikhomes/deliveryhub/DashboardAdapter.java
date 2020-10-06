@@ -207,8 +207,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private void init() {
             sliderAdapter = new SliderAdapter(itemView.getContext(), topBar, new SliderAdapter.ClickTopSlider() {
                 @Override
-                public void onClick(int position, int catID) {
-                    onClick.clickHeader(position, catID);
+                public void onClick(String position) {
+                    onClick.clickHeader(position);
                 }
             });
             viewpager.setAdapter(sliderAdapter);

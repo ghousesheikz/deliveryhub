@@ -88,38 +88,36 @@ class StoreItemsAdapter(context: Activity, mJoblist: List<StoreItemsPojo.StoreIt
                 }
             }
         })
+        if (!TextUtils.isEmpty(mJoblist!![position].weight1)) {
+            if (mJoblist!![position].mSelect == 0||mJoblist!![position].mSelect==1) {
+                holder.weight_text.text = mJoblist!![position].weight1
+                mJoblist!![position].itemSize = mJoblist!![position].weight1
+                mJoblist!![position].itemPrice = mJoblist!![position].mrpPrice1
+                mJoblist!![position].sellingPrice = mJoblist!![position].sellingPrice1
+            }else if(mJoblist!![position].mSelect == 2){
+                holder.weight_text.text = mJoblist!![position].weight2
+                mJoblist!![position].itemSize = mJoblist!![position].weight2
+                mJoblist!![position].itemPrice = mJoblist!![position].mrpPrice2
+                mJoblist!![position].sellingPrice = mJoblist!![position].sellingPrice2
+            }else if(mJoblist!![position].mSelect == 3){
+                holder.weight_text.text = mJoblist!![position].weight3
+                mJoblist!![position].itemSize = mJoblist!![position].weight3
+                mJoblist!![position].itemPrice = mJoblist!![position].mrpPrice3
+                mJoblist!![position].sellingPrice = mJoblist!![position].sellingPrice3
+            }
+        } else {
+            holder.weight_text.text = mJoblist!![position].itemSize
+
+        }
+        val amt = mJoblist!![position].itemPrice.toInt()
+        holder.mPrice.text = "₹ " + df.format(amt.toLong())
+        holder.mPrice.paintFlags = holder.mPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        val saleamt = mJoblist!![position].sellingPrice.toInt()
+        holder.mSellingPrice.text = "₹ " + df.format(saleamt.toLong())
         mCount = mJoblist!![position].itemCount
         holder.mPlusCnt.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                /* if (mJoblist.get(position).getItemSize().equalsIgnoreCase("Kgs")) {
-                    if (mCount < 1) {
-                        mCount = mJoblist.get(position).getItemCount();
-                        mCount = mCount + 0.1;
-                        double amt = Double.parseDouble(mJoblist.get(position).getSellingPrice());
-                        double mrpamt = Double.parseDouble(mJoblist.get(position).getItemPrice());
-                        amt = mCount * amt;
-                        mrpamt = mCount * mrpamt;
-                        mJoblist.get(position).setMRPtotalAmt(mrpamt);
-                        mJoblist.get(position).setTotalAmt(amt);
-                        mJoblist.get(position).setItemCount(mCount);
-                        //  holder.mPrice.setText("₹ " + amt + " ");
-                        holder.mCanCount.setText(round(mCount, 1));
-                        itemClickListener.onItemClick(mJoblist, position);
-                    } else {
-                        mCount = mJoblist.get(position).getItemCount();
-                        mCount = mCount + 1;
-                        double amt = Double.parseDouble(mJoblist.get(position).getSellingPrice());
-                        double mrpamt = Double.parseDouble(mJoblist.get(position).getItemPrice());
-                        amt = mCount * amt;
-                        mrpamt = mCount * mrpamt;
-                        mJoblist.get(position).setMRPtotalAmt(mrpamt);
-                        mJoblist.get(position).setTotalAmt(amt);
-                        mJoblist.get(position).setItemCount(mCount);
-                        //  holder.mPrice.setText("₹ " + amt + " ");
-                        holder.mCanCount.setText(round(mCount, 1));
-                        itemClickListener.onItemClick(mJoblist, position);
-                    }
-                } else {*/
+
                 mCount = mJoblist!![position].itemCount
                 mCount = mCount + 1
                 var amt = mJoblist!![position].sellingPrice.toDouble()
@@ -129,16 +127,12 @@ class StoreItemsAdapter(context: Activity, mJoblist: List<StoreItemsPojo.StoreIt
                 mJoblist!!.get(position).mrPtotalAmt = mrpamt
                 mJoblist!!.get(position).totalAmt = amt
                 mJoblist!!.get(position).itemCount = mCount
-                //  holder.mPrice.setText("₹ " + amt + " ");
+
                 holder.mCanCount.text = mCount.toString()
                 itemClickListener.onItemClick(mJoblist, position)
             } // }
         })
-        val amt = mJoblist!![position].itemPrice.toInt()
-        holder.mPrice.text = "₹ " + df.format(amt.toLong())
-        holder.mPrice.paintFlags = holder.mPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-        val saleamt = mJoblist!![position].sellingPrice.toInt()
-        holder.mSellingPrice.text = "₹ " + df.format(saleamt.toLong())
+
         holder.mMinusCnt.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
 
@@ -171,7 +165,7 @@ class StoreItemsAdapter(context: Activity, mJoblist: List<StoreItemsPojo.StoreIt
             }
         })
         holder.mCanCount.text = mJoblist!!.get(position).itemCount.toString()
-        holder.weight_text.text = mJoblist!![position].itemSize
+
 
         holder.weight_text.setOnClickListener({
             itemClickListener.onWeightClick(mJoblist, position, holder.weight_text)
